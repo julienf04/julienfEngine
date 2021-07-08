@@ -36,3 +36,16 @@ C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEng
 C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine04\obj\Debug\netcoreapp3.1\julienfEngine1.dll
 C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine04\obj\Debug\netcoreapp3.1\julienfEngine1.pdb
 C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine04\obj\Debug\netcoreapp3.1\julienfEngine1.genruntimeconfig.cache
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\bin\Debug\netcoreapp3.1\julienfEngine1.exe
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\bin\Debug\netcoreapp3.1\julienfEngine1.deps.json
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\bin\Debug\netcoreapp3.1\julienfEngine1.runtimeconfig.json
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\bin\Debug\netcoreapp3.1\julienfEngine1.runtimeconfig.dev.json
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\bin\Debug\netcoreapp3.1\julienfEngine1.dll
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\bin\Debug\netcoreapp3.1\julienfEngine1.pdb
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\Debug\netcoreapp3.1\julienfEngine1.csprojAssemblyReference.cache
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\Debug\netcoreapp3.1\julienfEngine1.AssemblyInfoInputs.cache
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\Debug\netcoreapp3.1\julienfEngine1.AssemblyInfo.cs
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\Debug\netcoreapp3.1\julienfEngine1.csproj.CoreCompileInputs.cache
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\Debug\netcoreapp3.1\julienfEngine1.dll
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\Debug\netcoreapp3.1\julienfEngine1.pdb
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\Debug\netcoreapp3.1\julienfEngine1.genruntimeconfig.cache

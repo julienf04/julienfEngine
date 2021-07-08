@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\julie\\C# Proyetos\\motorDeVideojuegosProbando0\\julienfEngine1\\julienfEngine04\\julienfEngine1.csproj": {}
+    "C:\\Users\\julie\\C# Proyetos\\motorDeVideojuegosProbando0\\julienfEngine1\\julienfEngine\\julienfEngine04\\julienfEngine1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\julie\\C# Proyetos\\motorDeVideojuegosProbando0\\julienfEngine1\\julienfEngine04\\julienfEngine1.csproj": {
+    "C:\\Users\\julie\\C# Proyetos\\motorDeVideojuegosProbando0\\julienfEngine1\\julienfEngine\\julienfEngine04\\julienfEngine1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\julie\\C# Proyetos\\motorDeVideojuegosProbando0\\julienfEngine1\\julienfEngine04\\julienfEngine1.csproj",
+        "projectUniqueName": "C:\\Users\\julie\\C# Proyetos\\motorDeVideojuegosProbando0\\julienfEngine1\\julienfEngine\\julienfEngine04\\julienfEngine1.csproj",
         "projectName": "julienfEngine1",
-        "projectPath": "C:\\Users\\julie\\C# Proyetos\\motorDeVideojuegosProbando0\\julienfEngine1\\julienfEngine04\\julienfEngine1.csproj",
+        "projectPath": "C:\\Users\\julie\\C# Proyetos\\motorDeVideojuegosProbando0\\julienfEngine1\\julienfEngine\\julienfEngine04\\julienfEngine1.csproj",
         "packagesPath": "C:\\Users\\julie\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\julie\\C# Proyetos\\motorDeVideojuegosProbando0\\julienfEngine1\\julienfEngine04\\obj\\",
+        "outputPath": "C:\\Users\\julie\\C# Proyetos\\motorDeVideojuegosProbando0\\julienfEngine1\\julienfEngine\\julienfEngine04\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\julie\\AppData\\Roaming\\NuGet\\NuGet.Config",

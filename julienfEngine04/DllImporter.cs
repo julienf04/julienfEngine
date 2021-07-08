@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace julienfEngine1
 {
-    class DllController
+    static class DllImporter
     {
         #region ---DLL TO GET THE WINDOW AND MAXIMIZE IT;
 
@@ -16,7 +16,7 @@ namespace julienfEngine1
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-        [DllImport("user32.dll", EntryPoint = "SetWindowPos")] public static extern IntPtr SetWindowPos(IntPtr hWnd, int hWndInsertAfter, int x, int y, int cx, int cy, int wFlags);
+        [DllImport("user32.dll", EntryPoint = "SetWindowPos")] private static extern IntPtr SetWindowPos(IntPtr hWnd, int hWndInsertAfter, int x, int y, int cx, int cy, int wFlags);
 
         private const int _SW_RRHIDE = 0;
         private const int _SW_MAXIMIZE = 3;
@@ -146,6 +146,50 @@ namespace julienfEngine1
 
         #endregion
 
+        #region ---DLL TO MANAGE SCREEN BUFFERS
+
+        [DllImport("Kernel32.dll")] static extern IntPtr CreateConsoleScreenBuffer(long dwDesiredAccess, long dwShareMode, IntPtr secutiryAttributes, uint flags, IntPtr screenBufferData);
+
+        [DllImport("Kernel32.dll")] static extern bool SetConsoleActiveScreenBuffer(IntPtr hConsoleOutput);
+
+        [DllImport("kernel32.dll", SetLastError = true)] static extern bool WriteConsoleOutputCharacter(IntPtr hConsoleOutput, string lpCharacter, int nLength, COORD dwWriteCoord, out uint lpNumberOfCharsWritten);
+
+        [DllImport("kernel32.dll", SetLastError = true)] static extern IntPtr GetStdHandle(int nStdHandle);
+
+        [DllImport("kernel32.dll", SetLastError = true)] static extern bool FillConsoleOutputCharacter(IntPtr hConsoleOutput, char cCharacter, int nLength, COORD dwWriteCoord, out uint lpNumberOfCharsWritten);
+
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct COORD
+        {
+            public short X;
+            public short Y;
+
+            public COORD(short X, short Y)
+            {
+                this.X = X;
+                this.Y = Y;
+            }
+        };
+
+
+        const long GENERIC_READ = 0x80000000L;
+        const long GENERIC_WRITE = 0x40000000L;
+
+        const long FILE_SHARED_READ = 0x00000001;
+        const long FILE_SHARED_WRITE = 0x00000002;
+
+        const int CONSOLE_TEXTMODE_BUFFER = 1;
+
+        const int STD_INPUT_HANDLE = -10;
+        const int STD_OUTPUT_HANDLE = -11;
+        const int STD_ERROR_HANDLE = -12;
+
+
+        private static List<IntPtr> _screenBuffers = new List<IntPtr>() { GetStdHandle((STD_OUTPUT_HANDLE)) };
+        private static int _numberOfScreenBuffers = 1;
+
+        #endregion
 
         #region ---METHODS
 
@@ -180,6 +224,49 @@ namespace julienfEngine1
             ClipCursor(ref rectCursorConfined);
 
             EnableWindow(_myConsole, false);
+        }
+
+        public static int CreateScreenBuffer()
+        {
+            IntPtr screenBufferHanlde = CreateConsoleScreenBuffer(GENERIC_WRITE, FILE_SHARED_WRITE, IntPtr.Zero, CONSOLE_TEXTMODE_BUFFER, IntPtr.Zero);
+            _screenBuffers.Add(screenBufferHanlde);
+            _numberOfScreenBuffers++;
+            return _screenBuffers.Count;
+        }
+
+        public static void SetScreenBuffer(int screenBufferID)
+        {
+            SetConsoleActiveScreenBuffer(_screenBuffers[--screenBufferID]);
+        }
+
+        public static void WriteConsole(int screenBufferID, string message, COORD coords)
+        {
+            uint ignore = 0;
+            WriteConsoleOutputCharacter(_screenBuffers[--screenBufferID], message, message.Length, coords, out ignore);
+        }
+
+        public static void WriteConsole(int screenBufferID, string message, int x, int y)
+        {
+            uint ignore = 0;
+            WriteConsoleOutputCharacter(_screenBuffers[--screenBufferID], message, message.Length, new COORD((short)x, (short)y), out ignore);
+        }
+
+        public static void ClearConsole(int screenBufferID)
+        {
+            uint ignore = 0;
+            FillConsoleOutputCharacter(_screenBuffers[--screenBufferID], ' ', julienfEngine.P_ScreenX * julienfEngine.P_ScreenY, new COORD(0, 0), out ignore);
+        }
+
+        #endregion
+
+        #region ---Properties
+
+        public static int P_NumberOfScreenBuffers
+        {
+            get
+            {
+                return _numberOfScreenBuffers;
+            }
         }
 
         #endregion

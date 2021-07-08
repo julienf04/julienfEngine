@@ -8,8 +8,6 @@ namespace julienfEngine1
     {
         #region ---ATRIBUTES;
 
-        private bool _isFirstCamera = true; //True if the first screen to draw gameObjects, and false if the second screen to draw gameObjects
-
         #endregion
 
         #region ---CONSTRUCTORS;
@@ -26,19 +24,6 @@ namespace julienfEngine1
         #endregion
 
         #region ---PROPIERTIES;
-
-        public bool P_IsFirstCamera
-        {
-            get
-            {
-                return _isFirstCamera;
-            }
-
-            set
-            {
-                _isFirstCamera = value;
-            }
-        }
 
         #endregion
     }

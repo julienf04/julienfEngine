@@ -79,7 +79,7 @@ namespace julienfEngine1
             {
                 julienfEngine.DrawConsole(gameObject0);
 
-                gameObject0.MovePosition(205,20);
+                gameObject0.MovePosition(205,50);
 
                 julienfEngine.ResetValuesUpdate();
             }

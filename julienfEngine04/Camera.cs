@@ -12,7 +12,7 @@ namespace julienfEngine1
 
         #region ---CONSTRUCTORS;
 
-        public Camera(int posX, int posY) : base(posX, posY)
+        public Camera(int posX = 0, int posY = 0) : base(posX, posY)
         {
 
         }

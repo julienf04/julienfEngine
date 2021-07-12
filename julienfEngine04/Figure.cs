@@ -28,6 +28,10 @@ namespace julienfEngine1
 
         #endregion
 
+        #region ---METHODS;
+
+        #endregion
+
         #region ---PROPERTIES;
 
         public string[] P_Figure
@@ -39,20 +43,9 @@ namespace julienfEngine1
 
             set
             {
-               this._figure = value; //If matriz in X and matriz in Y are less than screen, it is allowed, not else
+                this._figure = value; //If matriz in X and matriz in Y are less than screen, it is allowed, not else
             }
         }
-
-        #endregion
-
-        #region ---METHODS;
-
-
-
-
-
-
-
 
         #endregion
     }

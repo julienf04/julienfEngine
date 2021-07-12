@@ -6,8 +6,10 @@ namespace julienfEngine1
     {
         #region ---ATRIBUTES;
 
-        private static Stopwatch _stTime = new Stopwatch(); //this variable is a variable that shows the time elapsed since the game started
-        private static Stopwatch _stDeltaTime = new Stopwatch(); //This variable is a variable that shows the time elapsed since de last frame
+        private static Stopwatch _stTime = new Stopwatch(); //this variable is a variable that counts the time elapsed since the game started
+        private static double _time = 0; //This variable is a variable that shows the time elapsed since de last frame
+        private static Stopwatch _stDeltaTime = new Stopwatch(); //This variable is a variable that counts the time elapsed since de last frame
+        private static double _deltaTime = 0; //This variable is a variable that shows the time elapsed since de last frame
 
         private Stopwatch _stMyTimer = new Stopwatch(); //This variable is for managing a timer given to the user
         private double _myTimer = 0; //This timer is a final timer that going to be showed to the user. The user can set a start timer value
@@ -28,6 +30,7 @@ namespace julienfEngine1
 
         public static void ResetDeltaTime()
         {
+            _deltaTime = (double)_stDeltaTime.ElapsedMilliseconds / 1000;
             _stDeltaTime.Reset();
         }
 
@@ -42,7 +45,7 @@ namespace julienfEngine1
             _stMyTimer.Stop();
         }
 
-        public void ResetAndStopMyTimer()
+        public void ResetMyTimerValueAndStop()
         {
             _stMyTimer.Reset();
         }
@@ -52,11 +55,12 @@ namespace julienfEngine1
 
         #region ---PROPIERTIES;
 
-        public static double P_TimeElapsed
+        public static double P_Time
         {
             get
             {
-                return (double)_stTime.ElapsedMilliseconds / 1000;
+                _time = (double)_stTime.ElapsedMilliseconds / 1000;
+                return _time;
             }
         }
 
@@ -64,7 +68,7 @@ namespace julienfEngine1
         {
             get
             {
-                return _stDeltaTime.ElapsedMilliseconds / 1000;
+                return _deltaTime;
             }
         }
 
@@ -72,7 +76,7 @@ namespace julienfEngine1
         {
             get
             {
-                return _myTimer + _stMyTimer.ElapsedMilliseconds / 1000;
+                return _myTimer + (double)_stMyTimer.ElapsedMilliseconds / 1000;
             }
         }
 
@@ -80,7 +84,7 @@ namespace julienfEngine1
         {
             get
             {
-                return _myTimer - _stMyTimer.ElapsedMilliseconds / 1000;
+                return _myTimer - (double)_stMyTimer.ElapsedMilliseconds / 1000;
             }
         }
 

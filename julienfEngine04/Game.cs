@@ -70,7 +70,7 @@ namespace julienfEngine1
 
 
 
-            gameObject0 = new GameObject(figure0, true);
+            gameObject0 = new GameObject(figure0, true, false, 0, 0, julienfEngine.ForegroundColors.Red, julienfEngine.BackgroundColors.Black);
         }
 
         static void Update()
@@ -79,7 +79,9 @@ namespace julienfEngine1
             {
                 julienfEngine.DrawConsole(gameObject0);
 
-                gameObject0.MovePosition(205,50);
+                //gameObject0.MovePosition(20, 20);
+                //gameObject0.MovePosition((int)Timer.P_Time * 14, (int)Timer.P_Time * 4);
+                //julienfEngine.P_MainCamera.MovePosition(-(int)Timer.P_Time * 14, -(int)Timer.P_Time * 4);
 
                 julienfEngine.ResetValuesUpdate();
             }

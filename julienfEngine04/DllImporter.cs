@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace julienfEngine1
 {
-    static class DllImporter
+    abstract class DllImporter
     {
         #region ---DLL TO GET THE WINDOW AND MAXIMIZE IT;
 
@@ -28,23 +28,23 @@ namespace julienfEngine1
 
         #region ---DLL TO REMOVE THE TITLE BAR
 
-        const int WS_BORDER = 8388608;
-        const int WS_DLGFRAME = 4194304;
-        const int WS_CAPTION = WS_BORDER | WS_DLGFRAME;
-        const long GWL_STYLE = -16L;
-        const int SWP_FRAMECHANGED = 0x20;
-        const uint MF_REMOVE = 0x1000;
+        private const int _WS_BORDER = 8388608;
+        private const int _WS_DLGFRAME = 4194304;
+        private const int _WS_CAPTION = _WS_BORDER | _WS_DLGFRAME;
+        private const long _GWL_STYLE = -16L;
+        private const int _SWP_FRAMECHANGED = 0x20;
+        private const uint _MF_REMOVE = 0x1000;
 
-        [DllImport("user32.dll")] static extern int GetWindowLong(IntPtr hWnd, long nIndex);
-        [DllImport("user32.dll")] static extern int SetWindowLong(IntPtr hWnd, long nIndex, long dwNewLong);
+        [DllImport("user32.dll")] private static extern int GetWindowLong(IntPtr hWnd, long nIndex);
+        [DllImport("user32.dll")] private static extern int SetWindowLong(IntPtr hWnd, long nIndex, long dwNewLong);
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)] static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, int uFlags);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)] private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, int uFlags);
 
         #endregion
 
         #region ---DLL TO DISABLE THE CURSOR
 
-        [DllImport("user32.dll")] static extern bool ClipCursor(ref RECT lpRect);
+        [DllImport("user32.dll")] private static extern bool ClipCursor(ref RECT lpRect);
 
         [DllImport("user32.dll")] private static extern IntPtr MonitorFromWindow(IntPtr handle, int flags);
 
@@ -148,19 +148,21 @@ namespace julienfEngine1
 
         #region ---DLL TO MANAGE SCREEN BUFFERS
 
-        [DllImport("Kernel32.dll")] static extern IntPtr CreateConsoleScreenBuffer(long dwDesiredAccess, long dwShareMode, IntPtr secutiryAttributes, uint flags, IntPtr screenBufferData);
+        [DllImport("Kernel32.dll")] private static extern IntPtr CreateConsoleScreenBuffer(long dwDesiredAccess, long dwShareMode, IntPtr secutiryAttributes, uint flags, IntPtr screenBufferData);
 
-        [DllImport("Kernel32.dll")] static extern bool SetConsoleActiveScreenBuffer(IntPtr hConsoleOutput);
+        [DllImport("Kernel32.dll")] private static extern bool SetConsoleActiveScreenBuffer(IntPtr hConsoleOutput);
 
-        [DllImport("kernel32.dll", SetLastError = true)] static extern bool WriteConsoleOutputCharacter(IntPtr hConsoleOutput, string lpCharacter, int nLength, COORD dwWriteCoord, out uint lpNumberOfCharsWritten);
+        [DllImport("kernel32.dll", SetLastError = true)] private static extern bool WriteConsoleOutputCharacter(IntPtr hConsoleOutput, string lpCharacter, int nLength, COORD dwWriteCoord, out uint lpNumberOfCharsWritten);
 
-        [DllImport("kernel32.dll", SetLastError = true)] static extern IntPtr GetStdHandle(int nStdHandle);
+        [DllImport("kernel32.dll", SetLastError = true)] private static extern IntPtr GetStdHandle(int nStdHandle);
 
-        [DllImport("kernel32.dll", SetLastError = true)] static extern bool FillConsoleOutputCharacter(IntPtr hConsoleOutput, char cCharacter, int nLength, COORD dwWriteCoord, out uint lpNumberOfCharsWritten);
+        [DllImport("kernel32.dll", SetLastError = true)] private static extern bool FillConsoleOutputCharacter(IntPtr hConsoleOutput, char cCharacter, int nLength, COORD dwWriteCoord, out uint lpNumberOfCharsWritten);
+
+        [DllImport("kernel32.dll", SetLastError = true)] static extern bool FillConsoleOutputAttribute(IntPtr hConsoleOutput, int wAttribute, int nLength, COORD dwWriteCoord, out uint lpNumberOfAttrsWritten);
 
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct COORD
+        protected struct COORD
         {
             public short X;
             public short Y;
@@ -173,42 +175,61 @@ namespace julienfEngine1
         };
 
 
-        const long GENERIC_READ = 0x80000000L;
-        const long GENERIC_WRITE = 0x40000000L;
+        private const long _GENERIC_READ = 0x80000000L;
+        private const long _GENERIC_WRITE = 0x40000000L;
 
-        const long FILE_SHARED_READ = 0x00000001;
-        const long FILE_SHARED_WRITE = 0x00000002;
+        private const long _FILE_SHARED_READ = 0x00000001;
+        private const long _FILE_SHARED_WRITE = 0x00000002;
 
-        const int CONSOLE_TEXTMODE_BUFFER = 1;
+        private const int _CONSOLE_TEXTMODE_BUFFER = 1;
 
-        const int STD_INPUT_HANDLE = -10;
-        const int STD_OUTPUT_HANDLE = -11;
-        const int STD_ERROR_HANDLE = -12;
+        private const int _STD_INPUT_HANDLE = -10;
+        private const int _STD_OUTPUT_HANDLE = -11;
+        private const int _STD_ERROR_HANDLE = -12;
 
 
-        private static List<IntPtr> _screenBuffers = new List<IntPtr>() { GetStdHandle((STD_OUTPUT_HANDLE)) };
+        protected const ushort FOREGROUND_BLUE = 0x0001;
+        protected const ushort FOREGROUND_GREEN = 0x0002;
+        protected const ushort FOREGROUND_RED = 0x0004;
+        protected const ushort FOREGROUND_INTENSITY = 0x0008;
+
+        protected const ushort BACKGROUND_BLUE = 0x0010;
+        protected const ushort BACKGROUND_GREEN = 0x0020;
+        protected const ushort BACKGROUND_RED = 0x0040;
+        protected const ushort BACKGROUND_INTENSITY = 0x0080;
+
+        protected const ushort COMMON_LVB_LEADING_BYTE = 0x0100;
+        protected const ushort COMMON_LVB_TRAILING_BYTE = 0x0200;
+        protected const ushort COMMON_LVB_GRID_HORIZONTAL = 0x0400;
+        protected const ushort COMMON_LVB_GRID_LVERTICAL = 0x0800;
+        protected const ushort COMMON_LVB_GRID_RVERTICAL = 0x1000;
+        protected const ushort COMMON_LVB_REVERSE_VIDEO = 0x4000;
+        protected const ushort COMMON_LVB_UNDERSCORE = 0x8000;
+
+
+        private static List<IntPtr> _screenBuffers = new List<IntPtr>() { GetStdHandle((_STD_OUTPUT_HANDLE)) };
         private static int _numberOfScreenBuffers = 1;
 
         #endregion
 
         #region ---METHODS
 
-        public static void MaximizeWindow()
+        protected static void MaximizeWindow()
         {
             ShowWindow(_myConsole, _SW_MAXIMIZE);
         }
 
-        public static void RemoveBorders()
+        protected static void RemoveBorders()
         {
             long Style = 0;
-            Style = GetWindowLong(_myConsole, GWL_STYLE);
+            Style = GetWindowLong(_myConsole, _GWL_STYLE);
 
-            SetWindowLong(_myConsole, GWL_STYLE, Style & ~WS_CAPTION & ~MF_REMOVE);
+            SetWindowLong(_myConsole, _GWL_STYLE, Style & ~_WS_CAPTION & ~_MF_REMOVE);
 
-            SetWindowPos(_myConsole, new IntPtr(0), 0, 0, 0, 0, SWP_FRAMECHANGED);
+            SetWindowPos(_myConsole, new IntPtr(0), 0, 0, 0, 0, _SWP_FRAMECHANGED);
         }
 
-        public static void ConfineCursor(bool enabled)
+        protected static void ConfineCursor(bool enabled)
         {
             IntPtr monitor = MonitorFromWindow(myDesktopWindow, _MONITOR_DEFAULTTONEAREST);
 
@@ -226,42 +247,50 @@ namespace julienfEngine1
             EnableWindow(_myConsole, false);
         }
 
-        public static int CreateScreenBuffer()
+        protected static int CreateScreenBuffer()
         {
-            IntPtr screenBufferHanlde = CreateConsoleScreenBuffer(GENERIC_WRITE, FILE_SHARED_WRITE, IntPtr.Zero, CONSOLE_TEXTMODE_BUFFER, IntPtr.Zero);
+            IntPtr screenBufferHanlde = CreateConsoleScreenBuffer(_GENERIC_WRITE, _FILE_SHARED_WRITE, IntPtr.Zero, _CONSOLE_TEXTMODE_BUFFER, IntPtr.Zero);
             _screenBuffers.Add(screenBufferHanlde);
             _numberOfScreenBuffers++;
             return _screenBuffers.Count;
         }
 
-        public static void SetScreenBuffer(int screenBufferID)
+        protected static void SetScreenBuffer(int screenBufferID)
         {
-            SetConsoleActiveScreenBuffer(_screenBuffers[--screenBufferID]);
+            screenBufferID--;
+            SetConsoleActiveScreenBuffer(_screenBuffers[screenBufferID]);
         }
 
-        public static void WriteConsole(int screenBufferID, string message, COORD coords)
+        protected static void WriteConsole(int screenBufferID, string message, COORD coords, julienfEngine.ForegroundColors foregroundColor, julienfEngine.BackgroundColors backgroundColor)
         {
             uint ignore = 0;
-            WriteConsoleOutputCharacter(_screenBuffers[--screenBufferID], message, message.Length, coords, out ignore);
+            screenBufferID--;
+            FillConsoleOutputAttribute(_screenBuffers[screenBufferID], (int)foregroundColor | (int)backgroundColor, message.Length,coords, out ignore);
+            WriteConsoleOutputCharacter(_screenBuffers[screenBufferID], message, message.Length, coords, out ignore);
         }
 
-        public static void WriteConsole(int screenBufferID, string message, int x, int y)
+        protected static void WriteConsole(int screenBufferID, string message, int x, int y, julienfEngine.ForegroundColors foregroundColor, julienfEngine.BackgroundColors backgroundColor)
         {
             uint ignore = 0;
-            WriteConsoleOutputCharacter(_screenBuffers[--screenBufferID], message, message.Length, new COORD((short)x, (short)y), out ignore);
+            COORD coords = new COORD((short)x, (short)y);
+            screenBufferID--;
+            FillConsoleOutputAttribute(_screenBuffers[screenBufferID], (int)foregroundColor | (int)backgroundColor, message.Length, coords, out ignore);
+            WriteConsoleOutputCharacter(_screenBuffers[screenBufferID], message, message.Length, coords, out ignore);
         }
 
-        public static void ClearConsole(int screenBufferID)
+        protected static void ClearConsole(int screenBufferID)
         {
             uint ignore = 0;
-            FillConsoleOutputCharacter(_screenBuffers[--screenBufferID], ' ', julienfEngine.P_ScreenX * julienfEngine.P_ScreenY, new COORD(0, 0), out ignore);
+            screenBufferID--;
+            FillConsoleOutputAttribute(_screenBuffers[screenBufferID], 0, julienfEngine.P_ScreenX * julienfEngine.P_ScreenY + julienfEngine.P_ScreenX, new COORD(0, 0), out ignore);
+            //FillConsoleOutputCharacter(_screenBuffers[--screenBufferID], ' ', julienfEngine.P_ScreenX * julienfEngine.P_ScreenY + julienfEngine.P_ScreenX, new COORD(0, 0), out ignore);
         }
 
         #endregion
 
         #region ---Properties
 
-        public static int P_NumberOfScreenBuffers
+        protected static int P_NumberOfScreenBuffers
         {
             get
             {

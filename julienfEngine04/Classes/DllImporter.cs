@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace julienfEngine1
 {
-    abstract class DllImporter
+    internal abstract class DllImporter
     {
         #region ---DLL TO GET THE WINDOW AND MAXIMIZE IT;
 
@@ -126,7 +126,7 @@ namespace julienfEngine1
         }
 
 
-        [StructLayout(LayoutKind.Sequential)] struct RECT
+        [StructLayout(LayoutKind.Sequential)] private struct RECT
         {
             public RECT(int Top, int Bottom, int Left, int Right)
             {
@@ -158,11 +158,11 @@ namespace julienfEngine1
 
         [DllImport("kernel32.dll", SetLastError = true)] private static extern bool FillConsoleOutputCharacter(IntPtr hConsoleOutput, char cCharacter, int nLength, COORD dwWriteCoord, out uint lpNumberOfCharsWritten);
 
-        [DllImport("kernel32.dll", SetLastError = true)] static extern bool FillConsoleOutputAttribute(IntPtr hConsoleOutput, int wAttribute, int nLength, COORD dwWriteCoord, out uint lpNumberOfAttrsWritten);
+        [DllImport("kernel32.dll", SetLastError = true)] private static extern bool FillConsoleOutputAttribute(IntPtr hConsoleOutput, int wAttribute, int nLength, COORD dwWriteCoord, out uint lpNumberOfAttrsWritten);
 
 
         [StructLayout(LayoutKind.Sequential)]
-        protected struct COORD
+        internal protected struct COORD
         {
             public short X;
             public short Y;
@@ -188,23 +188,23 @@ namespace julienfEngine1
         private const int _STD_ERROR_HANDLE = -12;
 
 
-        protected const ushort FOREGROUND_BLUE = 0x0001;
-        protected const ushort FOREGROUND_GREEN = 0x0002;
-        protected const ushort FOREGROUND_RED = 0x0004;
-        protected const ushort FOREGROUND_INTENSITY = 0x0008;
+        internal const ushort FOREGROUND_BLUE = 0x0001;
+        internal const ushort FOREGROUND_GREEN = 0x0002;
+        internal const ushort FOREGROUND_RED = 0x0004;
+        internal const ushort FOREGROUND_INTENSITY = 0x0008;
 
-        protected const ushort BACKGROUND_BLUE = 0x0010;
-        protected const ushort BACKGROUND_GREEN = 0x0020;
-        protected const ushort BACKGROUND_RED = 0x0040;
-        protected const ushort BACKGROUND_INTENSITY = 0x0080;
+        internal const ushort BACKGROUND_BLUE = 0x0010;
+        internal const ushort BACKGROUND_GREEN = 0x0020;
+        internal const ushort BACKGROUND_RED = 0x0040;
+        internal const ushort BACKGROUND_INTENSITY = 0x0080;
 
-        protected const ushort COMMON_LVB_LEADING_BYTE = 0x0100;
-        protected const ushort COMMON_LVB_TRAILING_BYTE = 0x0200;
-        protected const ushort COMMON_LVB_GRID_HORIZONTAL = 0x0400;
-        protected const ushort COMMON_LVB_GRID_LVERTICAL = 0x0800;
-        protected const ushort COMMON_LVB_GRID_RVERTICAL = 0x1000;
-        protected const ushort COMMON_LVB_REVERSE_VIDEO = 0x4000;
-        protected const ushort COMMON_LVB_UNDERSCORE = 0x8000;
+        internal const ushort COMMON_LVB_LEADING_BYTE = 0x0100;
+        internal const ushort COMMON_LVB_TRAILING_BYTE = 0x0200;
+        internal const ushort COMMON_LVB_GRID_HORIZONTAL = 0x0400;
+        internal const ushort COMMON_LVB_GRID_LVERTICAL = 0x0800;
+        internal const ushort COMMON_LVB_GRID_RVERTICAL = 0x1000;
+        internal const ushort COMMON_LVB_REVERSE_VIDEO = 0x4000;
+        internal const ushort COMMON_LVB_UNDERSCORE = 0x8000;
 
 
         private static List<IntPtr> _screenBuffers = new List<IntPtr>() { GetStdHandle((_STD_OUTPUT_HANDLE)) };
@@ -214,12 +214,12 @@ namespace julienfEngine1
 
         #region ---METHODS
 
-        protected static void MaximizeWindow()
+        internal protected static void MaximizeWindow()
         {
             ShowWindow(_myConsole, _SW_MAXIMIZE);
         }
 
-        protected static void RemoveBorders()
+        internal protected static void RemoveBorders()
         {
             long Style = 0;
             Style = GetWindowLong(_myConsole, _GWL_STYLE);
@@ -229,7 +229,7 @@ namespace julienfEngine1
             SetWindowPos(_myConsole, new IntPtr(0), 0, 0, 0, 0, _SWP_FRAMECHANGED);
         }
 
-        protected static void ConfineCursor(bool enabled)
+        internal protected static void ConfineCursor(bool enabled)
         {
             IntPtr monitor = MonitorFromWindow(myDesktopWindow, _MONITOR_DEFAULTTONEAREST);
 
@@ -247,7 +247,7 @@ namespace julienfEngine1
             EnableWindow(_myConsole, false);
         }
 
-        protected static int CreateScreenBuffer()
+        internal protected static int CreateScreenBuffer()
         {
             IntPtr screenBufferHanlde = CreateConsoleScreenBuffer(_GENERIC_WRITE, _FILE_SHARED_WRITE, IntPtr.Zero, _CONSOLE_TEXTMODE_BUFFER, IntPtr.Zero);
             _screenBuffers.Add(screenBufferHanlde);
@@ -255,13 +255,13 @@ namespace julienfEngine1
             return _screenBuffers.Count;
         }
 
-        protected static void SetScreenBuffer(int screenBufferID)
+        internal protected static void SetScreenBuffer(int screenBufferID)
         {
             screenBufferID--;
             SetConsoleActiveScreenBuffer(_screenBuffers[screenBufferID]);
         }
 
-        protected static void WriteConsole(int screenBufferID, string message, COORD coords, julienfEngine.ForegroundColors foregroundColor, julienfEngine.BackgroundColors backgroundColor)
+        internal protected static void WriteConsole(int screenBufferID, string message, COORD coords, ForegroundColors foregroundColor, BackgroundColors backgroundColor)
         {
             uint ignore = 0;
             screenBufferID--;
@@ -269,7 +269,7 @@ namespace julienfEngine1
             WriteConsoleOutputCharacter(_screenBuffers[screenBufferID], message, message.Length, coords, out ignore);
         }
 
-        protected static void WriteConsole(int screenBufferID, string message, int x, int y, julienfEngine.ForegroundColors foregroundColor, julienfEngine.BackgroundColors backgroundColor)
+        internal protected static void WriteConsole(int screenBufferID, string message, int x, int y, ForegroundColors foregroundColor, BackgroundColors backgroundColor)
         {
             uint ignore = 0;
             COORD coords = new COORD((short)x, (short)y);
@@ -278,7 +278,7 @@ namespace julienfEngine1
             WriteConsoleOutputCharacter(_screenBuffers[screenBufferID], message, message.Length, coords, out ignore);
         }
 
-        protected static void ClearConsole(int screenBufferID)
+        internal protected static void ClearConsole(int screenBufferID)
         {
             uint ignore = 0;
             screenBufferID--;
@@ -290,7 +290,7 @@ namespace julienfEngine1
 
         #region ---Properties
 
-        protected static int P_NumberOfScreenBuffers
+        internal protected static int P_NumberOfScreenBuffers
         {
             get
             {

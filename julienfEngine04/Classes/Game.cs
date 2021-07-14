@@ -49,6 +49,7 @@ namespace julienfEngine1
                 "000000000000000000000000",
                 "000000000000000000000000"
             };
+            figure0.ForegroundColor = ForegroundColors.Red;
 
 
 
@@ -70,7 +71,7 @@ namespace julienfEngine1
 
 
 
-            gameObject0 = new GameObject(figure0, true, false, 0, 0, julienfEngine.ForegroundColors.Red, julienfEngine.BackgroundColors.Black);
+            gameObject0 = new GameObject(null, true, false, 0, 0);
         }
 
         static void Update()

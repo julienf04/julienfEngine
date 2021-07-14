@@ -14,23 +14,15 @@ namespace julienfEngine1
 
         private bool _isUI = false;
 
-        private julienfEngine.ForegroundColors _foregroundColor = julienfEngine.ForegroundColors.White;
-
-        private julienfEngine.BackgroundColors _backgroundColor = julienfEngine.BackgroundColors.Black;
-
         #endregion
 
         #region ---CONSTRUCTORS;
 
-        public GameObject(Figure figure = null, bool visible = true, bool isUI = false, int posX = 0, int posY = 0,
-                          julienfEngine.ForegroundColors foregroundColor = julienfEngine.ForegroundColors.White, julienfEngine.BackgroundColors backgroundColor = julienfEngine.BackgroundColors.Black)
-                          : base(posX, posY)
+        public GameObject(Figure figure, bool visible = true, bool isUI = false, int posX = 0, int posY = 0) : base(posX, posY)
         {
-            _figure = figure;
+            if (figure != null) _figure = figure;
             _visible = visible;
             _isUI = isUI;
-            _foregroundColor = foregroundColor;
-            _backgroundColor = backgroundColor;
         }
 
         #endregion
@@ -77,32 +69,6 @@ namespace julienfEngine1
             set
             {
                 _isUI = value;
-            }
-        }
-
-        public julienfEngine.ForegroundColors P_ForegroundColor
-        {
-            get
-            {
-                return _foregroundColor;
-            }
-
-            set
-            {
-                _foregroundColor = value;
-            }
-        }
-
-        public julienfEngine.BackgroundColors P_BackgroundColor
-        {
-            get
-            {
-                return _backgroundColor;
-            }
-
-            set
-            {
-                _backgroundColor = value;
             }
         }
 

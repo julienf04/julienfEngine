@@ -48,28 +48,32 @@ namespace julienfEngine1
         {
             if (gameObject.P_Visible)
             {
+                int figureIndex = gameObject.P_Animation.P_IsRunning ? gameObject.P_Animation.P_CurrentFigure : gameObject.P_BaseFigure;
+
                 int y = gameObject.P_IsUI ? gameObject.P_PosY : gameObject.P_PosY - _mainCamera.P_PosY;
                 int xStart = gameObject.P_IsUI ? gameObject.P_PosX : gameObject.P_PosX - _mainCamera.P_PosX;
-                for (int i = 0; y < (y - i + gameObject.P_GameObjectFigure.P_Figure.Length); y++, i++)
+                for (int i = 0; y < (y - i + gameObject.P_GameObjectFigures[figureIndex].P_Figure.Length); y++, i++)
                 {
                     if (y >= 0 && y <= _screenY)
                     {
-                        int xEnd = xStart + gameObject.P_GameObjectFigure.P_Figure[i].Length;
+                        int xEnd = xStart + gameObject.P_GameObjectFigures[figureIndex].P_Figure[i].Length;
 
                         if (xStart >= 0 && xEnd <= _screenX)
                         {
-                            DllImporter.WriteConsole(_currentScreenBufferID, gameObject.P_GameObjectFigure.P_Figure[i], new DllImporter.COORD((short)(xStart), (short)y), gameObject.P_GameObjectFigure.ForegroundColor, gameObject.P_GameObjectFigure.BackgroundColor);
+                            DllImporter.WriteConsole(_currentScreenBufferID, gameObject.P_GameObjectFigures[figureIndex].P_Figure[i], new DllImporter.COORD((short)(xStart), (short)y), gameObject.P_GameObjectFigures[figureIndex].ForegroundColor, gameObject.P_GameObjectFigures[figureIndex].BackgroundColor);
                         }
                         else if (xStart < _screenX && xEnd >= _screenX)
                         {
-                            DllImporter.WriteConsole(_currentScreenBufferID, gameObject.P_GameObjectFigure.P_Figure[i].Substring(0, _screenX - xStart), new DllImporter.COORD((short)(xStart), (short)y), gameObject.P_GameObjectFigure.ForegroundColor, gameObject.P_GameObjectFigure.BackgroundColor);
+                            DllImporter.WriteConsole(_currentScreenBufferID, gameObject.P_GameObjectFigures[figureIndex].P_Figure[i].Substring(0, _screenX - xStart), new DllImporter.COORD((short)(xStart), (short)y), gameObject.P_GameObjectFigures[figureIndex].ForegroundColor, gameObject.P_GameObjectFigures[figureIndex].BackgroundColor);
                         }
                         else if (xStart < 0 && xEnd > 0)
                         {
-                            DllImporter.WriteConsole(_currentScreenBufferID, gameObject.P_GameObjectFigure.P_Figure[i].Substring(-xStart, xEnd), new DllImporter.COORD((short)(0), (short)y), gameObject.P_GameObjectFigure.ForegroundColor, gameObject.P_GameObjectFigure.BackgroundColor);
+                            DllImporter.WriteConsole(_currentScreenBufferID, gameObject.P_GameObjectFigures[figureIndex].P_Figure[i].Substring(-xStart, xEnd), new DllImporter.COORD((short)(0), (short)y), gameObject.P_GameObjectFigures[figureIndex].ForegroundColor, gameObject.P_GameObjectFigures[figureIndex].BackgroundColor);
                         }
                     }
                 }
+
+                if (gameObject.P_Animation.P_IsRunning) gameObject.P_Animation.NextFigure();
             }
         }
 

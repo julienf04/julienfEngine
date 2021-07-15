@@ -18,17 +18,17 @@ namespace julienfEngine1
 
         #region ---METHODS;
 
-        public static void StartTime()
+        internal static void StartTime()
         {
             _stTime.Start();
         }
 
-        public static void StartDeltaTime()
+        internal static void StartDeltaTime()
         {
             _stDeltaTime.Start();
         }
 
-        public static void ResetDeltaTime()
+        internal static void ResetDeltaTime()
         {
             _deltaTime = (double)_stDeltaTime.ElapsedMilliseconds / 1000;
             _stDeltaTime.Reset();

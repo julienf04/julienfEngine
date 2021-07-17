@@ -17,11 +17,13 @@ namespace julienfEngine1
 
         private Animation _animation = null;
 
+        private int _layer = 0;
+
         #endregion
 
         #region ---CONSTRUCTORS;
 
-        public GameObject(Figure[] figures, int baseFigure = 0, bool visible = true, bool isUI = false, int posX = 0, int posY = 0) : base(posX, posY)
+        public GameObject(Figure[] figures, int baseFigure = 0, bool visible = true, bool isUI = false, int layer = 0, int posX = 0, int posY = 0) : base(posX, posY)
         {
             if (figures != null)
             {
@@ -41,6 +43,8 @@ namespace julienfEngine1
             _animation = new Animation(_figures.Length);
             _visible = visible;
             _isUI = isUI;
+
+            if (_visible) julienfEngine.DrawConsole(this);
         }
 
         #endregion
@@ -97,6 +101,7 @@ namespace julienfEngine1
             set
             {
                 _visible = value;
+                if (_visible) julienfEngine.DrawConsole(this);
             }
         }
 
@@ -118,6 +123,19 @@ namespace julienfEngine1
             get
             {
                 return _animation;
+            }
+        }
+
+        public int P_Layer
+        {
+            get
+            {
+                return _layer;
+            }
+
+            set
+            {
+                _layer = value;
             }
         }
 

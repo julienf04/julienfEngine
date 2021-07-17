@@ -139,7 +139,7 @@ namespace julienfEngine1
 
 
 
-            gameObject0 = new GameObject(figures, 0, true, false, 0, 0);
+            gameObject0 = new GameObject(figures, 0, true, false, 0, 0, 0);
             gameObject0.P_Animation.P_AnimationState = AnimationStates.PingPong;
         }
 
@@ -149,7 +149,7 @@ namespace julienfEngine1
             while (true)
             {
                 //julienfEngine.DrawConsole(gameObject0);
-                gameObject0.Draw();
+                //gameObject0.Draw();
 
                 //gameObject0.MovePosition(20, 20);
                 //gameObject0.MovePosition((int)Timer.P_Time * 14, (int)Timer.P_Time * 4);

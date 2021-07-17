@@ -4,6 +4,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Buffers;
 using System.IO;
+using System.Linq;
 
 namespace julienfEngine1
 {
@@ -17,6 +18,8 @@ namespace julienfEngine1
         private static Camera _mainCamera = new Camera(0, 0); //This Camera is the main camera, the camera displayed 
 
         private static int _currentScreenBufferID = 1; //This variable is a variable that contains the number of the current screen buffer that should be displayed 
+
+        private static List<GameObject> gameObjectsToDraw = new List<GameObject>();
 
 
         #endregion
@@ -46,34 +49,45 @@ namespace julienfEngine1
 
         public static void DrawConsole(GameObject gameObject)
         {
-            if (gameObject.P_Visible)
+            if (gameObjectsToDraw.Count != 0)
+                if (gameObjectsToDraw.Max(gameObjectOfList => gameObjectOfList.P_Layer) >= gameObject.P_Layer) gameObjectsToDraw.Insert(gameObjectsToDraw.FindIndex(gameObjectOfList => gameObjectOfList.P_Layer >= gameObject.P_Layer), gameObject);
+                else gameObjectsToDraw.Add(gameObject);
+            else gameObjectsToDraw.Add(gameObject);
+        }
+
+        private static void DrawAllGameObjects()
+        {
+            for (int iGameObject = 0; iGameObject < gameObjectsToDraw.Count; iGameObject++)
             {
-                int figureIndex = gameObject.P_Animation.P_IsRunning ? gameObject.P_Animation.P_CurrentFigure : gameObject.P_BaseFigure;
-
-                int y = gameObject.P_IsUI ? gameObject.P_PosY : gameObject.P_PosY - _mainCamera.P_PosY;
-                int xStart = gameObject.P_IsUI ? gameObject.P_PosX : gameObject.P_PosX - _mainCamera.P_PosX;
-                for (int i = 0; y < (y - i + gameObject.P_GameObjectFigures[figureIndex].P_Figure.Length); y++, i++)
+                if (gameObjectsToDraw[iGameObject].P_Visible)
                 {
-                    if (y >= 0 && y <= _screenY)
-                    {
-                        int xEnd = xStart + gameObject.P_GameObjectFigures[figureIndex].P_Figure[i].Length;
+                    int figureIndex = gameObjectsToDraw[iGameObject].P_Animation.P_IsRunning ? gameObjectsToDraw[iGameObject].P_Animation.P_CurrentFigure : gameObjectsToDraw[iGameObject].P_BaseFigure;
 
-                        if (xStart >= 0 && xEnd <= _screenX)
+                    int y = gameObjectsToDraw[iGameObject].P_IsUI ? gameObjectsToDraw[iGameObject].P_PosY : gameObjectsToDraw[iGameObject].P_PosY - _mainCamera.P_PosY;
+                    int xStart = gameObjectsToDraw[iGameObject].P_IsUI ? gameObjectsToDraw[iGameObject].P_PosX : gameObjectsToDraw[iGameObject].P_PosX - _mainCamera.P_PosX;
+                    for (int iFigure = 0; y < (y - iFigure + gameObjectsToDraw[iGameObject].P_GameObjectFigures[figureIndex].P_Figure.Length); y++, iFigure++)
+                    {
+                        if (y >= 0 && y <= _screenY)
                         {
-                            DllImporter.WriteConsole(_currentScreenBufferID, gameObject.P_GameObjectFigures[figureIndex].P_Figure[i], new DllImporter.COORD((short)(xStart), (short)y), gameObject.P_GameObjectFigures[figureIndex].ForegroundColor, gameObject.P_GameObjectFigures[figureIndex].BackgroundColor);
-                        }
-                        else if (xStart < _screenX && xEnd >= _screenX)
-                        {
-                            DllImporter.WriteConsole(_currentScreenBufferID, gameObject.P_GameObjectFigures[figureIndex].P_Figure[i].Substring(0, _screenX - xStart), new DllImporter.COORD((short)(xStart), (short)y), gameObject.P_GameObjectFigures[figureIndex].ForegroundColor, gameObject.P_GameObjectFigures[figureIndex].BackgroundColor);
-                        }
-                        else if (xStart < 0 && xEnd > 0)
-                        {
-                            DllImporter.WriteConsole(_currentScreenBufferID, gameObject.P_GameObjectFigures[figureIndex].P_Figure[i].Substring(-xStart, xEnd), new DllImporter.COORD((short)(0), (short)y), gameObject.P_GameObjectFigures[figureIndex].ForegroundColor, gameObject.P_GameObjectFigures[figureIndex].BackgroundColor);
+                            int xEnd = xStart + gameObjectsToDraw[iGameObject].P_GameObjectFigures[figureIndex].P_Figure[iFigure].Length;
+
+                            if (xStart >= 0 && xEnd <= _screenX)
+                            {
+                                DllImporter.WriteConsole(_currentScreenBufferID, gameObjectsToDraw[iGameObject].P_GameObjectFigures[figureIndex].P_Figure[iFigure], new DllImporter.COORD((short)(xStart), (short)y), gameObjectsToDraw[iGameObject].P_GameObjectFigures[figureIndex].ForegroundColor, gameObjectsToDraw[iGameObject].P_GameObjectFigures[figureIndex].BackgroundColor);
+                            }
+                            else if (xStart < _screenX && xEnd >= _screenX)
+                            {
+                                DllImporter.WriteConsole(_currentScreenBufferID, gameObjectsToDraw[iGameObject].P_GameObjectFigures[figureIndex].P_Figure[iFigure].Substring(0, _screenX - xStart), new DllImporter.COORD((short)(xStart), (short)y), gameObjectsToDraw[iGameObject].P_GameObjectFigures[figureIndex].ForegroundColor, gameObjectsToDraw[iGameObject].P_GameObjectFigures[figureIndex].BackgroundColor);
+                            }
+                            else if (xStart < 0 && xEnd > 0)
+                            {
+                                DllImporter.WriteConsole(_currentScreenBufferID, gameObjectsToDraw[iGameObject].P_GameObjectFigures[figureIndex].P_Figure[iFigure].Substring(-xStart, xEnd), new DllImporter.COORD((short)(0), (short)y), gameObjectsToDraw[iGameObject].P_GameObjectFigures[figureIndex].ForegroundColor, gameObjectsToDraw[iGameObject].P_GameObjectFigures[figureIndex].BackgroundColor);
+                            }
                         }
                     }
-                }
 
-                if (gameObject.P_Animation.P_IsRunning) gameObject.P_Animation.NextFigure();
+                    if (gameObjectsToDraw[iGameObject].P_Animation.P_IsRunning) gameObjectsToDraw[iGameObject].P_Animation.NextFigure();
+                }
             }
         }
 
@@ -89,6 +103,8 @@ namespace julienfEngine1
 
         public static void ResetValuesUpdate() //this method resets all values of the game so that it works correctly
         {
+            DrawAllGameObjects();
+
             ChangeScreenBuffer();
 
             Timer.ResetDeltaTime();

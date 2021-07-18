@@ -16,24 +16,18 @@ namespace julienfEngine1
 
         static Timer generalTimer = new Timer();
 
+        static Scene firstScene = julienfEngine.P_CurrentScene;
+        static Scene secondScene = new Scene();
+
         #endregion
 
         #region MAIN METHOD;
-
-        static void Main(string[] args)
-        {
-            julienfEngine.Initialize();
-
-            Start();
-
-            Update();
-        }
 
         #endregion;
 
         #region SUPPORT METHODS;
 
-        static void Start()
+        public static void Start()
         {
             for (int i = 0; i < figures.Length; i++)
             {
@@ -140,14 +134,29 @@ namespace julienfEngine1
 
 
             gameObject0 = new GameObject(figures, 0, true, false, 0, 0, 0);
-            gameObject0.P_Animation.P_AnimationState = AnimationStates.PingPong;
+            gameObject0.P_Animation.P_AnimationState = AnimationStates.RepeatReverse;
+            gameObject0.P_Animation.RunAnimation();
         }
 
-        static void Update()
+        public static void Update()
         {
-            gameObject0.P_Animation.RunAnimation();
+            
             while (true)
             {
+                if (Timer.P_Time > 600)
+                {
+                    julienfEngine.SetScene(firstScene, true);
+                }
+                else if (Timer.P_Time > 9)
+                {
+                    julienfEngine.SetScene(firstScene, true);
+                }
+                else if (Timer.P_Time > 8)
+                {
+                    julienfEngine.SetScene(secondScene, true);
+                }
+
+
                 //julienfEngine.DrawConsole(gameObject0);
                 //gameObject0.Draw();
 

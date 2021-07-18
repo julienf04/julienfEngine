@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Diagnostics;
 
 namespace julienfEngine1
 {
@@ -22,6 +23,8 @@ namespace julienfEngine1
         private int _timeBetweenFigures = 1; //time in seconds
 
         private Timer _sequenceTimer = new Timer();
+
+        private bool _isNextFigureFrame = false;
 
         #endregion
 
@@ -61,7 +64,7 @@ namespace julienfEngine1
             _isRunning = false;
         }
 
-        public void NextFigure()
+        public void NextFigure() //Return true if next figure should be processed
         {
             if (_sequenceTimer.P_MyTimer >= _timeBetweenFigures)
             {
@@ -69,7 +72,7 @@ namespace julienfEngine1
                 {
                     case AnimationStates.OneShot:
                         _currentFigureIndex++;
-                        if (_currentFigureIndex == _sequenceOfFigures.Length) StopAnimation(true);
+                        if (_currentFigureIndex >= _sequenceOfFigures.Length) StopAnimation(true);
                         break;
 
                     case AnimationStates.Repeat:
@@ -78,18 +81,27 @@ namespace julienfEngine1
                         break;
 
                     case AnimationStates.RepeatReverse:
-                        _currentFigureIndex = _currentFigureIndex == 0 ? _sequenceOfFigures.Length - 1 : --_currentFigureIndex;
-                        break;
+                        ////Here there are 2 options to do it this. Both of options are the same optimization
+                        //Option 1:
+                        _currentFigureIndex = _currentFigureIndex == 0 ? _sequenceOfFigures.Length - 1 : _currentFigureIndex >= _sequenceOfFigures.Length ? _sequenceOfFigures.Length - (_currentFigureIndex % _sequenceOfFigures.Length) : _currentFigureIndex - 1;
 
+                        //Option 2:
+                        //totalIterations++;
+                        //_currentFigureIndex = (_sequenceOfFigures.Length - 1) - (totalIterations % _sequenceOfFigures.Length);
+                        break;
                     case AnimationStates.PingPong:
-                        _currentFigureIndex += _nextFigureIndexForPingPong;
                         if (_currentFigureIndex % (_sequenceOfFigures.Length - 1) == 0) _nextFigureIndexForPingPong = -_nextFigureIndexForPingPong;
+                        _currentFigureIndex += _nextFigureIndexForPingPong;
                         break;
                 }
 
                 _sequenceTimer.ResetMyTimerValueAndStop();
                 _sequenceTimer.StartMyTimer(0);
+
+                _isNextFigureFrame = true;
             }
+
+            _isNextFigureFrame = false;
         }
 
         #endregion
@@ -119,7 +131,7 @@ namespace julienfEngine1
 
             set
             {
-                if (value == AnimationStates.RepeatReverse) _currentFigureIndex = _sequenceOfFigures.Length - 1;
+                if (value == AnimationStates.RepeatReverse && _animationState != value) _currentFigureIndex = _sequenceOfFigures.Length - 1;
                 _animationState = value;
             }
         }
@@ -138,11 +150,6 @@ namespace julienfEngine1
             {
                 return _isRunning;
             }
-
-            private set
-            {
-
-            }
         }
 
         public int P_TimeBetweenFigures
@@ -155,6 +162,14 @@ namespace julienfEngine1
             set
             {
                 _timeBetweenFigures = value;
+            }
+        }
+
+        public bool P_IsNextFigureFrame
+        {
+            get
+            {
+                return _isNextFigureFrame;
             }
         }
 

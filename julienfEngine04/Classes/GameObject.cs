@@ -61,6 +61,11 @@ namespace julienfEngine1
             _animation.RunAnimation();
         }
 
+        public void StopAnimation(bool resetAnimation)
+        {
+            _animation.StopAnimation(resetAnimation);
+        }
+
         #endregion
 
         #region ---PROPIERTIES;

@@ -11,13 +11,17 @@ namespace julienfEngine1
     {
         #region GAME ATRIBUTES;
 
-        static Figure[] figures = new Figure[5];
+        static Figure[] figuresGameObject0 = new Figure[5];
+        static Figure[] figuresGameObject1 = new Figure[1];
         static GameObject gameObject0;
+        static GameObject gameObject1;
 
         static Timer generalTimer = new Timer();
 
         static Scene firstScene = julienfEngine.P_CurrentScene;
         static Scene secondScene = new Scene();
+
+        static double deltaTimeGameObject1 = 0;
 
         #endregion
 
@@ -29,11 +33,11 @@ namespace julienfEngine1
 
         public static void Start()
         {
-            for (int i = 0; i < figures.Length; i++)
+            for (int i = 0; i < figuresGameObject0.Length; i++)
             {
-                figures[i] = new Figure();
+                figuresGameObject0[i] = new Figure();
             }
-            figures[0].P_Figure = new string[11]
+            figuresGameObject0[0].P_Figure = new string[11]
             {
                 "000000000000000000000000",
                 "000000000000000000000000",
@@ -47,9 +51,9 @@ namespace julienfEngine1
                 "000000000000000000000000",
                 "000000000000000000000000"
             };
-            figures[0].ForegroundColor = ForegroundColors.Red;
+            figuresGameObject0[0].ForegroundColor = ForegroundColors.Red;
 
-            figures[1].P_Figure = new string[11]
+            figuresGameObject0[1].P_Figure = new string[11]
            {
                 "XXXXXXXXXXXXXXXXXXXXXXXX",
                 "XXXXXXXXXXXXXXXXXXXXXXXX",
@@ -63,9 +67,9 @@ namespace julienfEngine1
                 "XXXXXXXXXXXXXXXXXXXXXXXX",
                 "XXXXXXXXXXXXXXXXXXXXXXXX"
            };
-            figures[1].ForegroundColor = ForegroundColors.Blue;
+            figuresGameObject0[1].ForegroundColor = ForegroundColors.Blue;
 
-            figures[2].P_Figure = new string[11]
+            figuresGameObject0[2].P_Figure = new string[11]
            {
                 "SSSSSSSSSSSSSSSSSSSSSSSS",
                 "SSSSSSSSSSSSSSSSSSSSSSSS",
@@ -79,9 +83,9 @@ namespace julienfEngine1
                 "SSSSSSSSSSSSSSSSSSSSSSSS",
                 "SSSSSSSSSSSSSSSSSSSSSSSS"
            };
-            figures[2].ForegroundColor = ForegroundColors.White;
+            figuresGameObject0[2].ForegroundColor = ForegroundColors.White;
 
-            figures[3].P_Figure = new string[11]
+            figuresGameObject0[3].P_Figure = new string[11]
            {
                 "YYYYYYYYYYYYYYYYYYYYYYYY",
                 "YYYYYYYYYYYYYYYYYYYYYYYY",
@@ -95,9 +99,9 @@ namespace julienfEngine1
                 "YYYYYYYYYYYYYYYYYYYYYYYY",
                 "YYYYYYYYYYYYYYYYYYYYYYYY"
            };
-            figures[3].ForegroundColor = ForegroundColors.Green;
+            figuresGameObject0[3].ForegroundColor = ForegroundColors.Green;
 
-            figures[4].P_Figure = new string[11]
+            figuresGameObject0[4].P_Figure = new string[11]
            {
                 "OOOOOOOOOOOOOOOOOOOOOOOO",
                 "OOOOOOOOOOOOOOOOOOOOOOOO",
@@ -111,7 +115,17 @@ namespace julienfEngine1
                 "OOOOOOOOOOOOOOOOOOOOOOOO",
                 "OOOOOOOOOOOOOOOOOOOOOOOO"
            };
-            figures[4].ForegroundColor = ForegroundColors.Yellow;
+            figuresGameObject0[4].ForegroundColor = ForegroundColors.Yellow;
+
+
+            for (int i = 0; i < figuresGameObject1.Length; i++)
+            {
+                figuresGameObject1[i] = new Figure();
+            }
+            figuresGameObject1[0].P_Figure = new string[1]
+            {
+                "DeltaTime:  "
+            };
 
 
 
@@ -129,13 +143,11 @@ namespace julienfEngine1
 
 
 
-
-
-
-
-            gameObject0 = new GameObject(figures, 0, true, false, 0, 0, 0);
+            gameObject0 = new GameObject(figuresGameObject0, 0, true, false, 0, 0, 0);
             gameObject0.P_Animation.P_AnimationState = AnimationStates.RepeatReverse;
             gameObject0.P_Animation.RunAnimation();
+
+            gameObject1 = new GameObject(figures: figuresGameObject1, isUI: false, layer: 0, posX: 20, posY: 20);
         }
 
         public static void Update()
@@ -143,18 +155,24 @@ namespace julienfEngine1
             
             while (true)
             {
-                if (Timer.P_Time > 600)
-                {
-                    julienfEngine.SetScene(firstScene, true);
-                }
-                else if (Timer.P_Time > 9)
-                {
-                    julienfEngine.SetScene(firstScene, true);
-                }
-                else if (Timer.P_Time > 8)
-                {
-                    julienfEngine.SetScene(secondScene, true);
-                }
+
+                if (Input.GetKeyUp(Keyboard.D)) gameObject0.MovePosition(gameObject0.P_PosX + 1, gameObject0.P_PosY + 1);
+
+                deltaTimeGameObject1 = Timer.P_DeltaTime > deltaTimeGameObject1 ? Timer.P_DeltaTime : deltaTimeGameObject1;
+                figuresGameObject1[0].P_Figure[figuresGameObject1[0].P_Figure.Length - 1] = Convert.ToString(deltaTimeGameObject1);
+
+                //if (Timer.P_Time > 600)
+                //{
+                //    julienfEngine.SetScene(firstScene, true);
+                //}
+                //else if (Timer.P_Time > 9)
+                //{
+                //    julienfEngine.SetScene(firstScene, true);
+                //}
+                //else if (Timer.P_Time > 8)
+                //{
+                //    julienfEngine.SetScene(secondScene, true);
+                //}
 
 
                 //julienfEngine.DrawConsole(gameObject0);

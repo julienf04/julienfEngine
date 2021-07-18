@@ -48,7 +48,7 @@ namespace julienfEngine1
         public static void DrawConsole(GameObject gameObject)
         {
             if (_currentScene.P_GameObjectsToDraw.Count != 0)
-                if (_currentScene.P_GameObjectsToDraw.Max(gameObjectOfList => gameObjectOfList.P_Layer) >= gameObject.P_Layer) _currentScene.P_GameObjectsToDraw.Insert(_currentScene.P_GameObjectsToDraw.FindIndex(gameObjectOfList => gameObjectOfList.P_Layer >= gameObject.P_Layer), gameObject);
+                if (_currentScene.P_GameObjectsToDraw.Max(gameObjectOfList => gameObjectOfList.P_Layer) > gameObject.P_Layer) _currentScene.P_GameObjectsToDraw.Insert(_currentScene.P_GameObjectsToDraw.FindIndex(gameObjectOfList => gameObjectOfList.P_Layer > gameObject.P_Layer), gameObject);
                 else _currentScene.P_GameObjectsToDraw.Add(gameObject);
             else _currentScene.P_GameObjectsToDraw.Add(gameObject);
         }

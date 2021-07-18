@@ -43,6 +43,7 @@ namespace julienfEngine1
             _animation = new Animation(_figures.Length);
             _visible = visible;
             _isUI = isUI;
+            _layer = layer;
 
             if (_visible) julienfEngine.DrawConsole(this);
         }

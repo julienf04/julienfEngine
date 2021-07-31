@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlTypes;
 using System.Threading;
+using System.Text;
 
 namespace julienfEngine1
 {
@@ -124,7 +125,7 @@ namespace julienfEngine1
             }
             figuresGameObject1[0].P_Figure = new string[1]
             {
-                "DeltaTime:  "
+                "DeltaTime: "
             };
 
 
@@ -152,38 +153,35 @@ namespace julienfEngine1
 
         public static void Update()
         {
-            
-            while (true)
-            {
-
-                if (Input.GetKeyUp(Keyboard.D)) gameObject0.MovePosition(gameObject0.P_PosX + 1, gameObject0.P_PosY + 1);
-
-                deltaTimeGameObject1 = Timer.P_DeltaTime > deltaTimeGameObject1 ? Timer.P_DeltaTime : deltaTimeGameObject1;
-                figuresGameObject1[0].P_Figure[figuresGameObject1[0].P_Figure.Length - 1] = Convert.ToString(deltaTimeGameObject1);
-
-                //if (Timer.P_Time > 600)
-                //{
-                //    julienfEngine.SetScene(firstScene, true);
-                //}
-                //else if (Timer.P_Time > 9)
-                //{
-                //    julienfEngine.SetScene(firstScene, true);
-                //}
-                //else if (Timer.P_Time > 8)
-                //{
-                //    julienfEngine.SetScene(secondScene, true);
-                //}
+            if (Input.GetKeyUp(Keyboard.D)) gameObject0.MovePosition(gameObject0.P_PosX + 1, gameObject0.P_PosY + 1);
 
 
-                //julienfEngine.DrawConsole(gameObject0);
-                //gameObject0.Draw();
+            deltaTimeGameObject1 = Timer.P_DeltaTime > 0.010 ? Timer.P_DeltaTime : deltaTimeGameObject1;
+            figuresGameObject1[0].P_Figure[0] = Convert.ToString(deltaTimeGameObject1);
 
-                //gameObject0.MovePosition(20, 20);
-                //gameObject0.MovePosition((int)Timer.P_Time * 14, (int)Timer.P_Time * 4);
-                //julienfEngine.P_MainCamera.MovePosition(-(int)Timer.P_Time * 14, -(int)Timer.P_Time * 4);
 
-                julienfEngine.ResetValuesUpdate();
-            }
+
+
+            //if (Timer.P_Time > 600)
+            //{
+            //    julienfEngine.SetScene(firstScene, true);
+            //}
+            //else if (Timer.P_Time > 9)
+            //{
+            //    julienfEngine.SetScene(firstScene, true);
+            //}
+            //else if (Timer.P_Time > 8)
+            //{
+            //    julienfEngine.SetScene(secondScene, true);
+            //}
+
+
+            //julienfEngine.DrawConsole(gameObject0);
+            //gameObject0.Draw();
+
+            //gameObject0.MovePosition(20, 20);
+            //gameObject0.MovePosition((int)Timer.P_Time * 14, (int)Timer.P_Time * 4);
+            //julienfEngine.P_MainCamera.MovePosition(-(int)Timer.P_Time * 14, -(int)Timer.P_Time * 4);
         }
     }
 

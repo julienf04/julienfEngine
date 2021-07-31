@@ -20,6 +20,7 @@ namespace julienfEngine1
         private static Scene _currentScene = new Scene();
 
 
+
         #endregion
 
         #region ---METHODS;
@@ -162,7 +163,12 @@ namespace julienfEngine1
 
             Game.Start();
 
-            Game.Update();
+            while (true)
+            {
+                Game.Update();
+
+                julienfEngine.ResetValuesUpdate();
+            }
         }
 
         #endregion

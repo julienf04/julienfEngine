@@ -9,14 +9,14 @@ namespace julienfEngine1
 
         #region ---ATRIBUTES;
 
-        private int _posX = 0; //position X of the gameObject
-        private int _posY = 0; //position Y of the gameObject
+        private double _posX = 0; //position X of the gameObject
+        private double _posY = 0; //position Y of the gameObject
 
         #endregion
 
         #region ---CONSTRUCTORS;
 
-        public Transform(int posX = 0, int posY = 0)
+        public Transform(double posX = 0, double posY = 0)
         {
             P_PosX = posX;
             P_PosY = posY;
@@ -26,7 +26,7 @@ namespace julienfEngine1
 
         #region ---METHODS;
 
-        public void MovePosition(int x, int y)
+        public void MovePosition(double x, double y)
         {
             P_PosX = x;
             P_PosY = y;
@@ -36,7 +36,7 @@ namespace julienfEngine1
 
         #region ---PROPIERTIES;
 
-        public int P_PosX
+        public double P_PosX
         {
             get
             {
@@ -49,7 +49,7 @@ namespace julienfEngine1
             }
         }
 
-        public int P_PosY
+        public double P_PosY
         {
             get
             {

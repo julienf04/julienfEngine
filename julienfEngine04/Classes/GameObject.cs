@@ -4,7 +4,7 @@ using System.Text;
 
 namespace julienfEngine1
 {
-    class GameObject : Transform //This class has all necesary for objets
+    abstract class GameObject : Transform //This class has all necesary for objets
     {
         #region ---ATRIBUTES;
 
@@ -19,11 +19,22 @@ namespace julienfEngine1
 
         private int _layer = 0;
 
+        private Area _collider;
+
+        private bool _detectCollisions;
+
+        private List<GameObject> _currentOnCollisionEnterGameObjects = new List<GameObject>();
+
+        private List<GameObject> _currentOnCollisionStayGameObjects = new List<GameObject>();
+
+        private List<GameObject> _currentOnCollisionExitGameObjects = new List<GameObject>();
+
         #endregion
 
         #region ---CONSTRUCTORS;
 
-        public GameObject(Figure[] figures, int baseFigure = 0, bool visible = true, bool isUI = false, int layer = 0, int posX = 0, int posY = 0) : base(posX, posY)
+        public GameObject(Figure[] figures, int baseFigure = 0, bool visible = true, bool isUI = false, int layer = 0, int posX = 0, int posY = 0,
+                          Area collider = null, bool detectCollisions = false) : base(posX, posY)
         {
             if (figures != null)
             {
@@ -46,6 +57,13 @@ namespace julienfEngine1
             _layer = layer;
 
             if (_visible) julienfEngine.DrawConsole(this);
+
+
+            _collider = collider;
+
+            _detectCollisions = _collider != null ? detectCollisions : false;
+
+            if (_detectCollisions) julienfEngine.AllowCollisions(this);
         }
 
         #endregion
@@ -66,6 +84,45 @@ namespace julienfEngine1
         {
             _animation.StopAnimation(resetAnimation);
         }
+
+        public abstract void OnCollisionEnter(GameObject[] gameObject);
+        public abstract void OnCollisionStay(GameObject[] gameObject);
+        public abstract void OnCollisionExit(GameObject[] gameObject);
+
+        public bool CollisionWith(GameObject gameObject)
+        {
+            int objectMinPosXAndColliderLength;
+            int objectMaxPosX;
+            if (this.P_PosX <= gameObject.P_PosX)
+            {
+                objectMinPosXAndColliderLength = (int)this.P_PosX + this._collider.P_FirstPointCollisionX + this._collider.P_LastPointCollisionX;
+                objectMaxPosX = (int)gameObject.P_PosX;
+            }
+            else
+            {
+                objectMinPosXAndColliderLength = (int)gameObject.P_PosX + gameObject._collider.P_FirstPointCollisionX + gameObject._collider.P_LastPointCollisionX;
+                objectMaxPosX = (int)this.P_PosX;
+            }
+
+
+            int objectMinPosYAndColliderLength;
+            int objectMaxPosY;
+            if (this.P_PosY <= gameObject.P_PosY)
+            {
+                objectMinPosYAndColliderLength = (int)this.P_PosY + this._collider.P_FirstPointCollisionY + this._collider.P_LastPointCollisionY;
+                objectMaxPosY = (int)gameObject.P_PosY;
+            }
+            else
+            {
+                objectMinPosYAndColliderLength = (int)gameObject.P_PosY + gameObject._collider.P_FirstPointCollisionY + gameObject._collider.P_LastPointCollisionY;
+                objectMaxPosY = (int)this.P_PosY;
+            }
+
+
+            return objectMinPosXAndColliderLength >= objectMaxPosX && objectMinPosYAndColliderLength >= objectMaxPosY;
+        }
+
+
 
         #endregion
 
@@ -142,6 +199,52 @@ namespace julienfEngine1
             set
             {
                 _layer = value;
+            }
+        }
+
+        public bool P_DetectCollisions
+        {
+            get
+            {
+                return _detectCollisions;
+            }
+            set
+            {
+                if (_collider != null && value)
+                {
+                    _detectCollisions = value;
+                    julienfEngine.AllowCollisions(this);
+                }
+                else
+                {
+                    _detectCollisions = value;
+                    _currentOnCollisionStayGameObjects.Clear();
+                    julienfEngine.NotAllowCollisions(this);
+                }
+            }
+        }
+
+        public List<GameObject> P_CurrentOnCollisionEnterGameObjects
+        {
+            get
+            {
+                return _currentOnCollisionEnterGameObjects;
+            }
+        }
+
+        public List<GameObject> P_CurrentOnCollisionStayGameObjects
+        {
+            get
+            {
+                return _currentOnCollisionStayGameObjects;
+            }
+        }
+
+        public List<GameObject> P_CurrentOnCollisionExitGameObjects
+        {
+            get
+            {
+                return _currentOnCollisionExitGameObjects;
             }
         }
 

@@ -208,6 +208,7 @@ namespace julienfEngine1
 
 
         private static List<IntPtr> _screenBuffers = new List<IntPtr>() { GetStdHandle((_STD_OUTPUT_HANDLE)) };
+        private static IntPtr[] _screenBuffersArray;
         private static int _numberOfScreenBuffers = 1;
 
         #endregion
@@ -252,21 +253,23 @@ namespace julienfEngine1
             IntPtr screenBufferHanlde = CreateConsoleScreenBuffer(_GENERIC_WRITE, _FILE_SHARED_WRITE, IntPtr.Zero, _CONSOLE_TEXTMODE_BUFFER, IntPtr.Zero);
             _screenBuffers.Add(screenBufferHanlde);
             _numberOfScreenBuffers++;
-            return _screenBuffers.Count;
+            _screenBuffersArray = _screenBuffers.ToArray();
+            return _screenBuffersArray.Length;
         }
 
         internal protected static void SetScreenBuffer(int screenBufferID)
         {
             screenBufferID--;
-            SetConsoleActiveScreenBuffer(_screenBuffers[screenBufferID]);
+            SetConsoleActiveScreenBuffer(_screenBuffersArray[screenBufferID]);
         }
 
         internal protected static void WriteConsole(int screenBufferID, string message, COORD coords, ForegroundColors foregroundColor, BackgroundColors backgroundColor)
         {
             uint ignore = 0;
             screenBufferID--;
-            FillConsoleOutputAttribute(_screenBuffers[screenBufferID], (int)foregroundColor | (int)backgroundColor, message.Length,coords, out ignore);
-            WriteConsoleOutputCharacter(_screenBuffers[screenBufferID], message, message.Length, coords, out ignore);
+            IntPtr screenBufferToWrite = _screenBuffersArray[screenBufferID];
+            FillConsoleOutputAttribute(screenBufferToWrite, (int)foregroundColor | (int)backgroundColor, message.Length,coords, out ignore);
+            WriteConsoleOutputCharacter(screenBufferToWrite, message, message.Length, coords, out ignore);
         }
 
         internal protected static void WriteConsole(int screenBufferID, string message, int x, int y, ForegroundColors foregroundColor, BackgroundColors backgroundColor)
@@ -274,15 +277,16 @@ namespace julienfEngine1
             uint ignore = 0;
             COORD coords = new COORD((short)x, (short)y);
             screenBufferID--;
-            FillConsoleOutputAttribute(_screenBuffers[screenBufferID], (int)foregroundColor | (int)backgroundColor, message.Length, coords, out ignore);
-            WriteConsoleOutputCharacter(_screenBuffers[screenBufferID], message, message.Length, coords, out ignore);
+            IntPtr screenBufferToWrite = _screenBuffersArray[screenBufferID];
+            FillConsoleOutputAttribute(screenBufferToWrite, (int)foregroundColor | (int)backgroundColor, message.Length, coords, out ignore);
+            WriteConsoleOutputCharacter(screenBufferToWrite, message, message.Length, coords, out ignore);
         }
 
         internal protected static void ClearConsole(int screenBufferID)
         {
             uint ignore = 0;
             screenBufferID--;
-            FillConsoleOutputAttribute(_screenBuffers[screenBufferID], 0, julienfEngine.P_ScreenX * julienfEngine.P_ScreenY + julienfEngine.P_ScreenX, new COORD(0, 0), out ignore);
+            FillConsoleOutputAttribute(_screenBuffersArray[screenBufferID], 0, julienfEngine.P_ScreenX * julienfEngine.P_ScreenY + julienfEngine.P_ScreenX, new COORD(0, 0), out ignore);
             //FillConsoleOutputCharacter(_screenBuffers[--screenBufferID], ' ', julienfEngine.P_ScreenX * julienfEngine.P_ScreenY + julienfEngine.P_ScreenX, new COORD(0, 0), out ignore);
         }
 

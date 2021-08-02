@@ -28,20 +28,20 @@ namespace julienfEngine1
 
         public static bool GetKey(Keyboard key)
         {
-            return GetAsyncKeyState(key) != 0 ? true : false;
+            return GetAsyncKeyState(key) != 0;
         }
 
         public static bool GetKeyDown(Keyboard key)
         {
             if (GetAsyncKeyState(key) != 0)
             {
-                if (_keysDown.Contains(key) == false)
+                if (!_keysDown.Contains(key))
                 {
                     _keysDown.Add(key);
                     return true;
                 }
             }
-            else if (_keysDown.Contains(key) == true) _keysDown.Remove(key);
+            else _keysDown.Remove(key);
             
             return false;
         }
@@ -50,13 +50,9 @@ namespace julienfEngine1
         {
             if (GetAsyncKeyState(key) == 0)
             {
-                if (_keysUp.Contains(key))
-                {
-                    _keysUp.Remove(key);
-                    return true;
-                }
+                return _keysUp.Remove(key);
             }
-            else if (_keysUp.Contains(key) == false) _keysUp.Add(key);
+            else if (!_keysUp.Contains(key)) _keysUp.Add(key);
 
             return false;
         }

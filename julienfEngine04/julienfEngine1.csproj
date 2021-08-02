@@ -9,6 +9,11 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
 </Project>

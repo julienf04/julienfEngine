@@ -12,6 +12,8 @@ namespace julienfEngine1
 
         private List<GameObject> _gameObjectsToDraw = new List<GameObject>();
 
+        private List<GameObject> _gameObjectsToDetectCollisions = new List<GameObject>();
+
         #endregion
 
 
@@ -35,6 +37,14 @@ namespace julienfEngine1
             get
             {
                 return _gameObjectsToDraw;
+            }
+        }
+
+        public List<GameObject> P_GameObjectsToDetectCollisions
+        {
+            get
+            {
+                return _gameObjectsToDetectCollisions;
             }
         }
 

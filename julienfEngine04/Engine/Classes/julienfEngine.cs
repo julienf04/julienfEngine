@@ -17,11 +17,7 @@ namespace julienfEngine1
 
         private static int _currentScreenBufferID = 1; //This variable is a variable that contains the number of the current screen buffer that should be displayed 
 
-        private static Scene _currentScene = new Scene();
-
-        private static GameObject[] _currentGameObjectsToDraw;
-
-        private static GameObject[] _currentGameObjectCollisions;
+        private static Scene _currentScene;
 
         #endregion
 
@@ -48,30 +44,11 @@ namespace julienfEngine1
             Timer.StartDeltaTime();
         }
 
-        public static void DrawConsole(GameObject gameObject)
-        {
-            if (_currentScene.P_GameObjectsToDraw.Count != 0)
-            {
-                if (!_currentScene.P_GameObjectsToDraw.Contains(gameObject))
-                {
-                    if (_currentScene.P_GameObjectsToDraw.Max(gameObjectOfList => gameObjectOfList.P_Layer) > gameObject.P_Layer) _currentScene.P_GameObjectsToDraw.Insert(_currentScene.P_GameObjectsToDraw.FindIndex(gameObjectOfList => gameObjectOfList.P_Layer > gameObject.P_Layer), gameObject);
-                    else _currentScene.P_GameObjectsToDraw.Add(gameObject);
-
-                    _currentGameObjectsToDraw = _currentScene.P_GameObjectsToDraw.ToArray();
-                }
-            }
-            else
-            {
-                _currentScene.P_GameObjectsToDraw.Add(gameObject);
-                _currentGameObjectsToDraw = _currentScene.P_GameObjectsToDraw.ToArray();
-            }
-        }
-
         private static void DrawAllGameObjects()
         {
-            for (int iGameObject = 0; iGameObject < _currentGameObjectsToDraw.Length; iGameObject++)
+            for (int iGameObject = 0; iGameObject < _currentScene.P_GameObjectsToDrawArray.Length; iGameObject++)
             {
-                GameObject currentGameObjectToDraw = _currentGameObjectsToDraw[iGameObject];
+                GameObject currentGameObjectToDraw = _currentScene.P_GameObjectsToDrawArray[iGameObject];
                 if (currentGameObjectToDraw.P_Visible)
                 {
                     int figureIndex = currentGameObjectToDraw.P_Animation.P_IsRunning ? currentGameObjectToDraw.P_Animation.P_CurrentFigure : currentGameObjectToDraw.P_BaseFigure;
@@ -104,17 +81,40 @@ namespace julienfEngine1
             }
         }
 
-        public static void SetScene(Scene scene, bool resetCurrentSceneAnimations)
+        public static void InitializeScene(Type sceneType)
         {
-            if (resetCurrentSceneAnimations)
-            {
-                for (int i = 0; i < _currentScene.P_GameObjectsToDraw.Count; i++)
-                {
-                    _currentScene.P_GameObjectsToDraw[i].P_Animation.StopAnimation(true);
-                }
-            }
+            if (Scene.IsScene(sceneType)) Scene.Initialize(sceneType);
+            else throw new Exception("The type is not a scene");
+        }
 
-            _currentScene = scene;
+        public static void SetLoadedScene(Type sceneType, bool deleteCurrentSceneValues)
+        {
+            if (Scene.IsScene(sceneType))
+            {
+                if (deleteCurrentSceneValues)
+                {
+                    _currentScene.RemoveAllToDrawGameObject();
+                    _currentScene.RemoveAllToDetectCollisionsGameObject();
+                }
+
+                _currentScene = Scene.GetLoadedSceneByType(sceneType); ;
+                GC.Collect();
+                _currentScene.Start();
+                return;
+            }
+            throw new Exception("The type is not a scene");
+        }
+
+        public static void LoadScene(Type sceneType)
+        {
+            if (Scene.IsScene(sceneType)) Scene.LoadScene(sceneType);
+            else throw new Exception("The type is not a scene");
+        }
+
+        public static void UnloadScene(Type sceneType)
+        {
+            if (Scene.IsScene(sceneType)) Scene.UnloadScene(sceneType);
+            else throw new Exception("The type is not a scene");
         }
 
         private static void ChangeScreenBuffer() //This method changes the current screen buffer to the next screen buffer
@@ -134,32 +134,20 @@ namespace julienfEngine1
             DrawAllGameObjects();
             ChangeScreenBuffer();
 
+            Input.ResetValues();
+
             Timer.ResetDeltaTime();
             Timer.StartDeltaTime();
         }
 
-        public static void AllowCollisions(GameObject gameObject)
-        {
-            if (!_currentScene.P_GameObjectsToDetectCollisions.Contains(gameObject))
-            {
-                _currentScene.P_GameObjectsToDetectCollisions.Add(gameObject);
-                _currentGameObjectCollisions = _currentScene.P_GameObjectsToDetectCollisions.ToArray();
-            }
-        }
-
-        public static void NotAllowCollisions(GameObject gameObject)
-        {
-            if (_currentScene.P_GameObjectsToDetectCollisions.Remove(gameObject)) _currentGameObjectCollisions = _currentScene.P_GameObjectsToDetectCollisions.ToArray();
-        }
-
         private static void DetectAllCollisions()
         {
-            for (int i = 0; i < _currentGameObjectCollisions.Length; i++)
+            for (int i = 0; i < _currentScene.P_ICollideableToDetectCollisionsArray.Length; i++)
             {
-                GameObject currentGameObjectCollision1 = _currentGameObjectCollisions[i];
-                for (int i2 = i + 1; i2 < _currentGameObjectCollisions.Length; i2++)
+                GameObject currentGameObjectCollision1 = (GameObject)_currentScene.P_ICollideableToDetectCollisionsArray[i];
+                for (int i2 = i + 1; i2 < _currentScene.P_ICollideableToDetectCollisionsArray.Length; i2++)
                 {
-                    GameObject currentGameObjectCollision2 = _currentGameObjectCollisions[i2];
+                    GameObject currentGameObjectCollision2 = (GameObject)_currentScene.P_ICollideableToDetectCollisionsArray[i2];
                     if (currentGameObjectCollision1.CollisionWith(currentGameObjectCollision2))
                     {
                         if (!currentGameObjectCollision1.P_CurrentOnCollisionStayGameObjects.Contains(currentGameObjectCollision2))
@@ -179,12 +167,13 @@ namespace julienfEngine1
 
                 if (currentGameObjectCollision1.P_CurrentOnCollisionEnterGameObjects.Count != 0)
                 {
-                    currentGameObjectCollision1.OnCollisionEnter(currentGameObjectCollision1.P_CurrentOnCollisionEnterGameObjects.ToArray());
-                    currentGameObjectCollision1.OnCollisionStay(currentGameObjectCollision1.P_CurrentOnCollisionStayGameObjects.ToArray());
+                    ((ICollideable)currentGameObjectCollision1).OnCollisionEnter(currentGameObjectCollision1.P_CurrentOnCollisionEnterGameObjects.ToArray());
+                    ((ICollideable)currentGameObjectCollision1).OnCollisionStay(currentGameObjectCollision1.P_CurrentOnCollisionStayGameObjects.ToArray());
                 }
-                else if (currentGameObjectCollision1.P_CurrentOnCollisionStayGameObjects.Count != 0) currentGameObjectCollision1.OnCollisionStay(currentGameObjectCollision1.P_CurrentOnCollisionStayGameObjects.ToArray());
 
-                if (currentGameObjectCollision1.P_CurrentOnCollisionExitGameObjects.Count != 0) currentGameObjectCollision1.OnCollisionExit(currentGameObjectCollision1.P_CurrentOnCollisionExitGameObjects.ToArray());
+                else if (currentGameObjectCollision1.P_CurrentOnCollisionStayGameObjects.Count != 0) ((ICollideable)currentGameObjectCollision1).OnCollisionStay(currentGameObjectCollision1.P_CurrentOnCollisionStayGameObjects.ToArray());
+
+                if (currentGameObjectCollision1.P_CurrentOnCollisionExitGameObjects.Count != 0) ((ICollideable)currentGameObjectCollision1).OnCollisionExit(currentGameObjectCollision1.P_CurrentOnCollisionExitGameObjects.ToArray());
 
                 currentGameObjectCollision1.P_CurrentOnCollisionEnterGameObjects.Clear();
                 currentGameObjectCollision1.P_CurrentOnCollisionExitGameObjects.Clear();
@@ -217,6 +206,10 @@ namespace julienfEngine1
             {
                 return _currentScene;
             }
+            set
+            {
+                if (_currentScene != null) _currentScene = value;
+            }
         }
 
         #endregion
@@ -229,12 +222,13 @@ namespace julienfEngine1
         {
             julienfEngine.Initialize();
 
-            Game.Start();
+            Game.Initialize();
 
             while (true)
             {
-                Game.Update();
-
+                //Game.Update();
+                _currentScene.Update();
+                
                 julienfEngine.ResetValuesUpdate();
             }
         }

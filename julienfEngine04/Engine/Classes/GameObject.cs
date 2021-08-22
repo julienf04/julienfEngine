@@ -9,7 +9,7 @@ namespace julienfEngine1
         #region ---ATRIBUTES;
 
         private Figure[] _figures = new Figure[1]; //Figures of the gameObject
-        private int _baseFigure = 0;
+        private byte _baseFigure = 0;
 
         private bool _visible = false; // return true if the gameObject must be drawed, false otherwise
 
@@ -17,24 +17,26 @@ namespace julienfEngine1
 
         private Animation _animation = null;
 
-        private int _layer = 0;
+        private byte _layer = 0;
 
         private Area _collider;
 
-        private bool _detectCollisions;
+        private bool _detectCollisions = false;
 
-        private List<GameObject> _currentOnCollisionEnterGameObjects = new List<GameObject>();
+        private List<GameObject> _currentOnCollisionEnterGameObjects;
 
-        private List<GameObject> _currentOnCollisionStayGameObjects = new List<GameObject>();
+        private List<GameObject> _currentOnCollisionStayGameObjects;
 
-        private List<GameObject> _currentOnCollisionExitGameObjects = new List<GameObject>();
+        private List<GameObject> _currentOnCollisionExitGameObjects;
+
+        private Scene _myScene = null;
 
         #endregion
 
         #region ---CONSTRUCTORS;
 
-        public GameObject(Figure[] figures, int baseFigure = 0, bool visible = true, bool isUI = false, int layer = 0, int posX = 0, int posY = 0,
-                          Area collider = null, bool detectCollisions = false) : base(posX, posY)
+        public GameObject(Figure[] figures, Scene myScene, byte baseFigure = 0, bool visible = true, bool isUI = false, byte layer = 0,
+                          int posX = 0, int posY = 0) : base(posX, posY)
         {
             if (figures != null)
             {
@@ -56,24 +58,18 @@ namespace julienfEngine1
             _isUI = isUI;
             _layer = layer;
 
-            if (_visible) julienfEngine.DrawConsole(this);
+            if (myScene != null) _myScene = myScene;
+            if (_visible && myScene != null) _myScene.AddToDrawGameObject(this);
 
 
-            _collider = collider;
-
-            _detectCollisions = _collider != null ? detectCollisions : false;
-
-            if (_detectCollisions) julienfEngine.AllowCollisions(this);
+            if (this is ICollideable)
+                if (((ICollideable)this).P_Collider == null) throw new NullReferenceException();
+                else _myScene.AddToDetectCollisionsGameObject(this);
         }
 
         #endregion
 
         #region ---METHODS;
-
-        public void Draw()
-        {
-            julienfEngine.DrawConsole(this);
-        }
 
         public void Animate()
         {
@@ -84,10 +80,6 @@ namespace julienfEngine1
         {
             _animation.StopAnimation(resetAnimation);
         }
-
-        public abstract void OnCollisionEnter(GameObject[] gameObject);
-        public abstract void OnCollisionStay(GameObject[] gameObject);
-        public abstract void OnCollisionExit(GameObject[] gameObject);
 
         public bool CollisionWith(GameObject gameObject)
         {
@@ -122,7 +114,14 @@ namespace julienfEngine1
             return objectMinPosXAndColliderLength >= objectMaxPosX && objectMinPosYAndColliderLength >= objectMaxPosY;
         }
 
-
+        internal void DetectCollisions(ICollideable collision)
+        {
+            _collider = collision.P_Collider;
+            _currentOnCollisionEnterGameObjects = new List<GameObject>();
+            _currentOnCollisionStayGameObjects = new List<GameObject>();
+            _currentOnCollisionExitGameObjects = new List<GameObject>();
+            _detectCollisions = true;
+        }
 
         #endregion
 
@@ -141,7 +140,7 @@ namespace julienfEngine1
             }
         }
 
-        public int P_BaseFigure
+        public byte P_BaseFigure
         {
             get
             {
@@ -164,7 +163,7 @@ namespace julienfEngine1
             set
             {
                 _visible = value;
-                if (_visible) julienfEngine.DrawConsole(this);
+                if (_visible) _myScene.AddToDrawGameObject(this);
             }
         }
 
@@ -189,7 +188,7 @@ namespace julienfEngine1
             }
         }
 
-        public int P_Layer
+        public byte P_Layer
         {
             get
             {
@@ -208,23 +207,9 @@ namespace julienfEngine1
             {
                 return _detectCollisions;
             }
-            set
-            {
-                if (_collider != null && value)
-                {
-                    _detectCollisions = value;
-                    julienfEngine.AllowCollisions(this);
-                }
-                else
-                {
-                    _detectCollisions = value;
-                    _currentOnCollisionStayGameObjects.Clear();
-                    julienfEngine.NotAllowCollisions(this);
-                }
-            }
         }
 
-        public List<GameObject> P_CurrentOnCollisionEnterGameObjects
+        internal List<GameObject> P_CurrentOnCollisionEnterGameObjects
         {
             get
             {
@@ -232,7 +217,7 @@ namespace julienfEngine1
             }
         }
 
-        public List<GameObject> P_CurrentOnCollisionStayGameObjects
+        internal List<GameObject> P_CurrentOnCollisionStayGameObjects
         {
             get
             {
@@ -240,13 +225,22 @@ namespace julienfEngine1
             }
         }
 
-        public List<GameObject> P_CurrentOnCollisionExitGameObjects
+        internal List<GameObject> P_CurrentOnCollisionExitGameObjects
         {
             get
             {
                 return _currentOnCollisionExitGameObjects;
             }
         }
+
+        #endregion
+
+        #region DESTRUCTOR
+
+        //~GameObject()
+        //{
+        //    this._myScene.RemoveToDrawGameObject(this);
+        //}
 
         #endregion
     }

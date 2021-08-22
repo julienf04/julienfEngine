@@ -4,7 +4,7 @@ using System.Text;
 
 namespace julienfEngine1
 {
-    enum ForegroundColors
+    enum E_ForegroundColors
     {
         Black = 0,
         DarkGray = DllImporter.FOREGROUND_INTENSITY,

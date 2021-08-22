@@ -4,7 +4,7 @@ using System.Text;
 
 namespace julienfEngine1
 {
-    enum AnimationStates
+    enum E_AnimationStates
     {
         OneShot,
         Repeat,

@@ -12,7 +12,7 @@ namespace julienfEngine1
 
         private int[] _sequenceOfFigures;
 
-        private AnimationStates _animationState = AnimationStates.OneShot;
+        private E_AnimationStates _animationState = E_AnimationStates.OneShot;
 
         private int _currentFigureIndex = 0;
 
@@ -70,17 +70,17 @@ namespace julienfEngine1
             {
                 switch (_animationState)
                 {
-                    case AnimationStates.OneShot:
+                    case E_AnimationStates.OneShot:
                         _currentFigureIndex++;
                         if (_currentFigureIndex >= _sequenceOfFigures.Length) StopAnimation(true);
                         break;
 
-                    case AnimationStates.Repeat:
+                    case E_AnimationStates.Repeat:
                         _currentFigureIndex++;
                         _currentFigureIndex = _currentFigureIndex % (_sequenceOfFigures.Length);
                         break;
 
-                    case AnimationStates.RepeatReverse:
+                    case E_AnimationStates.RepeatReverse:
                         ////Here there are 2 options to do it this. Both of options are the same optimization
                         //Option 1:
                         _currentFigureIndex = _currentFigureIndex == 0 ? _sequenceOfFigures.Length - 1 : _currentFigureIndex >= _sequenceOfFigures.Length ? _sequenceOfFigures.Length - (_currentFigureIndex % _sequenceOfFigures.Length) : _currentFigureIndex - 1;
@@ -89,7 +89,7 @@ namespace julienfEngine1
                         //totalIterations++;
                         //_currentFigureIndex = (_sequenceOfFigures.Length - 1) - (totalIterations % _sequenceOfFigures.Length);
                         break;
-                    case AnimationStates.PingPong:
+                    case E_AnimationStates.PingPong:
                         if (_currentFigureIndex % (_sequenceOfFigures.Length - 1) == 0) _nextFigureIndexForPingPong = -_nextFigureIndexForPingPong;
                         _currentFigureIndex += _nextFigureIndexForPingPong;
                         break;
@@ -122,7 +122,7 @@ namespace julienfEngine1
             }
         }
 
-        public AnimationStates P_AnimationState
+        public E_AnimationStates P_AnimationState
         {
             get
             {
@@ -131,7 +131,7 @@ namespace julienfEngine1
 
             set
             {
-                if (value == AnimationStates.RepeatReverse && _animationState != value) _currentFigureIndex = _sequenceOfFigures.Length - 1;
+                if (value == E_AnimationStates.RepeatReverse && _animationState != value) _currentFigureIndex = _sequenceOfFigures.Length - 1;
                 _animationState = value;
             }
         }

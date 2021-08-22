@@ -11,9 +11,9 @@ namespace julienfEngine1
 
         private string[] _figure; //points of the figure in a matriz. This is for read this matriz and draw points of the figure on the screen. 1 if some point need to be drawn, 0 else
 
-        private ForegroundColors _foregroundColor = ForegroundColors.White;
+        private E_ForegroundColors _foregroundColor = E_ForegroundColors.White;
 
-        private BackgroundColors _backgroundColor = BackgroundColors.Black;
+        private E_BackgroundColors _backgroundColor = E_BackgroundColors.Black;
 
         #endregion
 
@@ -30,29 +30,29 @@ namespace julienfEngine1
             _figure = figure;
         }
 
-        public Figure(ForegroundColors foregroundColor)
+        public Figure(E_ForegroundColors foregroundColor)
         {
             _foregroundColor = foregroundColor;
         }
 
-        public Figure(BackgroundColors backgroundColor)
+        public Figure(E_BackgroundColors backgroundColor)
         {
             _backgroundColor = backgroundColor;
         }
 
-        public Figure(string[] figure, ForegroundColors foregroundColor)
+        public Figure(string[] figure, E_ForegroundColors foregroundColor)
         {
             _figure = figure;
             _foregroundColor = foregroundColor;
         }
 
-        public Figure(string[] figure, BackgroundColors backgroundColor)
+        public Figure(string[] figure, E_BackgroundColors backgroundColor)
         {
             _figure = figure;
             _backgroundColor = backgroundColor;
         }
 
-        public Figure(string[] figure, ForegroundColors foregroundColor, BackgroundColors backgroundColor)
+        public Figure(string[] figure, E_ForegroundColors foregroundColor, E_BackgroundColors backgroundColor)
         {
             _figure = figure;
             _foregroundColor = foregroundColor;
@@ -80,7 +80,7 @@ namespace julienfEngine1
             }
         }
 
-        public ForegroundColors ForegroundColor
+        public E_ForegroundColors ForegroundColor
         {
             get
             {
@@ -93,7 +93,7 @@ namespace julienfEngine1
             }
         }
 
-        public BackgroundColors BackgroundColor
+        public E_BackgroundColors BackgroundColor
         {
             get
             {

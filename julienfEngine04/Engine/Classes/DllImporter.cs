@@ -222,8 +222,7 @@ namespace julienfEngine1
 
         internal protected static void RemoveBorders()
         {
-            long Style = 0;
-            Style = GetWindowLong(_myConsole, _GWL_STYLE);
+            long Style = GetWindowLong(_myConsole, _GWL_STYLE);
 
             SetWindowLong(_myConsole, _GWL_STYLE, Style & ~_WS_CAPTION & ~_MF_REMOVE);
 
@@ -263,7 +262,7 @@ namespace julienfEngine1
             SetConsoleActiveScreenBuffer(_screenBuffersArray[screenBufferID]);
         }
 
-        internal protected static void WriteConsole(int screenBufferID, string message, COORD coords, ForegroundColors foregroundColor, BackgroundColors backgroundColor)
+        internal protected static void WriteConsole(int screenBufferID, string message, COORD coords, E_ForegroundColors foregroundColor, E_BackgroundColors backgroundColor)
         {
             uint ignore = 0;
             screenBufferID--;
@@ -272,7 +271,7 @@ namespace julienfEngine1
             WriteConsoleOutputCharacter(screenBufferToWrite, message, message.Length, coords, out ignore);
         }
 
-        internal protected static void WriteConsole(int screenBufferID, string message, int x, int y, ForegroundColors foregroundColor, BackgroundColors backgroundColor)
+        internal protected static void WriteConsole(int screenBufferID, string message, int x, int y, E_ForegroundColors foregroundColor, E_BackgroundColors backgroundColor)
         {
             uint ignore = 0;
             COORD coords = new COORD((short)x, (short)y);

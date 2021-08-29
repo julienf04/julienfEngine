@@ -338,11 +338,13 @@ namespace julienfEngine1
             // Step 1: Initialize all scenes you have created --> YourScene.Initialize();
             julienfEngine.InitializeScene(typeof(MainMenuScene));
             julienfEngine.InitializeScene(typeof(ExitMenuScene));
-
+            julienfEngine.InitializeScene(typeof(SinglePlayerMenuScene));
+            julienfEngine.InitializeScene(typeof(SinglePlayerGameScene));
 
             // Step 2: Load the start scenes and set the first scene for your game --> julienfEngine.LoadScene(typeof(YourFirstScene)); julienfEngine.SetLoadedScene(typeof(YourFirstScene));
             julienfEngine.LoadScene(typeof(MainMenuScene));
             julienfEngine.LoadScene(typeof(ExitMenuScene));
+            julienfEngine.LoadScene(typeof(SinglePlayerMenuScene));
             julienfEngine.SetLoadedScene(typeof(MainMenuScene), false);
         }
 

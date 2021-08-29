@@ -22,13 +22,14 @@ namespace julienfEngine1
 
         #region ---ATRIBUTES
 
-        //private static byte[] _keyboardState = new byte[256];
-
         private static List<E_Keyboard> _keysPressedThisFrame = new List<E_Keyboard>();
         private static List<E_Keyboard> _keysDown = new List<E_Keyboard>();
         private static List<E_Keyboard> _keysUp = new List<E_Keyboard>();
         private static List<E_Keyboard> _keysDownToCheck = new List<E_Keyboard>();
         private static List<E_Keyboard> _keysUpToCheck = new List<E_Keyboard>();
+
+        private static E_Keyboard _lastKeyPressed = 0;
+        private static E_Keyboard _lastKeyUp = 0;
 
         #endregion
 
@@ -37,10 +38,15 @@ namespace julienfEngine1
 
         public static bool GetKey(E_Keyboard key)
         {
-            if (_keysPressedThisFrame.Contains(key)) return true;
+            if (_keysPressedThisFrame.Contains(key))
+            {
+                _lastKeyPressed = key;
+                return true;
+            }
             else if (GetAsyncKeyState(key) != 0)
             {
                 _keysPressedThisFrame.Add(key);
+                _lastKeyPressed = key;
                 return true;
             }
 
@@ -52,6 +58,7 @@ namespace julienfEngine1
             if (GetKey(key))
             {
                 if (!_keysDownToCheck.Contains(key)) _keysDownToCheck.Add(key);
+                _lastKeyPressed = key;
                 return !_keysDown.Contains(key);
             }
 
@@ -62,11 +69,16 @@ namespace julienfEngine1
         {
             if (!GetKey(key))
             {
-                return _keysUp.Contains(key);
+                if (_keysUp.Contains(key))
+                {
+                    _lastKeyUp = key;
+                    return true;
+                }
+                return false;
             }
 
             if (!_keysUpToCheck.Contains(key)) _keysUpToCheck.Add(key);
-
+            _lastKeyPressed = key;
             return false;
         }
 
@@ -102,6 +114,26 @@ namespace julienfEngine1
             }
 
             _keysPressedThisFrame.Clear();
+        }
+
+        #endregion
+
+        #region PROPERTIES
+
+        public static E_Keyboard P_LastKeyPressed
+        {
+            get
+            {
+                return _lastKeyPressed;
+            }
+        }
+
+        public static E_Keyboard P_LastKeyUp
+        {
+            get
+            {
+                return _lastKeyUp;
+            }
         }
 
         #endregion

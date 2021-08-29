@@ -145,25 +145,34 @@ namespace julienfEngine1
             for (int i = 0; i < _currentScene.P_ICollideableToDetectCollisionsArray.Length; i++)
             {
                 GameObject currentGameObjectCollision1 = (GameObject)_currentScene.P_ICollideableToDetectCollisionsArray[i];
-                for (int i2 = i + 1; i2 < _currentScene.P_ICollideableToDetectCollisionsArray.Length; i2++)
+
+                if (currentGameObjectCollision1.P_DetectCollisions)
                 {
-                    GameObject currentGameObjectCollision2 = (GameObject)_currentScene.P_ICollideableToDetectCollisionsArray[i2];
-                    if (currentGameObjectCollision1.CollisionWith(currentGameObjectCollision2))
+                    for (int i2 = i + 1; i2 < _currentScene.P_ICollideableToDetectCollisionsArray.Length; i2++)
                     {
-                        if (!currentGameObjectCollision1.P_CurrentOnCollisionStayGameObjects.Contains(currentGameObjectCollision2))
+                        GameObject currentGameObjectCollision2 = (GameObject)_currentScene.P_ICollideableToDetectCollisionsArray[i2];
+
+                        if (currentGameObjectCollision2.P_DetectCollisions)
                         {
-                            currentGameObjectCollision1.P_CurrentOnCollisionEnterGameObjects.Add(currentGameObjectCollision2);
-                            currentGameObjectCollision2.P_CurrentOnCollisionEnterGameObjects.Add(currentGameObjectCollision1);
-                            currentGameObjectCollision1.P_CurrentOnCollisionStayGameObjects.Add(currentGameObjectCollision2);
-                            currentGameObjectCollision2.P_CurrentOnCollisionStayGameObjects.Add(currentGameObjectCollision1);
+                            if (currentGameObjectCollision1.CollisionWith(currentGameObjectCollision2))
+                            {
+                                if (!currentGameObjectCollision1.P_CurrentOnCollisionStayGameObjects.Contains(currentGameObjectCollision2))
+                                {
+                                    currentGameObjectCollision1.P_CurrentOnCollisionEnterGameObjects.Add(currentGameObjectCollision2);
+                                    currentGameObjectCollision2.P_CurrentOnCollisionEnterGameObjects.Add(currentGameObjectCollision1);
+                                    currentGameObjectCollision1.P_CurrentOnCollisionStayGameObjects.Add(currentGameObjectCollision2);
+                                    currentGameObjectCollision2.P_CurrentOnCollisionStayGameObjects.Add(currentGameObjectCollision1);
+                                }
+                            }
+                            else if (currentGameObjectCollision1.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision2) && currentGameObjectCollision2.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision1))
+                            {
+                                currentGameObjectCollision1.P_CurrentOnCollisionExitGameObjects.Add(currentGameObjectCollision2);
+                                currentGameObjectCollision2.P_CurrentOnCollisionExitGameObjects.Add(currentGameObjectCollision1);
+                            }
                         }
                     }
-                    else if (currentGameObjectCollision1.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision2) && currentGameObjectCollision2.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision1))
-                    {
-                        currentGameObjectCollision1.P_CurrentOnCollisionExitGameObjects.Add(currentGameObjectCollision2);
-                        currentGameObjectCollision2.P_CurrentOnCollisionExitGameObjects.Add(currentGameObjectCollision1);
-                    }
                 }
+
 
                 if (currentGameObjectCollision1.P_CurrentOnCollisionEnterGameObjects.Count != 0)
                 {

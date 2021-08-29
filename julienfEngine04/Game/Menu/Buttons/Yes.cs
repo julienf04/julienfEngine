@@ -17,7 +17,7 @@ namespace julienfEngine1
                     @"  \ / |  __| `--. \",
                     @"  | | | |___/\__/ /",
                     @"  \_/ \____/\____/ "
-                }, E_ForegroundColors.Red
+                }, E_ForegroundColors.Gray
             );
         #endregion
 

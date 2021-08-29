@@ -78,7 +78,7 @@ namespace julienfEngine1
 
 
 
-        private uint _currentSelectOptionDimension = 0; //Current select option dimension 1
+        private uint _currentSelectOption = 0; //Current select option dimension 1
 
         private IClickable[] _currentMenu;
 
@@ -237,11 +237,11 @@ namespace julienfEngine1
             {
                 if (Input.GetKeyDown(keyToMoveRight))
                 {
-                    this.MoveOneStepRight(arrowPointSides[_currentSelectOptionDimension], buttonDistance);
+                    this.MoveOneStepRight(arrowPointSides[_currentSelectOption], buttonDistance);
                 }
                 else if (_timerChangeArrowVelocity > cooldownToMove)
                 {
-                    this.MoveOneStepRight(arrowPointSides[_currentSelectOptionDimension], buttonDistance);
+                    this.MoveOneStepRight(arrowPointSides[_currentSelectOption], buttonDistance);
                     _timerChangeArrowVelocity = arrowVelocity;
                 }
                 _timerChangeArrowVelocity += Timer.P_DeltaTime;
@@ -250,11 +250,11 @@ namespace julienfEngine1
             {
                 if (Input.GetKeyDown(keyToMoveLeft))
                 {
-                    this.MoveOneStepLeft(arrowPointSides[_currentSelectOptionDimension], buttonDistance);
+                    this.MoveOneStepLeft(arrowPointSides[_currentSelectOption], buttonDistance);
                 }
                 else if (_timerChangeArrowVelocity > cooldownToMove)
                 {
-                    this.MoveOneStepLeft(arrowPointSides[_currentSelectOptionDimension], buttonDistance);
+                    this.MoveOneStepLeft(arrowPointSides[_currentSelectOption], buttonDistance);
                     _timerChangeArrowVelocity = arrowVelocity;
                 }
                 _timerChangeArrowVelocity += Timer.P_DeltaTime;
@@ -268,11 +268,11 @@ namespace julienfEngine1
             {
                 if (Input.GetKeyDown(_currentKeyPressed))
                 {
-                    this.MoveOneStepRight(arrowPointSides[_currentSelectOptionDimension], buttonDistance);
+                    this.MoveOneStepRight(arrowPointSides[_currentSelectOption], buttonDistance);
                 }
                 else if (_timerChangeArrowVelocity > cooldownToMove)
                 {
-                    this.MoveOneStepRight(arrowPointSides[_currentSelectOptionDimension], buttonDistance);
+                    this.MoveOneStepRight(arrowPointSides[_currentSelectOption], buttonDistance);
                     _timerChangeArrowVelocity = arrowVelocity;
                 }
                 _timerChangeArrowVelocity += Timer.P_DeltaTime;
@@ -281,11 +281,11 @@ namespace julienfEngine1
             {
                 if (Input.GetKeyDown(_currentKeyPressed))
                 {
-                    this.MoveOneStepLeft(arrowPointSides[_currentSelectOptionDimension], buttonDistance);
+                    this.MoveOneStepLeft(arrowPointSides[_currentSelectOption], buttonDistance);
                 }
                 else if (_timerChangeArrowVelocity > cooldownToMove)
                 {
-                    this.MoveOneStepLeft(arrowPointSides[_currentSelectOptionDimension], buttonDistance);
+                    this.MoveOneStepLeft(arrowPointSides[_currentSelectOption], buttonDistance);
                     _timerChangeArrowVelocity = arrowVelocity;
                 }
                 _timerChangeArrowVelocity += Timer.P_DeltaTime;
@@ -296,18 +296,18 @@ namespace julienfEngine1
 
         public void DoClick()
         {
-            _currentMenu[this._currentSelectOptionDimension].OnClick();
+            _currentMenu[this._currentSelectOption].OnClick();
         }
 
 
 
         public void MoveOneStepLeft(E_PointSide pointSide, int buttonDistance)
         {
-            _currentMenu[_currentSelectOptionDimension].OnDeselect();
-            _currentSelectOptionDimension += (uint)(_currentMenu.Length - 1);
-            _currentSelectOptionDimension %= (uint)_currentMenu.Length;
-            GameObject currentButton = (GameObject)_currentMenu[_currentSelectOptionDimension];
-            _currentMenu[_currentSelectOptionDimension].OnSelect();
+            _currentMenu[_currentSelectOption].OnDeselect();
+            _currentSelectOption += (uint)(_currentMenu.Length - 1);
+            _currentSelectOption %= (uint)_currentMenu.Length;
+            GameObject currentButton = (GameObject)_currentMenu[_currentSelectOption];
+            _currentMenu[_currentSelectOption].OnSelect();
 
             switch (pointSide)
             {
@@ -332,11 +332,11 @@ namespace julienfEngine1
         
         public void MoveOneStepRight(E_PointSide pointSide, int buttonDistance)
         {
-            _currentMenu[_currentSelectOptionDimension].OnDeselect();
-            _currentSelectOptionDimension++;
-            _currentSelectOptionDimension %= (uint)_currentMenu.Length;
-            GameObject currentButton = (GameObject)_currentMenu[_currentSelectOptionDimension];
-            _currentMenu[_currentSelectOptionDimension].OnSelect();
+            _currentMenu[_currentSelectOption].OnDeselect();
+            _currentSelectOption++;
+            _currentSelectOption %= (uint)_currentMenu.Length;
+            GameObject currentButton = (GameObject)_currentMenu[_currentSelectOption];
+            _currentMenu[_currentSelectOption].OnSelect();
 
             switch (pointSide)
             {
@@ -363,11 +363,17 @@ namespace julienfEngine1
 
         #region PROPERTIES
 
-        public uint P_CurrentSelectOptionDimension
+        public uint P_CurrentSelectOption
         {
             get
             {
-                return _currentSelectOptionDimension;
+                return _currentSelectOption;
+            }
+            set
+            {
+                _currentMenu[_currentSelectOption].OnDeselect();
+                _currentSelectOption = value;
+                _currentMenu[_currentSelectOption].OnSelect();
             }
         }
 

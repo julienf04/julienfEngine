@@ -18,7 +18,7 @@ namespace julienfEngine1
                     @"\____/ |_||_| |_| \__, ||_| \___| | .__/ |_| \__,_| \__, | \___||_|   ",
                     @"                   __/ |          | |                __/ |            ",
                     @"                  |___/           |_|               |___/             "
-                }, E_ForegroundColors.Green
+                }, E_ForegroundColors.Gray
             );
 
         #endregion
@@ -47,7 +47,7 @@ namespace julienfEngine1
 
         public void OnClick()
         {
-            throw new NotImplementedException();
+            julienfEngine.SetLoadedScene(typeof(SinglePlayerMenuScene), true);
         }
 
         #endregion

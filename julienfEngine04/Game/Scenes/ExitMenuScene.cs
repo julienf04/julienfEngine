@@ -17,19 +17,12 @@ namespace julienfEngine1
         private TextMessage messageAreYouSureYouWantToCloseMe;
         private ArrowMenu arrowMenu;
 
-        private double cooldownToMoveArrow = 0.60;
-        private double arrowVelocity = 0.40;
+        private double cooldownToMoveArrow = 0.55;
+        private double arrowVelocity = 0.30;
         private byte buttonDistance = 2;
+        private const ArrowMenu.E_PointSide _arrowPointSide = ArrowMenu.E_PointSide.PointDown;
 
-        private E_Keyboard[] keysToMoveArrowToRight = new E_Keyboard[2]
-        {
-            E_Keyboard.RightArrow, E_Keyboard.D
-        };
-
-        private E_Keyboard[] keysToMoveArrowToLeft = new E_Keyboard[2]
-       {
-            E_Keyboard.LeftArrow, E_Keyboard.A
-       };
+        private double _timerChangeArrowVelocity = 0;
 
         #endregion
 
@@ -62,12 +55,44 @@ namespace julienfEngine1
                 new No(null, this, 0, true, false, 0, 117, 16)
             };
 
-            arrowMenu = new ArrowMenu(buttonsExitMenu, ArrowMenu.RO_FigureMenuArrow, this, 7, true, true, 0, 92, 14);
+            arrowMenu = new ArrowMenu(buttonsExitMenu, ArrowMenu.RO_FigureMenuArrow, this, 7, true, true, 0, 122, 14);
+            arrowMenu.P_CurrentSelectOption = 1;
         }
 
         public override void Update()
         {
-            arrowMenu.MoveArrowToCurrentMenu(cooldownToMoveArrow, arrowVelocity, buttonDistance, ArrowMenu.E_PointSide.PointDown, keysToMoveArrowToLeft, keysToMoveArrowToRight);
+            //arrowMenu.MoveArrowToCurrentMenu(cooldownToMoveArrow, arrowVelocity, buttonDistance, ArrowMenu.E_PointSide.PointDown, keysToMoveArrowToLeft, keysToMoveArrowToRight);
+
+            if (Input.GetKey(E_Keyboard.RightArrow) || Input.GetKey(E_Keyboard.D))
+            {
+                if (Input.GetKeyDown(Input.P_LastKeyPressed))
+                {
+                    arrowMenu.MoveOneStepRight(_arrowPointSide, buttonDistance);
+                }
+                else if (_timerChangeArrowVelocity > cooldownToMoveArrow)
+                {
+                    arrowMenu.MoveOneStepRight(_arrowPointSide, buttonDistance);
+                    _timerChangeArrowVelocity = arrowVelocity;
+                }
+                _timerChangeArrowVelocity += Timer.P_DeltaTime;
+            }
+            else if (Input.GetKey(E_Keyboard.LeftArrow) || Input.GetKey(E_Keyboard.A))
+            {
+                if (Input.GetKeyDown(Input.P_LastKeyPressed))
+                {
+                    arrowMenu.MoveOneStepLeft(_arrowPointSide, buttonDistance);
+                }
+                else if (_timerChangeArrowVelocity > cooldownToMoveArrow)
+                {
+                    arrowMenu.MoveOneStepLeft(_arrowPointSide, buttonDistance);
+                    _timerChangeArrowVelocity = arrowVelocity;
+                }
+                _timerChangeArrowVelocity += Timer.P_DeltaTime;
+            }
+            else _timerChangeArrowVelocity = 0;
+
+
+            if (Input.GetKeyDown(E_Keyboard.Enter) || Input.GetKeyDown(E_Keyboard.SpaceBar)) arrowMenu.DoClick();
 
             if (Input.GetKeyDown(E_Keyboard.Enter) || Input.GetKeyDown(E_Keyboard.SpaceBar)) arrowMenu.DoClick();
         }

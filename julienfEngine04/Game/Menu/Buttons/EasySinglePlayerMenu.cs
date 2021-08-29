@@ -47,7 +47,12 @@ namespace julienfEngine1
 
         public void OnClick()
         {
-            throw new NotImplementedException();
+            julienfEngine.UnloadScene(typeof(MainMenuScene));
+            julienfEngine.UnloadScene(typeof(ExitMenuScene));
+            julienfEngine.UnloadScene(typeof(SinglePlayerMenuScene));
+
+            julienfEngine.LoadScene(typeof(SinglePlayerGameScene));
+            julienfEngine.SetLoadedScene(typeof(SinglePlayerGameScene), true);
         }
 
         #endregion

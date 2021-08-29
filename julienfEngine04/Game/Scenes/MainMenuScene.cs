@@ -41,7 +41,7 @@ namespace julienfEngine1
                 new ExitMenu(null, this, 0, true, true, 0, 35, 30),
             };
 
-            arrowMenu = new ArrowMenu(buttonsMainMenu, ArrowMenu.RO_FigureMenuArrow, julienfEngine.P_CurrentScene, (byte)ArrowMenu.E_ArrowSidesAndSizes.BigArrowPointLeft, true, true, 0, 108, 6);
+            arrowMenu = new ArrowMenu(buttonsMainMenu, ArrowMenu.RO_FigureMenuArrow, this, (byte)ArrowMenu.E_ArrowSidesAndSizes.BigArrowPointLeft, true, true, 0, 108, 6);
             arrowMenu.P_CurrentSelectOption = 0;
         }
 

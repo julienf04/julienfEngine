@@ -32,6 +32,44 @@ namespace julienfEngine1
             P_PosY = y;
         }
 
+        //public void MoveUp(double step)
+        //{
+        //    //int nextIntCell = (int)this.P_PosY;
+        //    //double nextStep = this.P_PosY - step;
+
+        //    //this.P_PosY = nextStep >= nextIntCell ? nextStep : nextIntCell;
+
+        //    int oldPosY = (int)this.P_PosY - 1;
+        //    this.P_PosY -= step;
+        //    if (this.P_PosY < oldPosY) this.P_PosY = (int)this.P_PosY;
+
+        //    //if (this.ppo)
+        //}
+
+        //public void MoveDown(double step)
+        //{
+        //    int nextIntCell = (int)this.P_PosY + 1;
+        //    double nextStep = this.P_PosY + step;
+
+        //    this.P_PosY = nextStep < nextIntCell ? nextStep : nextIntCell;
+        //}
+
+        //public void MoveRight(double step)
+        //{
+        //    int nextIntCell = (int)this.P_PosX + 1;
+        //    double nextStep = this.P_PosX + step;
+
+        //    this.P_PosX = nextStep < nextIntCell ? nextStep : nextIntCell;
+        //}
+
+        //public void MoveLeft(double step)
+        //{
+        //    int nextIntCell = (int)this.P_PosX;
+        //    double nextStep = this.P_PosX - step;
+
+        //    this.P_PosX = nextStep > nextIntCell ? nextStep : nextIntCell - 0.0001;
+        //}
+
         #endregion
 
         #region ---PROPIERTIES;

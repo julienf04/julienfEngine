@@ -47,12 +47,12 @@ namespace julienfEngine1
 
         public void OnClick()
         {
-            julienfEngine.UnloadScene(typeof(MainMenuScene));
-            julienfEngine.UnloadScene(typeof(ExitMenuScene));
-            julienfEngine.UnloadScene(typeof(SinglePlayerMenuScene));
+            Scene.UnloadScene(typeof(MainMenuScene));
+            Scene.UnloadScene(typeof(ExitMenuScene));
+            Scene.UnloadScene(typeof(SinglePlayerMenuScene));
 
-            julienfEngine.LoadScene(typeof(SinglePlayerGameScene));
-            julienfEngine.SetLoadedScene(typeof(SinglePlayerGameScene), true);
+            Scene.LoadScene(typeof(SinglePlayerGameScene));
+            Scene.SetLoadedScene(typeof(SinglePlayerGameScene), true);
         }
 
         #endregion

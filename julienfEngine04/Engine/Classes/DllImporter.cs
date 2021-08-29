@@ -188,23 +188,23 @@ namespace julienfEngine1
         private const int _STD_ERROR_HANDLE = -12;
 
 
-        internal const ushort FOREGROUND_BLUE = 0x0001;
-        internal const ushort FOREGROUND_GREEN = 0x0002;
-        internal const ushort FOREGROUND_RED = 0x0004;
-        internal const ushort FOREGROUND_INTENSITY = 0x0008;
+        protected internal const ushort FOREGROUND_BLUE = 0x0001;
+        protected internal const ushort FOREGROUND_GREEN = 0x0002;
+        protected internal const ushort FOREGROUND_RED = 0x0004;
+        protected internal const ushort FOREGROUND_INTENSITY = 0x0008;
 
-        internal const ushort BACKGROUND_BLUE = 0x0010;
-        internal const ushort BACKGROUND_GREEN = 0x0020;
-        internal const ushort BACKGROUND_RED = 0x0040;
-        internal const ushort BACKGROUND_INTENSITY = 0x0080;
-
-        internal const ushort COMMON_LVB_LEADING_BYTE = 0x0100;
-        internal const ushort COMMON_LVB_TRAILING_BYTE = 0x0200;
-        internal const ushort COMMON_LVB_GRID_HORIZONTAL = 0x0400;
-        internal const ushort COMMON_LVB_GRID_LVERTICAL = 0x0800;
-        internal const ushort COMMON_LVB_GRID_RVERTICAL = 0x1000;
-        internal const ushort COMMON_LVB_REVERSE_VIDEO = 0x4000;
-        internal const ushort COMMON_LVB_UNDERSCORE = 0x8000;
+        protected internal const ushort BACKGROUND_BLUE = 0x0010;
+        protected internal const ushort BACKGROUND_GREEN = 0x0020;
+        protected internal const ushort BACKGROUND_RED = 0x0040;
+        protected internal const ushort BACKGROUND_INTENSITY = 0x0080;
+        
+        protected internal const ushort COMMON_LVB_LEADING_BYTE = 0x0100;
+        protected internal const ushort COMMON_LVB_TRAILING_BYTE = 0x0200;
+        protected internal const ushort COMMON_LVB_GRID_HORIZONTAL = 0x0400;
+        protected internal const ushort COMMON_LVB_GRID_LVERTICAL = 0x0800;
+        protected internal const ushort COMMON_LVB_GRID_RVERTICAL = 0x1000;
+        protected internal const ushort COMMON_LVB_REVERSE_VIDEO = 0x4000;
+        protected internal const ushort COMMON_LVB_UNDERSCORE = 0x8000;
 
 
         private static List<IntPtr> _screenBuffers = new List<IntPtr>() { GetStdHandle((_STD_OUTPUT_HANDLE)) };
@@ -285,7 +285,7 @@ namespace julienfEngine1
         {
             uint ignore = 0;
             screenBufferID--;
-            FillConsoleOutputAttribute(_screenBuffersArray[screenBufferID], 0, julienfEngine.P_ScreenX * julienfEngine.P_ScreenY + julienfEngine.P_ScreenX, new COORD(0, 0), out ignore);
+            FillConsoleOutputAttribute(_screenBuffersArray[screenBufferID], 0, Screen.P_Width * Screen.P_Height + Screen.P_Width, new COORD(0, 0), out ignore);
             //FillConsoleOutputCharacter(_screenBuffers[--screenBufferID], ' ', julienfEngine.P_ScreenX * julienfEngine.P_ScreenY + julienfEngine.P_ScreenX, new COORD(0, 0), out ignore);
         }
 

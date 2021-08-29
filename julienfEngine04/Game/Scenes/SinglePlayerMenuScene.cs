@@ -45,7 +45,7 @@ namespace julienfEngine1
                 new Back(null, this, 0, true, true, 0, 33, 43)
             };
 
-            arrowMenu = new ArrowMenu(buttonsMainMenu, ArrowMenu.RO_FigureMenuArrow, julienfEngine.P_CurrentScene, (byte)ArrowMenu.E_ArrowSidesAndSizes.BigArrowPointLeft, true, true, 0, 64, 6);
+            arrowMenu = new ArrowMenu(buttonsMainMenu, ArrowMenu.RO_FigureMenuArrow, this, (byte)ArrowMenu.E_ArrowSidesAndSizes.BigArrowPointLeft, true, true, 0, 64, 6);
             arrowMenu.P_CurrentSelectOption = 0;
         }
 

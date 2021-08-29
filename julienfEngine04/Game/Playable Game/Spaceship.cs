@@ -55,12 +55,10 @@ namespace julienfEngine1
 
             if (_playerID == 0)
             {
-                this._figureSpaceshipLeftSide.BackgroundColor = E_BackgroundColors.Green;
-
                 this.P_GameObjectFigures = new Figure[1] { _figureSpaceshipLeftSide };
                 this.P_Layer = 1;
 
-                this.P_Colliders = new Area[3]
+                this.P_Collision.P_Colliders = new Area[3]
                 {
                     new Area(0, 5, 0, 8),
                     new Area(6, 9, 2, 6),
@@ -69,11 +67,9 @@ namespace julienfEngine1
             }
             else
             {
-                this._figureSpaceshipRightSide.BackgroundColor = E_BackgroundColors.Violet;
-
                 this.P_GameObjectFigures = new Figure[1] { _figureSpaceshipRightSide };
 
-                this.P_Colliders = new Area[3]
+                this.P_Collision.P_Colliders = new Area[3]
                 {
                     new Area(0, 1, 4, 4),
                     new Area(2, 5, 2, 6),

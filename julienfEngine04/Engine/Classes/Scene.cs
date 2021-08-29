@@ -23,6 +23,8 @@ namespace julienfEngine1
 
         private static bool _onLoadScene = false;
 
+        private static Scene _currentScene;
+
         #endregion
 
         #region CONSTRUCTORS
@@ -116,19 +118,39 @@ namespace julienfEngine1
             _ICollideableToDetectCollisionsArray = _ICollideableToDetectCollisions.ToArray();
         }
 
-        internal static void Initialize(Type sceneType)
+        public static void InitializeScene(Type sceneType)
         {
+            if (!IsScene(sceneType)) throw new Exception("The type is not a scene");
+
             IntPtr scenePointer = sceneType.TypeHandle.Value;
             if (_allScenePointers.Contains(scenePointer)) throw new Exception("Scene type was already initialized. You cannot initialize twice the same scene");
             _allScenePointers.Add(scenePointer);
         }
 
-        internal static bool IsScene(Type sceneType)
+        public static bool IsScene(Type sceneType)
         {
             return sceneType.BaseType == typeof(Scene);
         }
 
-        internal static Scene GetLoadedSceneByType(Type sceneType)
+        public static void SetLoadedScene(Type sceneType, bool deleteCurrentSceneValues)
+        {
+            if (IsScene(sceneType))
+            {
+                if (deleteCurrentSceneValues)
+                {
+                    _currentScene.RemoveAllToDrawGameObject();
+                    _currentScene.RemoveAllToDetectCollisionsGameObject();
+                }
+
+                _currentScene = Scene.GetLoadedSceneByType(sceneType); ;
+                GC.Collect();
+                _currentScene.Start();
+                return;
+            }
+            throw new Exception("The type is not a scene");
+        }
+
+        public static Scene GetLoadedSceneByType(Type sceneType)
         {
             Scene sceneToReturn = _allLoadedScenes.Find(currentScene => currentScene.GetType() == sceneType);
 
@@ -137,8 +159,10 @@ namespace julienfEngine1
             return sceneToReturn;
         }
 
-        internal static void LoadScene(Type sceneType)
+        public static void LoadScene(Type sceneType)
         {
+            if (!IsScene(sceneType)) throw new Exception("The type is not a scene");
+
             if (_allLoadedScenes.All(currentScene => currentScene.GetType() == sceneType) && _allLoadedScenes.Count >= 1) throw new Exception("The scene you are trying to load is already loaded");
 
             _onLoadScene = true;
@@ -146,8 +170,10 @@ namespace julienfEngine1
             _allLoadedScenes.Add(sceneToLoad);
         }
 
-        internal static void UnloadScene(Type sceneType)
+        public static void UnloadScene(Type sceneType)
         {
+            if (!IsScene(sceneType)) throw new Exception("The type is not a scene");
+
             Scene sceneToUnload = _allLoadedScenes.Find(currentScene => currentScene.GetType() == sceneType);
             _allLoadedScenes.Remove(sceneToUnload);
         }
@@ -202,6 +228,14 @@ namespace julienfEngine1
             get
             {
                 return _ICollideableToDetectCollisionsArray;
+            }
+        }
+
+        public static Scene P_CurrentScene
+        {
+            get
+            {
+                return _currentScene;
             }
         }
 

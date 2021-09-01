@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Buffers;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace julienfEngine1
 {
@@ -41,39 +42,45 @@ namespace julienfEngine1
 
         private static void DrawAllGameObjects()
         {
+            Task[] allTasksToDrawGameObjects = new Task[Scene.P_CurrentScene.P_GameObjectsToDrawArray.Length];
             for (int iGameObject = 0; iGameObject < Scene.P_CurrentScene.P_GameObjectsToDrawArray.Length; iGameObject++)
             {
                 GameObject currentGameObjectToDraw = Scene.P_CurrentScene.P_GameObjectsToDrawArray[iGameObject];
-                if (currentGameObjectToDraw.P_Visible)
+                allTasksToDrawGameObjects[iGameObject] = Task.Run(() =>
                 {
-                    int figureIndex = currentGameObjectToDraw.P_Animation.P_IsRunning ? currentGameObjectToDraw.P_Animation.P_CurrentFigure : currentGameObjectToDraw.P_BaseFigure;
-
-                    int y = currentGameObjectToDraw.P_IsUI ? (int)currentGameObjectToDraw.P_PosY : (int)(currentGameObjectToDraw.P_PosY - Scene.P_CurrentScene.P_MainCamera.P_PosY);
-                    int xStart = currentGameObjectToDraw.P_IsUI ? (int)currentGameObjectToDraw.P_PosX : (int)(currentGameObjectToDraw.P_PosX - Scene.P_CurrentScene.P_MainCamera.P_PosX);
-                    for (int iFigure = 0; y < (y - iFigure + currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure.Length); y++, iFigure++)
+                    if (currentGameObjectToDraw.P_Visible)
                     {
-                        if (y >= 0 && y <= Screen.P_Height)
-                        {
-                            int xEnd = xStart + currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure].Length;
+                        int figureIndex = currentGameObjectToDraw.P_Animation.P_IsRunning ? currentGameObjectToDraw.P_Animation.P_CurrentFigure : currentGameObjectToDraw.P_BaseFigure;
 
-                            if (xStart >= 0 && xEnd <= Screen.P_Width)
+                        int y = currentGameObjectToDraw.P_IsUI ? (int)currentGameObjectToDraw.P_PosY : (int)(currentGameObjectToDraw.P_PosY - Scene.P_CurrentScene.P_MainCamera.P_PosY);
+                        int xStart = currentGameObjectToDraw.P_IsUI ? (int)currentGameObjectToDraw.P_PosX : (int)(currentGameObjectToDraw.P_PosX - Scene.P_CurrentScene.P_MainCamera.P_PosX);
+                        for (int iFigure = 0; y < (y - iFigure + currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure.Length); y++, iFigure++)
+                        {
+                            if (y >= 0 && y <= Screen.P_Height)
                             {
-                                DllImporter.WriteConsole(_currentScreenBufferID, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure], new DllImporter.COORD((short)(xStart), (short)y), currentGameObjectToDraw.P_GameObjectFigures[figureIndex].ForegroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].BackgroundColor);
-                            }
-                            else if (xStart < Screen.P_Width && xEnd >= Screen.P_Width)
-                            {
-                                DllImporter.WriteConsole(_currentScreenBufferID, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure].Substring(0, Screen.P_Width - xStart), new DllImporter.COORD((short)(xStart), (short)y), currentGameObjectToDraw.P_GameObjectFigures[figureIndex].ForegroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].BackgroundColor);
-                            }
-                            else if (xStart < 0 && xEnd > 0)
-                            {
-                                DllImporter.WriteConsole(_currentScreenBufferID, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure].Substring(-xStart, xEnd), new DllImporter.COORD((short)(0), (short)y), currentGameObjectToDraw.P_GameObjectFigures[figureIndex].ForegroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].BackgroundColor);
+                                int xEnd = xStart + currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure].Length;
+
+                                if (xStart >= 0 && xEnd <= Screen.P_Width)
+                                {
+                                    DllImporter.WriteConsole(_currentScreenBufferID, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure], new DllImporter.COORD((short)(xStart), (short)y), currentGameObjectToDraw.P_GameObjectFigures[figureIndex].ForegroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].BackgroundColor);
+                                }
+                                else if (xStart < Screen.P_Width && xEnd >= Screen.P_Width)
+                                {
+                                    DllImporter.WriteConsole(_currentScreenBufferID, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure].Substring(0, Screen.P_Width - xStart), new DllImporter.COORD((short)(xStart), (short)y), currentGameObjectToDraw.P_GameObjectFigures[figureIndex].ForegroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].BackgroundColor);
+                                }
+                                else if (xStart < 0 && xEnd > 0)
+                                {
+                                    DllImporter.WriteConsole(_currentScreenBufferID, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure].Substring(-xStart, xEnd), new DllImporter.COORD((short)(0), (short)y), currentGameObjectToDraw.P_GameObjectFigures[figureIndex].ForegroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].BackgroundColor);
+                                }
                             }
                         }
-                    }
 
-                    if (currentGameObjectToDraw.P_Animation.P_IsRunning) currentGameObjectToDraw.P_Animation.NextFigure();
-                }
+                        if (currentGameObjectToDraw.P_Animation.P_IsRunning) currentGameObjectToDraw.P_Animation.NextFigure();
+                    }
+                });
             }
+
+            Task.WaitAll(allTasksToDrawGameObjects);
         }
 
         //public static void InitializeScene(Type sceneType)
@@ -140,35 +147,42 @@ namespace julienfEngine1
             for (int i = 0; i < Scene.P_CurrentScene.P_ICollideableToDetectCollisionsArray.Length; i++)
             {
                 GameObject currentGameObjectCollision1 = (GameObject)Scene.P_CurrentScene.P_ICollideableToDetectCollisionsArray[i];
+                Task[] allTasksToDetectCollisionGameObjects = null;
 
-                if (currentGameObjectCollision1.P_Collision.P_DetectCollisions)
+                if (currentGameObjectCollision1.P_Collision.P_DetectCollisions && i + 1 < Scene.P_CurrentScene.P_ICollideableToDetectCollisionsArray.Length)
                 {
+                    allTasksToDetectCollisionGameObjects = new Task[Scene.P_CurrentScene.P_ICollideableToDetectCollisionsArray.Length - 1];
+
                     for (int i2 = i + 1; i2 < Scene.P_CurrentScene.P_ICollideableToDetectCollisionsArray.Length; i2++)
                     {
                         GameObject currentGameObjectCollision2 = (GameObject)Scene.P_CurrentScene.P_ICollideableToDetectCollisionsArray[i2];
 
-                        if (currentGameObjectCollision2.P_Collision.P_DetectCollisions)
+                        allTasksToDetectCollisionGameObjects[i2 - i - 1] = Task.Run(() =>
                         {
-                            if (Collision.IsCollision(currentGameObjectCollision1, currentGameObjectCollision2))
+                            if (currentGameObjectCollision2.P_Collision.P_DetectCollisions)
                             {
-                                if (!currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Contains(currentGameObjectCollision2))
+                                if (Collision.IsCollision(currentGameObjectCollision1, currentGameObjectCollision2))
                                 {
-                                    currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionEnterGameObjects.Add(currentGameObjectCollision2);
-                                    currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionEnterGameObjects.Add(currentGameObjectCollision1);
-                                    currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Add(currentGameObjectCollision2);
-                                    currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionStayGameObjects.Add(currentGameObjectCollision1);
+                                    if (!currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Contains(currentGameObjectCollision2))
+                                    {
+                                        currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionEnterGameObjects.Add(currentGameObjectCollision2);
+                                        currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionEnterGameObjects.Add(currentGameObjectCollision1);
+                                        currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Add(currentGameObjectCollision2);
+                                        currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionStayGameObjects.Add(currentGameObjectCollision1);
+                                    }
+                                }
+                                else if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision2) &&
+                                         currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision1))
+                                {
+                                    currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionExitGameObjects.Add(currentGameObjectCollision2);
+                                    currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionExitGameObjects.Add(currentGameObjectCollision1);
                                 }
                             }
-                            else if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision2) &&
-                                     currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision1))
-                            {
-                                currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionExitGameObjects.Add(currentGameObjectCollision2);
-                                currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionExitGameObjects.Add(currentGameObjectCollision1);
-                            }
-                        }
+                        });
                     }
                 }
 
+                if (allTasksToDetectCollisionGameObjects != null) Task.WaitAll(allTasksToDetectCollisionGameObjects);
 
                 if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionEnterGameObjects.Count != 0)
                 {

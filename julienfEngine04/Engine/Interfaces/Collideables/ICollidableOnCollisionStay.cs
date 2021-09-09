@@ -4,12 +4,8 @@ using System.Text;
 
 namespace julienfEngine1
 {
-    interface ICollideable
+    interface ICollidableOnCollisionStay : ICanCollide
     {
-        public void OnCollisionEnter(GameObject[] collisions);
-
         public void OnCollisionStay(GameObject[] collisions);
-
-        public void OnCollisionExit(GameObject[] collisions);
     }
 }

@@ -40,6 +40,12 @@ namespace julienfEngine1
             _backgroundColor = backgroundColor;
         }
 
+        public Figure(E_BackgroundColors backgroundColor, E_ForegroundColors foregroundColor)
+        {
+            _backgroundColor = backgroundColor;
+            _foregroundColor = foregroundColor;
+        }
+
         public Figure(string[] figure, E_ForegroundColors foregroundColor)
         {
             _figure = figure;

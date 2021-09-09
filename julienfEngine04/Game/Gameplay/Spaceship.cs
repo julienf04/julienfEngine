@@ -1,10 +1,22 @@
 ﻿using julienfEngine1;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace julienfEngine1
 {
-    class Spaceship : GameObject, ICollideable
+    class Spaceship : GameObject, ICollidable
     {
+        #region ENUMS
+
+        public enum E_PlayerID : byte
+        {
+            Player1,
+            Player2
+        }
+
+        #endregion
+
         // Declare every attributes of this GameObject
         #region ATRIBUTES
 
@@ -40,7 +52,16 @@ namespace julienfEngine1
           );
 
 
-        private static byte _playerID = 0;
+        private static byte _numberOfPlayers = 0;
+        private E_PlayerID _playerID = E_PlayerID.Player1;
+
+        private double _velocity = 25;
+        private int _minPosY = 0;
+        private int _maxPosY = 46;
+
+        private Queue<Bullet> _bullets = new Queue<Bullet>();
+        private int _posXToInstantiateBullets;
+        private byte _halfFigureY;
 
         #endregion
 
@@ -51,9 +72,10 @@ namespace julienfEngine1
         public Spaceship(Figure[] figures, Scene myScene, byte baseFigure = 0, bool visible = true, bool isUI = false, byte layer = 0,
                                   int posX = 0, int posY = 0) : base(figures, myScene, baseFigure, visible, isUI, layer, posX, posY)
         {
-            this.P_GameObjectFigures = new Figure[1] { _figureSpaceshipLeftSide };
+            _playerID = (E_PlayerID)_numberOfPlayers;
+            _numberOfPlayers++;
 
-            if (_playerID == 0)
+            if (_playerID == E_PlayerID.Player1)
             {
                 this.P_GameObjectFigures = new Figure[1] { _figureSpaceshipLeftSide };
                 this.P_Layer = 1;
@@ -64,6 +86,8 @@ namespace julienfEngine1
                     new Area(6, 9, 2, 6),
                     new Area(10, 11, 4, 4)
                 };
+
+                this._posXToInstantiateBullets = 15;
             }
             else
             {
@@ -75,9 +99,16 @@ namespace julienfEngine1
                     new Area(2, 5, 2, 6),
                     new Area(6, 11, 0, 8)
                 };
+
+                this._posXToInstantiateBullets = 200;
             }
 
-            _playerID++;
+            _posXToInstantiateBullets = _playerID == E_PlayerID.Player1 ? 20 : 200;
+            _halfFigureY = (byte)(this.P_GameObjectFigures[0].P_Figure.Length / 2);
+
+            Bullet firstBullet = new Bullet(_playerID, null, Scene.P_CurrentScene, 0, false, false, 0, 0, 0);
+            firstBullet.P_Collision.P_DetectCollisions = false;
+            _bullets.Enqueue(firstBullet);
         }
 
         #endregion
@@ -85,17 +116,41 @@ namespace julienfEngine1
         // Create actions of this GameObject
         #region METHODS
 
-        void ICollideable.OnCollisionEnter(GameObject[] collisions)
+        public void MoveBulletsAttached()
+        {
+            foreach (Bullet bullet in _bullets) bullet.MoveBullet();
+
+        }
+
+        public void InstantiateBullet()
+        {
+            void SetBullet(Bullet bullet)
+            {
+                // Hacer que la bullet aparezca en el canion de la nave, y poner su propiedad isBeenUsed en true
+                bullet.P_PosX = _posXToInstantiateBullets;
+                bullet.P_PosY = this.P_PosY + _halfFigureY;
+                bullet.P_IsBeenUsed = true;
+                bullet.P_Collision.P_DetectCollisions = true;
+                bullet.P_Visible = true;
+
+                _bullets.Enqueue(bullet);
+            }
+
+            if (!_bullets.Peek().P_IsBeenUsed) SetBullet(_bullets.Dequeue());
+            else SetBullet(new Bullet(_playerID, null, Scene.P_CurrentScene, 0, true, false, 0, 0, 0));
+        }
+
+        void ICollidableOnCollisionEnter.OnCollisionEnter(GameObject[] collisions)
         {
             this._figureSpaceshipLeftSide.ForegroundColor = E_ForegroundColors.Red;
         }
 
-        void ICollideable.OnCollisionStay(GameObject[] collisions)
+        void ICollidableOnCollisionStay.OnCollisionStay(GameObject[] collisions)
         {
             //throw new Exception();
         }
 
-        void ICollideable.OnCollisionExit(GameObject[] collisions)
+        void ICollidableOnCollisionExit.OnCollisionExit(GameObject[] collisions)
         {
             this._figureSpaceshipLeftSide.ForegroundColor = E_ForegroundColors.Gray;
         }
@@ -119,6 +174,30 @@ namespace julienfEngine1
             get
             {
                 return _figureSpaceshipRightSide;
+            }
+        }
+
+        public double P_Velocity
+        {
+            get
+            {
+                return _velocity;
+            }
+        }
+
+        public int P_MinPosY
+        {
+            get
+            {
+                return _minPosY;
+            }
+        }
+
+        public int P_MaxPosY
+        {
+            get
+            {
+                return _maxPosY;
             }
         }
 

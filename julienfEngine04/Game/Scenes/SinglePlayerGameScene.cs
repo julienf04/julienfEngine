@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace julienfEngine1
 {
@@ -10,13 +12,12 @@ namespace julienfEngine1
         private Spaceship spaceshipPlayer1;
         private Spaceship spaceshipPlayer2;
 
-        private double velocity = 25;
-        private int minPosY = 0;
-        private int maxPosY = 46;
 
         #endregion
 
-        // Initialize every attribute and create a game logic for this scene
+        // Initialize every attribute and create a game logic for this
+        // 
+
         #region GAME METHODS
 
         // This runs when this scene is loaded
@@ -37,15 +38,20 @@ namespace julienfEngine1
         {
             int oldPosY = (int)spaceshipPlayer1.P_PosY;
 
-            if (Input.GetKey(E_Keyboard.W) || Input.GetKey(E_Keyboard.UpArrow)) spaceshipPlayer1.P_PosY -= velocity * Timer.P_DeltaTime;
+            if (Input.GetKey(E_Keyboard.W) || Input.GetKey(E_Keyboard.UpArrow)) spaceshipPlayer1.P_PosY -= spaceshipPlayer1.P_Velocity * Timer.P_DeltaTime;
 
-            if (Input.GetKey(E_Keyboard.S) || Input.GetKey(E_Keyboard.DownArrow)) spaceshipPlayer1.P_PosY += velocity * Timer.P_DeltaTime;
+            if (Input.GetKey(E_Keyboard.S) || Input.GetKey(E_Keyboard.DownArrow)) spaceshipPlayer1.P_PosY += spaceshipPlayer1.P_Velocity * Timer.P_DeltaTime;
 
-            if (Input.GetKey(E_Keyboard.D) || Input.GetKey(E_Keyboard.RightArrow)) spaceshipPlayer1.P_PosX += velocity * Timer.P_DeltaTime;
+            if (Input.GetKey(E_Keyboard.D) || Input.GetKey(E_Keyboard.RightArrow)) spaceshipPlayer1.P_PosX += spaceshipPlayer1.P_Velocity * Timer.P_DeltaTime;
 
-            if (Input.GetKey(E_Keyboard.A) || Input.GetKey(E_Keyboard.LeftArrow)) spaceshipPlayer1.P_PosX -= velocity * Timer.P_DeltaTime;
+            if (Input.GetKey(E_Keyboard.A) || Input.GetKey(E_Keyboard.LeftArrow)) spaceshipPlayer1.P_PosX -= spaceshipPlayer1.P_Velocity * Timer.P_DeltaTime;
 
-            if (spaceshipPlayer1.P_PosY <= minPosY || spaceshipPlayer1.P_PosY >= maxPosY) spaceshipPlayer1.P_PosY = oldPosY;
+            if (spaceshipPlayer1.P_PosY < spaceshipPlayer1.P_MinPosY || spaceshipPlayer1.P_PosY >= spaceshipPlayer1.P_MaxPosY) spaceshipPlayer1.P_PosY = oldPosY;
+
+            if (Input.GetKey(E_Keyboard.D) || Input.GetKey(E_Keyboard.LeftArrow))
+                spaceshipPlayer1.InstantiateBullet();
+
+            spaceshipPlayer1.MoveBulletsAttached();
 
             //Scene.P_CurrentScene.P_MainCamera.P_PosX -= velocity * Timer.P_DeltaTime * 0.5;
         }

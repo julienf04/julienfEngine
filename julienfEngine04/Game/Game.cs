@@ -1,13 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Data;
-using System.Data.Common;
-using System.Data.SqlTypes;
-using System.Threading;
-using System.Text;
-using System.Collections.Generic;
-
-namespace julienfEngine1
+﻿namespace julienfEngine1
 {
     static class Game
     {
@@ -330,13 +321,16 @@ namespace julienfEngine1
 
 
 
-
+                    
         #region INITIALIZE METHOD
 
         public static void Initialize()
         {
+            julienfEngine.LimitFPS(25);
+
             // Step 1: Initialize all scenes you have created --> YourScene.Initialize();
             Scene.InitializeScene(typeof(MainMenuScene));
+
             Scene.InitializeScene(typeof(ExitMenuScene));
             Scene.InitializeScene(typeof(SinglePlayerMenuScene));
             Scene.InitializeScene(typeof(SinglePlayerGameScene));

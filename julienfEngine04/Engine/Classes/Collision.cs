@@ -12,19 +12,23 @@ namespace julienfEngine1
 
         private bool _detectCollisions = true;
 
-        private List<GameObject> _currentOnCollisionEnterGameObjects;
+        private Stack<GameObject> _currentOnCollisionEnterGameObjects;
         private List<GameObject> _currentOnCollisionStayGameObjects;
-        private List<GameObject> _currentOnCollisionExitGameObjects;
+        private Stack<GameObject> _currentOnCollisionExitGameObjects;
+
+        private GameObject _gameObjectAttached;
 
         #endregion
 
         #region CONSTRUCTORS
 
-        public Collision()
+        public Collision(GameObject gameObjectAttached)
         {
-            _currentOnCollisionEnterGameObjects = new List<GameObject>();
+            this._gameObjectAttached = gameObjectAttached;
+
+            _currentOnCollisionEnterGameObjects = new Stack<GameObject>();
             _currentOnCollisionStayGameObjects = new List<GameObject>();
-            _currentOnCollisionExitGameObjects = new List<GameObject>();
+            _currentOnCollisionExitGameObjects = new Stack<GameObject>();
         }
 
         #endregion
@@ -91,6 +95,16 @@ namespace julienfEngine1
             return false;
         }
 
+        public static void AddToDetectCollisions(GameObject gameObject)
+        {
+            Scene.P_CurrentScene.AddToDetectCollisionsGameObject(gameObject);
+        }
+
+        public void AddToDetectCollisions()
+        {
+            Scene.P_CurrentScene.AddToDetectCollisionsGameObject(this._gameObjectAttached);
+        }
+
         #endregion
 
         #region PROPERTIES
@@ -115,11 +129,17 @@ namespace julienfEngine1
             }
             set
             {
-                _detectCollisions = value;
+                if (value != _detectCollisions)
+                {
+                    if (value) Scene.P_CurrentScene.AddToDetectCollisionsGameObject(_gameObjectAttached);
+                    else Scene.P_CurrentScene.RemoveToDetectCollisionsGameObject(_gameObjectAttached);
+
+                    _detectCollisions = value;
+                }
             }
         }
 
-        internal List<GameObject> P_CurrentOnCollisionEnterGameObjects
+        internal Stack<GameObject> P_CurrentOnCollisionEnterGameObjects
         {
             get
             {
@@ -135,7 +155,7 @@ namespace julienfEngine1
             }
         }
 
-        internal List<GameObject> P_CurrentOnCollisionExitGameObjects
+        internal Stack<GameObject> P_CurrentOnCollisionExitGameObjects
         {
             get
             {

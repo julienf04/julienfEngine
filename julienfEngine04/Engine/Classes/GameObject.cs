@@ -23,7 +23,7 @@ namespace julienfEngine1
 
         private Collision _collision;
 
-        private Scene _myScene = null;
+        //private Scene _myScene = null;
 
         #endregion
 
@@ -52,15 +52,17 @@ namespace julienfEngine1
             _isUI = isUI;
             _layer = layer;
 
-            if (myScene != null) _myScene = myScene;
-            if (_visible && myScene != null) _myScene.AddToDrawGameObject(this);
+            //if (myScene != null) _myScene = myScene;
+            //if (_visible && myScene != null) _myScene.AddToDrawGameObject(this);
+            if (_visible) Scene.P_CurrentScene.AddToDrawGameObject(this);
 
 
-            if (this is ICollideable)
+            if (this is ICanCollide)
             {
-                _collision = new Collision();
+                _collision = new Collision(this);
 
-                _myScene.AddToDetectCollisionsGameObject(this);
+                //_myScene.AddToDetectCollisionsGameObject(this);
+                Scene.P_CurrentScene.AddToDetectCollisionsGameObject(this);
             }
         }
 
@@ -523,8 +525,14 @@ namespace julienfEngine1
 
             set
             {
-                _visible = value;
-                if (_visible) _myScene.AddToDrawGameObject(this);
+                //if (_visible) _myScene.AddToDrawGameObject(this);
+                if (value != _visible)
+                {
+                    if (value) Scene.P_CurrentScene.AddToDrawGameObject(this);
+                    else Scene.P_CurrentScene.RemoveToDrawGameObject(this);
+
+                    _visible = value;
+                }
             }
         }
 

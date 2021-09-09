@@ -208,8 +208,21 @@ namespace julienfEngine1
 
 
         private static List<IntPtr> _screenBuffers = new List<IntPtr>() { GetStdHandle((_STD_OUTPUT_HANDLE)) };
-        private static IntPtr[] _screenBuffersArray;
         private static int _numberOfScreenBuffers = 1;
+
+        #endregion
+
+        #region ---DLL TO HIDE CONSOLE CURSOR
+
+        [DllImport("kernel32.dll", SetLastError = true)] static extern bool SetConsoleCursorInfo(IntPtr hConsoleOutput, [In] ref CONSOLE_CURSOR_INFO lpConsoleCursorInfo);
+
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct CONSOLE_CURSOR_INFO
+        {
+            public uint Size;
+            public bool Visible;
+        }
 
         #endregion
 
@@ -252,21 +265,20 @@ namespace julienfEngine1
             IntPtr screenBufferHanlde = CreateConsoleScreenBuffer(_GENERIC_WRITE, _FILE_SHARED_WRITE, IntPtr.Zero, _CONSOLE_TEXTMODE_BUFFER, IntPtr.Zero);
             _screenBuffers.Add(screenBufferHanlde);
             _numberOfScreenBuffers++;
-            _screenBuffersArray = _screenBuffers.ToArray();
-            return _screenBuffersArray.Length;
+            return _screenBuffers.Count;
         }
 
         internal protected static void SetScreenBuffer(int screenBufferID)
         {
             screenBufferID--;
-            SetConsoleActiveScreenBuffer(_screenBuffersArray[screenBufferID]);
+            SetConsoleActiveScreenBuffer(_screenBuffers[screenBufferID]);
         }
 
         internal protected static void WriteConsole(int screenBufferID, string message, COORD coords, E_ForegroundColors foregroundColor, E_BackgroundColors backgroundColor)
         {
             uint ignore = 0;
             screenBufferID--;
-            IntPtr screenBufferToWrite = _screenBuffersArray[screenBufferID];
+            IntPtr screenBufferToWrite = _screenBuffers[screenBufferID];
             FillConsoleOutputAttribute(screenBufferToWrite, (int)foregroundColor | (int)backgroundColor, message.Length,coords, out ignore);
             WriteConsoleOutputCharacter(screenBufferToWrite, message, message.Length, coords, out ignore);
         }
@@ -276,7 +288,7 @@ namespace julienfEngine1
             uint ignore = 0;
             COORD coords = new COORD((short)x, (short)y);
             screenBufferID--;
-            IntPtr screenBufferToWrite = _screenBuffersArray[screenBufferID];
+            IntPtr screenBufferToWrite = _screenBuffers[screenBufferID];
             FillConsoleOutputAttribute(screenBufferToWrite, (int)foregroundColor | (int)backgroundColor, message.Length, coords, out ignore);
             WriteConsoleOutputCharacter(screenBufferToWrite, message, message.Length, coords, out ignore);
         }
@@ -285,8 +297,19 @@ namespace julienfEngine1
         {
             uint ignore = 0;
             screenBufferID--;
-            FillConsoleOutputAttribute(_screenBuffersArray[screenBufferID], 0, Screen.P_Width * Screen.P_Height + Screen.P_Width, new COORD(0, 0), out ignore);
+            FillConsoleOutputAttribute(_screenBuffers[screenBufferID], 0, Screen.P_Width * Screen.P_Height + Screen.P_Width, new COORD(0, 0), out ignore);
             //FillConsoleOutputCharacter(_screenBuffers[--screenBufferID], ' ', julienfEngine.P_ScreenX * julienfEngine.P_ScreenY + julienfEngine.P_ScreenX, new COORD(0, 0), out ignore);
+        }
+
+        internal protected static void HideConsoleCursor()
+        {
+            CONSOLE_CURSOR_INFO consoleCursorInfo = new CONSOLE_CURSOR_INFO();
+            consoleCursorInfo.Size = 1;
+            consoleCursorInfo.Visible = false;
+            bool succesfull = SetConsoleCursorInfo(_screenBuffers[0], ref consoleCursorInfo);
+            bool succesfull2 = SetConsoleCursorInfo(_screenBuffers[1], ref consoleCursorInfo);
+            bool x = succesfull;
+            bool y = succesfull;
         }
 
         #endregion

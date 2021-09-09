@@ -92,11 +92,6 @@ namespace julienfEngine1
                         }
                         _timerChangeArrowVelocity += Timer.P_DeltaTime;
                     }
-                    else if (Input.GetKeyDown(E_Keyboard.LeftArrow))
-                    {
-                        arrowMenu.P_CurrentSelectOption = 0;
-                        arrowMenu.P_Visible = false;
-                    }
                     else _timerChangeArrowVelocity = 0;
 
                     break;

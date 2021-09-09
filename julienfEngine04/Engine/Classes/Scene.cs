@@ -13,10 +13,7 @@ namespace julienfEngine1
 
         private List<GameObject> _gameObjectsToDraw = new List<GameObject>();
 
-        private List<ICollideable> _ICollideableToDetectCollisions = new List<ICollideable>();
-
-        private GameObject[] _gameObjectsToDrawArray;
-        private ICollideable[] _ICollideableToDetectCollisionsArray;
+        private List<ICanCollide> _ICollideableToDetectCollisions = new List<ICanCollide>();
 
         private static List<IntPtr> _allScenePointers = new List<IntPtr>();
         private static List<Scene> _allLoadedScenes = new List<Scene>();
@@ -49,9 +46,6 @@ namespace julienfEngine1
             {
                 if (!_allScenePointers.Contains(this.GetType().TypeHandle.Value)) throw new Exception("The scene you are trying to load is not initialized");
 
-                _gameObjectsToDrawArray = _gameObjectsToDraw.ToArray();
-                _ICollideableToDetectCollisionsArray = _ICollideableToDetectCollisions.ToArray();
-
                 _onLoadScene = false;
                 return;
             }
@@ -74,48 +68,37 @@ namespace julienfEngine1
                     else _gameObjectsToDraw.Add(gameObject);
                 }
             }
-            else
-            {
-                _gameObjectsToDraw.Add(gameObject);
-            }
-
-            _gameObjectsToDrawArray = _gameObjectsToDraw.ToArray();
+            else _gameObjectsToDraw.Add(gameObject);
         }
 
         public void RemoveToDrawGameObject(GameObject gameObject)
         {
-            if (_gameObjectsToDraw.Remove(gameObject)) _gameObjectsToDrawArray = _gameObjectsToDraw.ToArray();
+            _gameObjectsToDraw.Remove(gameObject);
         }
 
         public void RemoveAllToDrawGameObject()
         {
             _gameObjectsToDraw.Clear();
-            _gameObjectsToDrawArray = _gameObjectsToDraw.ToArray();
         }
 
         public void AddToDetectCollisionsGameObject(GameObject gameObject)
         {
-            if (!(gameObject is ICollideable)) throw new Exception("gamobject must be 'ICollideable'");
+            if (!(gameObject is ICanCollide)) throw new Exception("gamobject must be 'ICollideable'");
 
-            ICollideable collision = (ICollideable)gameObject;
-            if (!P_ICollideableToDetectCollisions.Contains(collision))
-            {
-                _ICollideableToDetectCollisions.Add(collision);
-                _ICollideableToDetectCollisionsArray = _ICollideableToDetectCollisions.ToArray();
-            }
+            ICanCollide collision = (ICanCollide)gameObject;
+            if (!_ICollideableToDetectCollisions.Contains(collision)) _ICollideableToDetectCollisions.Add(collision);
         }
 
         public void RemoveToDetectCollisionsGameObject(GameObject gameObject)
         {
-            if (!(gameObject is ICollideable)) throw new Exception("gamobject must be 'ICollideable'");
+            if (!(gameObject is ICanCollide)) throw new Exception("gamobject must be 'ICollideable'");
 
-            if (_ICollideableToDetectCollisions.Remove((ICollideable)gameObject)) _ICollideableToDetectCollisionsArray = _ICollideableToDetectCollisions.ToArray();
+            _ICollideableToDetectCollisions.Remove((ICanCollide)gameObject);
         }
 
         public void RemoveAllToDetectCollisionsGameObject()
         {
             _ICollideableToDetectCollisions.Clear();
-            _ICollideableToDetectCollisionsArray = _ICollideableToDetectCollisions.ToArray();
         }
 
         public static void InitializeScene(Type sceneType)
@@ -142,8 +125,13 @@ namespace julienfEngine1
                     _currentScene.RemoveAllToDetectCollisionsGameObject();
                 }
 
-                _currentScene = Scene.GetLoadedSceneByType(sceneType); ;
+                _currentScene = Scene.GetLoadedSceneByType(sceneType);
                 GC.Collect();
+
+                #if DEBUG
+                julienfEngine.SetDebugGameObject();
+                #endif
+
                 _currentScene.Start();
                 return;
             }
@@ -199,35 +187,19 @@ namespace julienfEngine1
             }
         }
 
-        public List<GameObject> P_GameObjectsToDraw
+        public GameObject[] P_GameObjectsToDraw
         {
             get
             {
-                return _gameObjectsToDraw;
+                return _gameObjectsToDraw.ToArray();
             }
         }
 
-        public List<ICollideable> P_ICollideableToDetectCollisions
+        public ICanCollide[] P_ICollideableToDetectCollisions
         {
             get
             {
-                return _ICollideableToDetectCollisions;
-            }
-        }
-
-        public GameObject[] P_GameObjectsToDrawArray
-        {
-            get
-            {
-                return _gameObjectsToDrawArray;
-            }
-        }
-
-        public ICollideable[] P_ICollideableToDetectCollisionsArray
-        {
-            get
-            {
-                return _ICollideableToDetectCollisionsArray;
+                return _ICollideableToDetectCollisions.ToArray();
             }
         }
 

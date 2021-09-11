@@ -67,7 +67,7 @@ namespace julienfEngine1
             _stMyTimer.Stop();
         }
 
-        public void ResetMyTimerValueAndStop()
+        public void ResetMyTimer()
         {
             _stMyTimer.Reset();
         }
@@ -110,13 +110,13 @@ namespace julienfEngine1
             }
         }
 
-        public double P_MyTimerReverse
-        {
-            get
-            {
-                return _myTimer - (double)_stMyTimer.ElapsedMilliseconds / 1000;
-            }
-        }
+        //public double P_MyTimerReverse
+        //{
+        //    get
+        //    {
+        //        return _myTimer - (double)_stMyTimer.ElapsedMilliseconds / 1000;
+        //    }
+        //}
 
         public static double P_AverageFPS
         {

@@ -272,6 +272,7 @@ namespace julienfEngine1
         {
             screenBufferID--;
             SetConsoleActiveScreenBuffer(_screenBuffers[screenBufferID]);
+
         }
 
         internal protected static void WriteConsole(int screenBufferID, string message, COORD coords, E_ForegroundColors foregroundColor, E_BackgroundColors backgroundColor)

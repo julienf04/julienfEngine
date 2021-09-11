@@ -29,7 +29,7 @@ namespace julienfEngine1
 
         #region ---CONSTRUCTORS;
 
-        public GameObject(Figure[] figures, Scene myScene, byte baseFigure = 0, bool visible = true, bool isUI = false, byte layer = 0,
+        public GameObject(Figure[] figures = null, byte baseFigure = 0, bool visible = true, bool isUI = false, byte layer = 0,
                           int posX = 0, int posY = 0) : base(posX, posY)
         {
             if (figures != null)

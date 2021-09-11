@@ -48,7 +48,7 @@ namespace julienfEngine1
             }
             set
             {
-                _firstPointCollisionX = value <= _lastPointCollisionX ? value : ChangeValues (value, ref _lastPointCollisionX);
+                _firstPointCollisionX = value <= _lastPointCollisionX ? value : ChangeValues(value, ref _lastPointCollisionX);
             }
         }
 

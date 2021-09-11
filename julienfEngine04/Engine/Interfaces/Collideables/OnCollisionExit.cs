@@ -4,7 +4,7 @@ using System.Text;
 
 namespace julienfEngine1
 {
-    interface ICollidableOnCollisionExit : ICanCollide
+    interface IOnCollisionExit : ICanCollide
     {
         public void OnCollisionExit(GameObject[] collisions);
     }

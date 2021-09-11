@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace julienfEngine1
 {
-    class Bullet : GameObject, ICollidable
+    class Bullet : GameObject, ICanCollide
     {
         // Declare every attributes of this GameObject
         #region ATRIBUTES
@@ -19,7 +19,7 @@ namespace julienfEngine1
                }, E_ForegroundColors.Gray
            );
 
-        private int _velocity = 25;
+        private int _velocity = 50;
 
         private bool _isBeenUsed = false;
 
@@ -29,10 +29,16 @@ namespace julienfEngine1
         #region CONSTRUCTORS
 
         // Create a constructor/s of tthis GameObject
-        public Bullet(Spaceship.E_PlayerID playerID, Figure[] figures, Scene myScene, byte baseFigure = 0, bool visible = true, bool isUI = false, byte layer = 0,
-                                  int posX = 0, int posY = 0) : base(figures, myScene, baseFigure, visible, isUI, layer, posX, posY)
+        public Bullet(E_ForegroundColors color, Spaceship.E_PlayerID playerID, Figure[] figures = null, byte baseFigure = 0, bool visible = true, bool isUI = false, byte layer = 0,
+                                  int posX = 0, int posY = 0) : base(figures, baseFigure, visible, isUI, layer, posX, posY)
         {
             this.P_GameObjectFigures = new Figure[1] { _figureBullet };
+            this.P_GameObjectFigures[0].ForegroundColor = color;
+
+            this.P_Collision.P_Colliders = new Area[1]
+            {
+                new Area(1,1,0,0)
+            };
 
             this._velocity *= playerID == Spaceship.E_PlayerID.Player1 ? 1 : -1;
         }
@@ -47,21 +53,6 @@ namespace julienfEngine1
             if (this._isBeenUsed) this.P_PosX += _velocity * Timer.P_DeltaTime;
 
             this._isBeenUsed = this.P_PosX < Screen.P_Width && this.P_PosX > 0;
-        }
-
-        void ICollidableOnCollisionEnter.OnCollisionEnter(GameObject[] collisions)
-        {
-            throw new NotImplementedException();
-        }
-
-        void ICollidableOnCollisionStay.OnCollisionStay(GameObject[] collisions)
-        {
-            throw new NotImplementedException();
-        }
-
-        void ICollidableOnCollisionExit.OnCollisionExit(GameObject[] collisions)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion
@@ -86,7 +77,12 @@ namespace julienfEngine1
             }
             set
             {
-                _isBeenUsed = value;
+                if (value != _isBeenUsed)
+                {
+                    this.P_Visible = value;
+                    this.P_Collision.P_DetectCollisions = value;
+                    _isBeenUsed = value;
+                }
             }
         }
 

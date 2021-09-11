@@ -57,7 +57,7 @@ namespace julienfEngine1
                 _currentFigureIndex = 0;
                 _nextFigureIndexForPingPong = 1;
 
-                _sequenceTimer.ResetMyTimerValueAndStop();
+                _sequenceTimer.ResetMyTimer();
             }
             else _sequenceTimer.StopMyTimer();
 
@@ -95,7 +95,7 @@ namespace julienfEngine1
                         break;
                 }
 
-                _sequenceTimer.ResetMyTimerValueAndStop();
+                _sequenceTimer.ResetMyTimer();
                 _sequenceTimer.StartMyTimer(0);
 
                 _isNextFigureFrame = true;

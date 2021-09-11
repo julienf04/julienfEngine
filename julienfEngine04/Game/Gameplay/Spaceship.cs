@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace julienfEngine1
 {
-    class Spaceship : GameObject, ICollidable
+    class Spaceship : GameObject, IOnCollisionEnter
     {
         #region ENUMS
 
@@ -63,14 +63,21 @@ namespace julienfEngine1
         private int _posXToInstantiateBullets;
         private byte _halfFigureY;
 
+        private byte _maxBullets = 5;
+        private double _timeToRecharge = 1;
+        private byte _countOfBullets;
+        private Timer _timerToRechargeBullets = new Timer();
+
+        private E_ForegroundColors _bulletsColor;
+
         #endregion
 
         // Constructors of this GameObject
         #region CONSTRUCTORS
 
         // Create a constructor/s of tthis GameObject
-        public Spaceship(Figure[] figures, Scene myScene, byte baseFigure = 0, bool visible = true, bool isUI = false, byte layer = 0,
-                                  int posX = 0, int posY = 0) : base(figures, myScene, baseFigure, visible, isUI, layer, posX, posY)
+        public Spaceship(E_ForegroundColors bulletsColor, Figure[] figures = null, byte baseFigure = 0, bool visible = true, bool isUI = false, byte layer = 0,
+                                  int posX = 0, int posY = 0) : base(figures, baseFigure, visible, isUI, layer, posX, posY)
         {
             _playerID = (E_PlayerID)_numberOfPlayers;
             _numberOfPlayers++;
@@ -106,9 +113,12 @@ namespace julienfEngine1
             _posXToInstantiateBullets = _playerID == E_PlayerID.Player1 ? 20 : 200;
             _halfFigureY = (byte)(this.P_GameObjectFigures[0].P_Figure.Length / 2);
 
-            Bullet firstBullet = new Bullet(_playerID, null, Scene.P_CurrentScene, 0, false, false, 0, 0, 0);
+            _bulletsColor = bulletsColor;
+            Bullet firstBullet = new Bullet(bulletsColor, _playerID, null, 0, false, false, 0, 0, 0);
             firstBullet.P_Collision.P_DetectCollisions = false;
             _bullets.Enqueue(firstBullet);
+
+            _countOfBullets = _maxBullets;
         }
 
         #endregion
@@ -122,7 +132,7 @@ namespace julienfEngine1
 
         }
 
-        public void InstantiateBullet()
+        public void Shoot()
         {
             void SetBullet(Bullet bullet)
             {
@@ -130,29 +140,35 @@ namespace julienfEngine1
                 bullet.P_PosX = _posXToInstantiateBullets;
                 bullet.P_PosY = this.P_PosY + _halfFigureY;
                 bullet.P_IsBeenUsed = true;
-                bullet.P_Collision.P_DetectCollisions = true;
-                bullet.P_Visible = true;
-
                 _bullets.Enqueue(bullet);
             }
 
-            if (!_bullets.Peek().P_IsBeenUsed) SetBullet(_bullets.Dequeue());
-            else SetBullet(new Bullet(_playerID, null, Scene.P_CurrentScene, 0, true, false, 0, 0, 0));
+            if (_countOfBullets > 0)
+            {
+                if (!_bullets.Peek().P_IsBeenUsed) SetBullet(_bullets.Dequeue());
+                else SetBullet(new Bullet(_bulletsColor, _playerID, null, 0, true, false, 0, 0, 0));
+
+                //// Decimal reset = false;
+                _countOfBullets--;
+                double timerDecimalsElapsed = _timerToRechargeBullets.P_MyTimer >= _countOfBullets ? _timerToRechargeBullets.P_MyTimer - (int)_timerToRechargeBullets.P_MyTimer : 0;
+                _timerToRechargeBullets.ResetMyTimer();
+                _timerToRechargeBullets.StartMyTimer(_countOfBullets + timerDecimalsElapsed);
+
+                //// Decimal reset = true;
+                //_countOfBullets--;
+                //_timerToRechargeBullets.ResetMyTimer();
+                //_timerToRechargeBullets.StartMyTimer(_countOfBullets);
+            }
         }
 
-        void ICollidableOnCollisionEnter.OnCollisionEnter(GameObject[] collisions)
+        public void RechargeBullets()
+        {
+            _countOfBullets = _countOfBullets < _maxBullets ? (byte)_timerToRechargeBullets.P_MyTimer : _maxBullets;
+        }
+
+        void IOnCollisionEnter.OnCollisionEnter(GameObject[] collisions)
         {
             this._figureSpaceshipLeftSide.ForegroundColor = E_ForegroundColors.Red;
-        }
-
-        void ICollidableOnCollisionStay.OnCollisionStay(GameObject[] collisions)
-        {
-            //throw new Exception();
-        }
-
-        void ICollidableOnCollisionExit.OnCollisionExit(GameObject[] collisions)
-        {
-            this._figureSpaceshipLeftSide.ForegroundColor = E_ForegroundColors.Gray;
         }
 
         #endregion
@@ -200,6 +216,46 @@ namespace julienfEngine1
                 return _maxPosY;
             }
         }
+
+        public byte P_MaxBullets
+        {
+            get
+            {
+                return _maxBullets;
+            }
+        }
+
+        public byte P_CountOfBullets
+        {
+            get
+            {
+                return _countOfBullets;
+            }
+        }
+
+        public double P_TimeToRecharge
+        {
+            get
+            {
+                return _timeToRecharge;
+            }
+        }
+
+        public E_ForegroundColors P_BulletsColor
+        {
+            get
+            {
+                return _bulletsColor;
+            }
+        }
+
+        //public E_BackgroundColors P_BulletsColorUI
+        //{
+        //    get
+        //    {
+        //        return _bulletsColorUI;
+        //    }
+        //}
 
         #endregion
     }

@@ -117,8 +117,8 @@ namespace julienfEngine1
 
         #region CONSTRUCTORS
 
-        public ArrowMenu(IClickable[] currentMenu, Figure[] figures, Scene myScene, byte baseFigure = 0, bool visible = true, bool isUI = false, byte layer = 0,
-                    int posX = 0, int posY = 0) : base(figures, myScene, baseFigure, visible, isUI, layer, posX, posY)
+        public ArrowMenu(IClickable[] currentMenu, Figure[] figures = null, byte baseFigure = 0, bool visible = true, bool isUI = false, byte layer = 0,
+                    int posX = 0, int posY = 0) : base(figures, baseFigure, visible, isUI, layer, posX, posY)
         {
             _currentMenu = currentMenu;
             _predicateForCheckArrowMovement = new Func<E_Keyboard, bool>(IsPressed);

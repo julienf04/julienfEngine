@@ -182,15 +182,15 @@ namespace julienfEngine1
 
                 if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionEnterGameObjects.Count != 0)
                 {
-                    ((ICollidableOnCollisionEnter)currentGameObjectCollision1).OnCollisionEnter(currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionEnterGameObjects.ToArray());
-                    ((ICollidableOnCollisionStay)currentGameObjectCollision1).OnCollisionStay(currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.ToArray());
+                    if (currentGameObjectCollision1 is IOnCollisionEnter) ((IOnCollisionEnter)currentGameObjectCollision1).OnCollisionEnter(currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionEnterGameObjects.ToArray());
+                    if (currentGameObjectCollision1 is IOnCollisionStay) ((IOnCollisionStay)currentGameObjectCollision1).OnCollisionStay(currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.ToArray());
                 }
 
-                else if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Count != 0)
-                    ((ICollidableOnCollisionStay)currentGameObjectCollision1).OnCollisionStay(currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.ToArray());
+                else if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Count != 0 && currentGameObjectCollision1 is IOnCollisionStay)
+                    ((IOnCollisionStay)currentGameObjectCollision1).OnCollisionStay(currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.ToArray());
 
-                if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionExitGameObjects.Count != 0)
-                    ((ICollidableOnCollisionExit)currentGameObjectCollision1).OnCollisionExit(currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionExitGameObjects.ToArray());
+                if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionExitGameObjects.Count != 0 && currentGameObjectCollision1 is IOnCollisionExit)
+                    ((IOnCollisionExit)currentGameObjectCollision1).OnCollisionExit(currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionExitGameObjects.ToArray());
 
                 currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionEnterGameObjects.Clear();
                 currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionExitGameObjects.Clear();
@@ -218,7 +218,7 @@ namespace julienfEngine1
         #if DEBUG
         internal static void SetDebugGameObject()
         {
-            _debugGameObject = new Debug(null, Scene.P_CurrentScene, 0, true, true, 0, 0, 0);
+            _debugGameObject = new Debug(null, 0, true, true, 0, 0, 0);
             _debugGameObject.P_GameObjectFigures[0].P_Figure = new string[1] { "" };
         }
         #endif

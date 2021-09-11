@@ -36,12 +36,12 @@ namespace julienfEngine1
         {
             buttonsMainMenu = new IClickable[3]
             {
-                new SinglePlayerMenu(null, this, 0, true, true, 0, 35, 5),
-                new MultiplayerMenu(null, this, 0, true, true, 0, 35, 17),
-                new ExitMenu(null, this, 0, true, true, 0, 35, 30),
+                new SinglePlayerMenu(null, 0, true, true, 0, 35, 5),
+                new MultiplayerMenu(null, 0, true, true, 0, 35, 17),
+                new ExitMenu(null, 0, true, true, 0, 35, 30),
             };
 
-            arrowMenu = new ArrowMenu(buttonsMainMenu, ArrowMenu.RO_FigureMenuArrow, this, (byte)ArrowMenu.E_ArrowSidesAndSizes.BigArrowPointLeft, true, true, 0, 108, 6);
+            arrowMenu = new ArrowMenu(buttonsMainMenu, ArrowMenu.RO_FigureMenuArrow, (byte)ArrowMenu.E_ArrowSidesAndSizes.BigArrowPointLeft, true, true, 0, 108, 6);
             arrowMenu.P_CurrentSelectOption = 0;
         }
 

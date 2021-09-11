@@ -9,8 +9,8 @@ namespace julienfEngine1
         private double velocity = 10;
         public int ID = 0;
 
-        public Square(bool allowInput, Figure[] figures, Scene myScene, byte baseFigure = 0, bool visible = true, bool isUI = false, byte layer = 0,
-                    int posX = 0, int posY = 0) : base(figures, myScene, baseFigure, visible, isUI, layer, posX, posY)
+        public Square(bool allowInput, Figure[] figures = null, byte baseFigure = 0, bool visible = true, bool isUI = false, byte layer = 0,
+                    int posX = 0, int posY = 0) : base(figures, baseFigure, visible, isUI, layer, posX, posY)
         {
             _allowInput = allowInput;
         }

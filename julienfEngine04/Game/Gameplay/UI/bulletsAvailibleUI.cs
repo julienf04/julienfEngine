@@ -29,15 +29,15 @@ namespace julienfEngine1
         #region CONSTRUCTORS
 
         // Create a constructor/s of tthis GameObject
-        public bulletsAvailibleUI(Spaceship player, E_BackgroundColors bulletsColor, Figure[] figures = null, byte baseFigure = 0, bool visible = true, bool isUI = false, byte layer = 0,
-                                  int posX = 0, int posY = 0) : base(figures, baseFigure, visible, isUI, layer, posX, posY)
+        public bulletsAvailibleUI(Spaceship player, E_BackgroundColors bulletsColor, int posX, int posY, bool visible, bool isUI, byte layer)
+            : base(posX, posY, visible, isUI, layer)
         {
             this.P_GameObjectFigures = new Figure[1] { _figurebulletsAvailible };
 
             _bullets = new SimpleBacgroundColor[player.P_MaxBullets];
             for (int i = 0, x = 0; x < _bullets.Length * _BULLET_DISTANCE; i++, x += _BULLET_DISTANCE)
-                _bullets[i] = new SimpleBacgroundColor(bulletsColor, null, 0, true, true, 0,
-                    (int)this.P_PosX + _figurebulletsAvailible.P_Figure[0].Length + 1 +  x, (int)this.P_PosY);
+                _bullets[i] = new SimpleBacgroundColor(bulletsColor, (int)this.P_PosX + _figurebulletsAvailible.P_Figure[0].Length + 1 + x, (int)this.P_PosY,
+                    true, true, 0);
 
             this._spaceshipAttached = player;
             this._countOfBulletsUI = player.P_MaxBullets;

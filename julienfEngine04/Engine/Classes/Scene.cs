@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Diagnostics;
 
 namespace julienfEngine1
 {
@@ -64,11 +65,21 @@ namespace julienfEngine1
             {
                 if (!_gameObjectsToDraw.Contains(gameObject))
                 {
-                    if (_gameObjectsToDraw.Max(gameObjectOfList => gameObjectOfList.P_Layer) > gameObject.P_Layer) _gameObjectsToDraw.Insert(_gameObjectsToDraw.FindIndex(gameObjectOfList => gameObjectOfList.P_Layer > gameObject.P_Layer), gameObject);
+                    int indexFirstUI = _gameObjectsToDraw.Any(gameObjectOfList => gameObjectOfList.P_IsUI)
+                        ? _gameObjectsToDraw.FindIndex(gameObjectOfList => gameObjectOfList.P_IsUI)
+                        : 0;
+                    int startIndex = gameObject.P_IsUI ? indexFirstUI : 0;
+                    int count = gameObject.P_IsUI ? _gameObjectsToDraw.Count - indexFirstUI : indexFirstUI + 1;
+
+                    List<GameObject> gameObjectsUI = _gameObjectsToDraw.GetRange(startIndex, count);
+
+                    if (gameObjectsUI.Max(gameObjectOfList => gameObjectOfList.P_Layer) > gameObject.P_Layer)
+                        _gameObjectsToDraw.Insert(_gameObjectsToDraw.FindIndex(startIndex, count, gameObjectOfList => gameObjectOfList.P_Layer > gameObject.P_Layer), gameObject);
                     else _gameObjectsToDraw.Add(gameObject);
                 }
             }
             else _gameObjectsToDraw.Add(gameObject);
+
         }
 
         public void RemoveToDrawGameObject(GameObject gameObject)

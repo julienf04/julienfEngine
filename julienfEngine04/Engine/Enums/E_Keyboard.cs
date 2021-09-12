@@ -4,7 +4,7 @@ using System.Text;
 
 namespace julienfEngine1
 {
-    enum E_Keyboard
+    enum E_Keyboard : byte
     {
         Backspace = 0x08,
         Tab = 0x09,

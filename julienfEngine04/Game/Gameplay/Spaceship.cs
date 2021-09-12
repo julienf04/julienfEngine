@@ -76,8 +76,7 @@ namespace julienfEngine1
         #region CONSTRUCTORS
 
         // Create a constructor/s of tthis GameObject
-        public Spaceship(E_ForegroundColors bulletsColor, Figure[] figures = null, byte baseFigure = 0, bool visible = true, bool isUI = false, byte layer = 0,
-                                  int posX = 0, int posY = 0) : base(figures, baseFigure, visible, isUI, layer, posX, posY)
+        public Spaceship(E_ForegroundColors bulletsColor, int posX, int posY, bool visible) : base(posX, posY, visible)
         {
             _playerID = (E_PlayerID)_numberOfPlayers;
             _numberOfPlayers++;
@@ -114,7 +113,7 @@ namespace julienfEngine1
             _halfFigureY = (byte)(this.P_GameObjectFigures[0].P_Figure.Length / 2);
 
             _bulletsColor = bulletsColor;
-            Bullet firstBullet = new Bullet(bulletsColor, _playerID, null, 0, false, false, 0, 0, 0);
+            Bullet firstBullet = new Bullet(bulletsColor, _playerID, 0, 0, false);
             firstBullet.P_Collision.P_DetectCollisions = false;
             _bullets.Enqueue(firstBullet);
 
@@ -146,7 +145,7 @@ namespace julienfEngine1
             if (_countOfBullets > 0)
             {
                 if (!_bullets.Peek().P_IsBeenUsed) SetBullet(_bullets.Dequeue());
-                else SetBullet(new Bullet(_bulletsColor, _playerID, null, 0, true, false, 0, 0, 0));
+                else SetBullet(new Bullet(_bulletsColor, _playerID, 0, 0, true));
 
                 //// Decimal reset = false;
                 _countOfBullets--;

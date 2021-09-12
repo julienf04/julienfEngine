@@ -43,19 +43,19 @@ namespace julienfEngine1
 
         public override void Start()
         {
-            horizontalLineUp = new HorizontalLine(60, HorizontalLine.E_CurveDirection.Down, null, 0, true, true, 0, 77, 9);
-            horizontalLineDown = new HorizontalLine(60, HorizontalLine.E_CurveDirection.Up, null, 0, true, true, 0, 77, 24);
-            verticalLineLeft = new VerticalLine(15, VerticalLine.E_CurveDirection.Right, null, 0, true, true, 0, 76, 10);
-            verticalLineRight = new VerticalLine(15, VerticalLine.E_CurveDirection.Left, null, 0, true, true, 0, 137, 10);
-            messageAreYouSureYouWantToCloseMe = new TextMessage("Are you sure you want to close me?", null, 0, true, true, 0, 89, 12);
+            horizontalLineUp = new HorizontalLine(60, HorizontalLine.E_CurveDirection.Down, 77, 9, true, true, 0);
+            horizontalLineDown = new HorizontalLine(60, HorizontalLine.E_CurveDirection.Up, 77, 24, true, true, 0);
+            verticalLineLeft = new VerticalLine(15, VerticalLine.E_CurveDirection.Right, 76, 10, true, true, 0);
+            verticalLineRight = new VerticalLine(15, VerticalLine.E_CurveDirection.Left, 137, 10, true, true, 0);
+            messageAreYouSureYouWantToCloseMe = new TextMessage("Are you sure you want to close me?", 89, 12, true, true, 0);
 
             buttonsExitMenu = new IClickable[2]
             {
-                new Yes(null, 0, true, true, 0, 83, 16),
-                new No(null, 0, true, false, 0, 117, 16)
+                new Yes(83, 16, true, true, 0),
+                new No(117, 16, true, false, 0)
             };
 
-            arrowMenu = new ArrowMenu(buttonsExitMenu, ArrowMenu.RO_FigureMenuArrow, 7, true, true, 0, 122, 14);
+            arrowMenu = new ArrowMenu(buttonsExitMenu, 122, 14, true, true, 0, ArrowMenu.RO_FigureMenuArrow, 7);
             arrowMenu.P_CurrentSelectOption = 1;
         }
 

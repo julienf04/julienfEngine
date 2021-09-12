@@ -4,7 +4,7 @@ using System.Text;
 
 namespace julienfEngine1
 {
-    enum E_BackgroundColors
+    enum E_BackgroundColors : ushort
     {
         Black = 0,
         DarkGray = DllImporter.BACKGROUND_INTENSITY,

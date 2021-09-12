@@ -39,13 +39,13 @@ namespace julienfEngine1
         {
             buttonsMainMenu = new IClickable[4]
             {
-                new EasySinglePlayerMenu(null, 0, true, true, 0, 35, 5),
-                new NormalSinglePlayerMenu(null, 0, true, true, 0, 35, 17),
-                new HardSinglePlayerMenu(null, 0, true, true, 0, 35, 30),
-                new Back(null, 0, true, true, 0, 33, 43)
+                new EasySinglePlayerMenu(35, 5, true, true, 0),
+                new NormalSinglePlayerMenu(35, 17, true, true, 0),
+                new HardSinglePlayerMenu(35, 30, true, true, 0),
+                new Back(15, 43, true, true, 0)
             };
 
-            arrowMenu = new ArrowMenu(buttonsMainMenu, ArrowMenu.RO_FigureMenuArrow, (byte)ArrowMenu.E_ArrowSidesAndSizes.BigArrowPointLeft, true, true, 0, 64, 6);
+            arrowMenu = new ArrowMenu(buttonsMainMenu, 64, 6, true, true, 0, ArrowMenu.RO_FigureMenuArrow, (byte)ArrowMenu.E_ArrowSidesAndSizes.BigArrowPointLeft);
             arrowMenu.P_CurrentSelectOption = 0;
         }
 

@@ -218,7 +218,7 @@ namespace julienfEngine1
         #if DEBUG
         internal static void SetDebugGameObject()
         {
-            _debugGameObject = new Debug(null, 0, true, true, 0, 0, 0);
+            _debugGameObject = new Debug(0, 0, true, true, byte.MaxValue);
             _debugGameObject.P_GameObjectFigures[0].P_Figure = new string[1] { "" };
         }
         #endif

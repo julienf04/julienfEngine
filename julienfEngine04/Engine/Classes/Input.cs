@@ -116,6 +116,13 @@ namespace julienfEngine1
             _keysPressedThisFrame.Clear();
         }
 
+
+
+        public static bool AnyKeyPressed()
+        {
+            return Console.KeyAvailable;
+        }
+
         #endregion
 
         #region PROPERTIES

@@ -21,8 +21,8 @@ namespace julienfEngine1
 
         #region CONSTRUCTORS
 
-        public VerticalLine(byte length, Figure[] figures = null, byte baseFigure = 0, bool visible = true, bool isUI = false, byte layer = 0,
-                    int posX = 0, int posY = 0) : base(figures, baseFigure, visible, isUI, layer, posX, posY)
+        public VerticalLine(byte length, int posX, int posY, bool visible, bool isUI, byte layer)
+            : base(posX, posY, visible, isUI, layer)
         {
             string[] line = new string[length];
             for (int i = 0; i < length; i++) line[i] = "|";
@@ -31,8 +31,8 @@ namespace julienfEngine1
             //figures[0].P_Figure = line;
         }
 
-        public VerticalLine(byte length, E_CurveDirection curveDirection, Figure[] figures = null, byte baseFigure = 0, bool visible = true, bool isUI = false, byte layer = 0,
-                    int posX = 0, int posY = 0) : base(figures, baseFigure, visible, isUI, layer, posX, posY)
+        public VerticalLine(byte length, E_CurveDirection curveDirection, int posX, int posY, bool visible, bool isUI, byte layer)
+            : base(posX, posY, visible, isUI, layer)
         {
             length--;
             string[] line = new string[length];

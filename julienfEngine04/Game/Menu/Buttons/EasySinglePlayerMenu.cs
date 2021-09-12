@@ -25,8 +25,7 @@ namespace julienfEngine1
 
         #region CONSTRUCTORS
 
-        public EasySinglePlayerMenu(Figure[] figures = null, byte baseFigure = 0, bool visible = true, bool isUI = false, byte layer = 0,
-                    int posX = 0, int posY = 0) : base(figures, baseFigure, visible, isUI, layer, posX, posY)
+        public EasySinglePlayerMenu(int posX, int posY, bool visible, bool isUI, byte layer) : base(posX, posY, visible, isUI, layer)
         {
             this.P_GameObjectFigures = new Figure[1] { _figureEasy };
         }

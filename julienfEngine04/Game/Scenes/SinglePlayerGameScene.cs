@@ -19,9 +19,18 @@ namespace julienfEngine1
 
         private bulletsAvailibleUI bulletsAvailibleUI;
 
-        private HorizontalLine horizontalLinePanel;
-        private VerticalLine verticalLinePanel;
+        private TextMessage pauseText;
 
+        //private HorizontalLine horizontalLineUp;
+        //private HorizontalLine horizontalLineDown;
+        //private VerticalLine verticalLineLeft;
+        //private VerticalLine verticalLineRight;
+
+        private Winner winner;
+        private Loser loser;
+        private Pause pause;
+
+        private TextMessage pressAnyKeyToContinue;
 
         #endregion
 
@@ -39,19 +48,26 @@ namespace julienfEngine1
         // This runs when this scene is setted
         public override void Start()
         {
-            spaceshipPlayer1 = new Spaceship(E_ForegroundColors.Green, null, 0, true, false, 0, _WALL_DISTANCE, Screen.P_Height / 2);
+            spaceshipPlayer1 = new Spaceship(E_ForegroundColors.Green, _WALL_DISTANCE, Screen.P_Height / 2, true);
             spaceshipPlayer1.P_GameObjectFigures[0].ForegroundColor = E_ForegroundColors.White;
-            bulletsAvailibleUI = new bulletsAvailibleUI(spaceshipPlayer1, E_BackgroundColors.Green, null, 0, true, true, 0, _WALL_DISTANCE_UI, _CEILING_DISTANCE_UI);
+            bulletsAvailibleUI = new bulletsAvailibleUI(spaceshipPlayer1, E_BackgroundColors.Green, _WALL_DISTANCE_UI, _CEILING_DISTANCE_UI, true, true, 0);
 
-            spaceshipPlayer2 = new Spaceship(E_ForegroundColors.White, null, 0, true, false, 0, Screen.P_Width - _WALL_DISTANCE, Screen.P_Height / 2);
+            spaceshipPlayer2 = new Spaceship(E_ForegroundColors.White, Screen.P_Width - _WALL_DISTANCE, Screen.P_Height / 2, true);
             spaceshipPlayer2.P_PosX -= spaceshipPlayer2.P_GameObjectFigures[0].P_Figure[0].Length;
             spaceshipPlayer2.P_GameObjectFigures[0].ForegroundColor = E_ForegroundColors.White;
 
 
+            pauseText = new TextMessage("Pause: P", (int)bulletsAvailibleUI.P_PosX, (int)bulletsAvailibleUI.P_PosY - 1, true, true, 0);
 
+            //horizontalLineUp = new HorizontalLine(60, HorizontalLine.E_CurveDirection.Down, null, 0, true, true, 0, 77, 9);
+            //horizontalLineDown = new HorizontalLine(60, HorizontalLine.E_CurveDirection.Up, null, 0, true, true, 0, 77, 24);
+            //verticalLineLeft = new VerticalLine(15, VerticalLine.E_CurveDirection.Right, null, 0, true, true, 0, 76, 10);
+            //verticalLineRight = new VerticalLine(15, VerticalLine.E_CurveDirection.Left, null, 0, true, true, 0, 137, 10);
 
-            horizontalLinePanel = new HorizontalLine(50, null, 0, false, true, 0, 100, 40);
-            //verticalLinePanel = new VerticalLine(20, )
+            winner = new Winner(Screen.P_Width / 2, 10, true, true, 0);
+            winner.P_PosX -= winner.P_GameObjectFigures[0].P_Figure[0].Length / 2;
+
+            pressAnyKeyToContinue = new TextMessage("Press any key to continue", 3, 3, true, true, 0);
         }
 
         // This runs every frame

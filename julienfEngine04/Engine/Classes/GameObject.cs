@@ -37,7 +37,7 @@ namespace julienfEngine1
             _visible = visible;
             if (_visible) Scene.P_CurrentScene.AddToDrawGameObject(this);
 
-            if (this is ICanCollide)
+            if (this is IOnCollisionEnter)
             {
                 _collision = new Collision(this);
                 Scene.P_CurrentScene.AddToDetectCollisionsGameObject(this);
@@ -55,7 +55,7 @@ namespace julienfEngine1
 
             if (_visible) Scene.P_CurrentScene.AddToDrawGameObject(this);
 
-            if (this is ICanCollide)
+            if (this is IOnCollisionEnter)
             {
                 _collision = new Collision(this);
                 Scene.P_CurrentScene.AddToDetectCollisionsGameObject(this);
@@ -80,7 +80,7 @@ namespace julienfEngine1
 
             if (_visible) Scene.P_CurrentScene.AddToDrawGameObject(this);
 
-            if (this is ICanCollide)
+            if (this is IOnCollisionEnter)
             {
                 _collision = new Collision(this);
                 Scene.P_CurrentScene.AddToDetectCollisionsGameObject(this);

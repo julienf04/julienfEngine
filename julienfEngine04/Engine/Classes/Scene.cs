@@ -14,7 +14,7 @@ namespace julienfEngine1
 
         private List<GameObject> _gameObjectsToDraw = new List<GameObject>();
 
-        private List<ICanCollide> _ICollideableToDetectCollisions = new List<ICanCollide>();
+        private List<IOnCollisionEnter> _ICollideableToDetectCollisions = new List<IOnCollisionEnter>();
 
         private static List<IntPtr> _allScenePointers = new List<IntPtr>();
         private static List<Scene> _allLoadedScenes = new List<Scene>();
@@ -51,7 +51,7 @@ namespace julienfEngine1
                 return;
             }
 
-            throw new Exception("You cannot create an instance of your scenes. Use julienfEngine.LoadScene(Type sceneType) for load a scene, and use julienfEngine.SetLoadedScene(Type sceneType) for run a loaded scene");
+            throw new Exception("You cannot create an instance of your scenes. Use Scene.LoadScene(Type sceneType) for load scene, and use Scene.SetLoadedScene(Type sceneType) for run loaded scene");
         
         }
 
@@ -94,17 +94,17 @@ namespace julienfEngine1
 
         public void AddToDetectCollisionsGameObject(GameObject gameObject)
         {
-            if (!(gameObject is ICanCollide)) throw new Exception("gamobject must be 'ICollideable'");
+            if (!(gameObject is IOnCollisionEnter)) throw new Exception("gamobject must be 'ICollideable'");
 
-            ICanCollide collision = (ICanCollide)gameObject;
+            IOnCollisionEnter collision = (IOnCollisionEnter)gameObject;
             if (!_ICollideableToDetectCollisions.Contains(collision)) _ICollideableToDetectCollisions.Add(collision);
         }
 
         public void RemoveToDetectCollisionsGameObject(GameObject gameObject)
         {
-            if (!(gameObject is ICanCollide)) throw new Exception("gamobject must be 'ICollideable'");
+            if (!(gameObject is IOnCollisionEnter)) throw new Exception("gamobject must be 'ICollideable'");
 
-            _ICollideableToDetectCollisions.Remove((ICanCollide)gameObject);
+            _ICollideableToDetectCollisions.Remove((IOnCollisionEnter)gameObject);
         }
 
         public void RemoveAllToDetectCollisionsGameObject()
@@ -167,6 +167,13 @@ namespace julienfEngine1
             _onLoadScene = true;
             Scene sceneToLoad = (Scene)Activator.CreateInstance(sceneType);
             _allLoadedScenes.Add(sceneToLoad);
+
+            if (_currentScene == null) _currentScene = sceneToLoad;
+
+            Scene currentScene = _currentScene;
+            _currentScene = sceneToLoad;
+            sceneToLoad.Awake();
+            _currentScene = currentScene;
         }
 
         public static void UnloadScene(Type sceneType)
@@ -178,6 +185,7 @@ namespace julienfEngine1
         }
 
 
+        public abstract void Awake();
         public abstract void Start();
         public abstract void Update();
 
@@ -206,7 +214,7 @@ namespace julienfEngine1
             }
         }
 
-        public ICanCollide[] P_ICollideableToDetectCollisions
+        public IOnCollisionEnter[] P_ICollideableToDetectCollisions
         {
             get
             {

@@ -6,6 +6,7 @@ using System.Buffers;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace julienfEngine1
 {
@@ -21,6 +22,8 @@ namespace julienfEngine1
         private static bool _limitFPSbyAverage = false;
 
         private static Stack<Task> _tasksToWait = new Stack<Task>();
+
+        private const byte _COUNT_OF_METHODS_TO_RESET_ALL_ENGINE_VALUES = 3;
 
         #if DEBUG
         private static Debug _debugGameObject;
@@ -132,12 +135,15 @@ namespace julienfEngine1
         {
             WaitToTasks();
 
-            DetectAllCollisions();
+            Task[] tasksToResetValues = new Task[_COUNT_OF_METHODS_TO_RESET_ALL_ENGINE_VALUES];
 
-            DrawAllGameObjects();
+            tasksToResetValues[0] = Task.Run(DetectAllCollisions);
+            tasksToResetValues[1] = Task.Run(DrawAllGameObjects);
+            tasksToResetValues[2] = Task.Run(Input.ResetValues);
+
+            Task.WaitAll(tasksToResetValues);
+
             ChangeScreenBuffer();
-
-            Input.ResetValues();
 
             LimitFPSResetValues();                                                                                                                                                                                                                                                                                                                                                                                                                       
 
@@ -172,7 +178,7 @@ namespace julienfEngine1
                                     currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionStayGameObjects.Add(currentGameObjectCollision1);
                                 }
                             }
-                            else if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision2) &&
+                            else  if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision2) &&
                                      currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision1))
                             {
                                 currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionExitGameObjects.Push(currentGameObjectCollision2);

@@ -57,13 +57,7 @@ namespace julienfEngine1
         #region GAME METHODS
 
         // This runs when this scene is loaded
-        public SinglePlayerGameScene()
-        {
-
-        }
-
-        // This runs when this scene is setted
-        public override void Start()
+        public override void Awake()
         {
             _spaceshipPlayer1 = new Spaceship(E_ForegroundColors.Green, _WALL_DISTANCE, Screen.P_Height / 2, true);
             _spaceshipPlayer1.P_GameObjectFigures[0].ForegroundColor = E_ForegroundColors.White;
@@ -93,6 +87,19 @@ namespace julienfEngine1
             _pressAnyKeyToContinue = new TextMessage("Press any key to continue",
                 (int)_pause.P_PosX + _TEXT_ANY_KEY_FIXED_PAUSE_POSX, (int)_pause.P_PosY + 10,
                 false, true, 0);
+        }
+
+        // This runs when this scene is setted
+        public override void Start()
+        {
+            int posY = Screen.P_Height / 2;
+
+            _spaceshipPlayer1.P_PosY = posY;
+            _spaceshipPlayer1.SetBullets(_spaceshipPlayer1.P_MaxBullets);
+            _bulletsAvailibleUI.UpdateBulletsUI();
+
+            _spaceshipPlayer2.P_PosY = posY;
+            _spaceshipPlayer2.SetBullets(_spaceshipPlayer2.P_MaxBullets);
         }
 
         // This runs every frame

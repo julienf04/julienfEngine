@@ -39,13 +39,7 @@ namespace julienfEngine1
         #region GAME METHODS
 
         // This runs when this scene is loaded
-        public SinglePlayerMenuScene()
-        {
-
-        }
-
-        // This runs when this scene is setted
-        public override void Start()
+        public override void Awake()
         {
             int buttonsPosX = (int)(Screen.P_Width / _BUTTONS_RELATIVE_POSX);
             int easySinglePlayerMenuPosY = (int)(Screen.P_Height / _FIRST_BUTTON_RELATIVE_POSY);
@@ -87,6 +81,12 @@ namespace julienfEngine1
             _tutorialMovement = new TextMessage("Move with:  { W - S }  or  { Up arrow - Down arrow }", tutorialsPosX, tutorialMovementPosY, true, true, 0);
             _tutorialShoot = new TextMessage("Shoot with:  { D }  or  { Right arrow }", tutorialsPosX, tutorialShootPosY, true, true, 0);
             _tutorialAvailableBullets = new TextMessage("Your available bullets are shown up", tutorialsPosX, tutorialAvailableBulletsPosY, true, true, 0);
+        }
+
+        // This runs when this scene is setted
+        public override void Start()
+        {
+            _arrowMenu.SetArrowAt(_ARROW_POINT_SIDE, _DISTANCE_BETWEEN_BUTTONS_AND_ARROW_POSX, 0);
         }
 
         // This runs every frame

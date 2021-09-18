@@ -44,14 +44,6 @@ namespace julienfEngine1
 
         #endregion
 
-        #region CONSTRUCTORS
-
-        public ExitMenuScene()
-        {
-
-        }
-
-        #endregion
 
         #region METHODS
 
@@ -59,7 +51,7 @@ namespace julienfEngine1
 
         #region GAME METHODS
 
-        public override void Start()
+        public override void Awake()
         {
             int yesPosX = (int)(Screen.P_Width / _YES_BUTTON_RELATIVE_POSX);
             int noPosX = yesPosX + _DISTANCE_BETWEEN_YES_AND_NO_POSX;
@@ -91,6 +83,11 @@ namespace julienfEngine1
             int arrowPosY = yesAndNoPosY - _DISTANCE_BETWEEN_YES_AND_ARROW_POSY;
             _arrowMenu = new ArrowMenu(_buttonsExitMenu, arrowPosX, arrowPosY, true, true, 0, ArrowMenu.RO_FigureMenuArrow, 7);
             _arrowMenu.P_CurrentSelectOption = 1;
+        }
+
+        public override void Start()
+        {
+            _arrowMenu.SetArrowAt(_ARROW_POINT_SIDE, _DISTANCE_BETWEEN_YES_AND_ARROW_POSY, 1);
         }
 
         public override void Update()

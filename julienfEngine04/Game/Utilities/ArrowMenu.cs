@@ -309,27 +309,10 @@ namespace julienfEngine1
             GameObject currentButton = (GameObject)_currentMenu[_currentSelectOption];
             _currentMenu[_currentSelectOption].OnSelect();
 
-            switch (pointSide)
-            {
-                case E_PointSide.PointLeft:
-                    this.P_PosY = currentButton.P_PosY + (currentButton.P_GameObjectFigures[0].P_Figure.Length / 2) - (this.P_GameObjectFigures[0].P_Figure.Length / 2);
-                    this.P_PosX = currentButton.P_PosX + currentButton.P_GameObjectFigures[0].P_Figure[0].Length + buttonDistance;
-                    break;
-                case E_PointSide.PointRight:
-                    this.P_PosY = currentButton.P_PosY + (currentButton.P_GameObjectFigures[0].P_Figure.Length / 2) - (this.P_GameObjectFigures[0].P_Figure.Length / 2);
-                    this.P_PosX = currentButton.P_PosX - this.P_GameObjectFigures[0].P_Figure[0].Length - buttonDistance;
-                    break;
-                case E_PointSide.PointUp:
-                    this.P_PosY = currentButton.P_PosY + currentButton.P_GameObjectFigures[0].P_Figure.Length + buttonDistance;
-                    this.P_PosX = currentButton.P_PosX + (currentButton.P_GameObjectFigures[0].P_Figure[0].Length / 2) - (this.P_GameObjectFigures[0].P_Figure[0].Length / 2);
-                    break;
-                case E_PointSide.PointDown:
-                    this.P_PosY = currentButton.P_PosY - buttonDistance;
-                    this.P_PosX = currentButton.P_PosX + (currentButton.P_GameObjectFigures[0].P_Figure[0].Length / 2) - (this.P_GameObjectFigures[0].P_Figure[0].Length / 2);
-                    break;
-            }
+            AlignArrow(currentButton, pointSide, buttonDistance);
+
         }
-        
+
         public void MoveOneStepRight(E_PointSide pointSide, int buttonDistance)
         {
             _currentMenu[_currentSelectOption].OnDeselect();
@@ -338,6 +321,21 @@ namespace julienfEngine1
             GameObject currentButton = (GameObject)_currentMenu[_currentSelectOption];
             _currentMenu[_currentSelectOption].OnSelect();
 
+            AlignArrow(currentButton, pointSide, buttonDistance);
+        }
+
+        public void SetArrowAt(E_PointSide pointSide, int buttonDistance, uint currentSelectButton)
+        {
+            _currentMenu[_currentSelectOption].OnDeselect();
+            _currentSelectOption = currentSelectButton;
+            GameObject currentButton = ((GameObject)_currentMenu[_currentSelectOption]);
+            _currentMenu[_currentSelectOption].OnSelect();
+
+            AlignArrow(currentButton, pointSide, buttonDistance);
+        }
+
+        private void AlignArrow(GameObject currentButton, E_PointSide pointSide, int buttonDistance)
+        {
             switch (pointSide)
             {
                 case E_PointSide.PointLeft:

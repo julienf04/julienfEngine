@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace julienfEngine1
 {
-    class Bullet : GameObject, ICanCollide
+    class Bullet : GameObject, IOnCollisionEnter, IOnCollisionStay, IOnCollisionExit
     {
         // Declare every attributes of this GameObject
         #region ATRIBUTES
@@ -59,6 +59,21 @@ namespace julienfEngine1
             if (this._isBeenUsed) this.P_PosX += _velocity * Timer.P_DeltaTime;
 
             this._isBeenUsed = this.P_PosX < Screen.P_Width && this.P_PosX > 0;
+        }
+
+        void IOnCollisionEnter.OnCollisionEnter(GameObject[] collisions)
+        {
+            //int i = 0;
+        }
+
+        void IOnCollisionStay.OnCollisionStay(GameObject[] collisions)
+        {
+            //int i = 0;
+        }
+
+        void IOnCollisionExit.OnCollisionExit(GameObject[] collisions)
+        {
+            //int i = 0;
         }
 
         #endregion

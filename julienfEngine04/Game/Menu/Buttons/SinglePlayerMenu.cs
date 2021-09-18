@@ -46,7 +46,7 @@ namespace julienfEngine1
 
         public void OnClick()
         {
-            Scene.SetLoadedScene(typeof(SinglePlayerMenuScene), true);
+            Scene.SetLoadedScene(typeof(SinglePlayerMenuScene), false);
         }
 
         #endregion

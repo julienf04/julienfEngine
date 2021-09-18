@@ -35,12 +35,14 @@ namespace julienfEngine1
 
         private static bool _anyKeyPressed = false;
 
+        private static Stack<E_Keyboard> _keysUsedForThisGame = new Stack<E_Keyboard>();
+
         #endregion
 
 
         #region ---METHODS
 
-        public static bool GetKey(E_Keyboard key)
+        private static bool InternalGetKey(E_Keyboard key)
         {
             if (_keysPressedThisFrame.Contains(key))
             {
@@ -55,6 +57,17 @@ namespace julienfEngine1
             }
 
             return false;
+        }
+
+        public static bool GetKey(E_Keyboard key)
+        {
+            if (!_keysUsedForThisGame.Contains(key))
+            {
+                _keysUsedForThisGame.Push(key);
+                return GetAsyncKeyState(key) < 0;
+            }
+
+            return InternalGetKey(key);
         }
 
         public static bool GetKeyDown(E_Keyboard key)
@@ -88,13 +101,10 @@ namespace julienfEngine1
 
         internal static void ResetValues()
         {
-            _keysPressedThisFrame.Clear();
-            SetKeyboardState(new byte[256]);
-
             for (int i = 0; i < _keysDownToCheck.Count; i++)
             {
                 E_Keyboard currentKeyToCheck = _keysDownToCheck[i];
-                if (GetKey(currentKeyToCheck))
+                if (InternalGetKey(currentKeyToCheck))
                 {
                     if (!_keysDown.Contains(currentKeyToCheck)) _keysDown.Add(currentKeyToCheck);
                 }
@@ -109,7 +119,7 @@ namespace julienfEngine1
             for (int i = 0; i < _keysUpToCheck.Count; i++)
             {
                 E_Keyboard currentKeyToCheck = _keysUpToCheck[i];
-                if (!GetKey(currentKeyToCheck))
+                if (!InternalGetKey(currentKeyToCheck))
                 {
                     if (!_keysUp.Contains(currentKeyToCheck)) _keysUp.Add(currentKeyToCheck);
                     else
@@ -119,6 +129,10 @@ namespace julienfEngine1
                     }
                 }
             }
+
+            foreach (E_Keyboard key in _keysUsedForThisGame) GetAsyncKeyState(key);
+
+            _keysPressedThisFrame.Clear();
         }
 
 

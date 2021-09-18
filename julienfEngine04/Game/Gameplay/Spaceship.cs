@@ -126,6 +126,11 @@ namespace julienfEngine1
         // Create actions of this GameObject
         #region METHODS
 
+        public void SetBullets(byte bullets)
+        {
+            this._countOfBullets = bullets <= _maxBullets ? bullets : _maxBullets;
+        }
+
         public void MoveBulletsAttached()
         {
             foreach (Bullet bullet in _bullets) bullet.MoveBullet();

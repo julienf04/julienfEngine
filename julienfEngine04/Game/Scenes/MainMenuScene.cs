@@ -27,17 +27,13 @@ namespace julienfEngine1
 
         #endregion
 
-        #region CONSTRUCTORS
-
-        #endregion
-
         #region METHODS
 
         #endregion
 
         #region GAME METHODS
 
-        public override void Start()
+        public override void Awake()
         {
             int allButtonsPosX = Screen.P_Width / _BUTTONS_RELATIVE_POSX;
             int singlePlayerMenuPosY = Screen.P_Height / _FIRST_BUTTON_RELATIVE_POSY;
@@ -45,11 +41,13 @@ namespace julienfEngine1
             int exitMenuPosY = multiplayerMenuPosY + _DISTANCE_BETWEEN_BUTTONS_POSY;
 
             SinglePlayerMenu singlePlayerMenu = new SinglePlayerMenu(allButtonsPosX, singlePlayerMenuPosY, true, true, 0);
+            MultiplayerMenu multiplayerMenu = new MultiplayerMenu(allButtonsPosX, multiplayerMenuPosY, true, true, 0);
+            ExitMenu exitMenu = new ExitMenu(allButtonsPosX, exitMenuPosY, true, true, 0);
             _buttonsMainMenu = new IClickable[3]
             {
                 singlePlayerMenu,
-                new MultiplayerMenu(allButtonsPosX, multiplayerMenuPosY, true, true, 0),
-                new ExitMenu(allButtonsPosX, exitMenuPosY, true, true, 0),
+                multiplayerMenu,
+                exitMenu
             };
 
             int arrowMenuPosX = allButtonsPosX + singlePlayerMenu.P_GameObjectFigures[0].P_Figure[0].Length + _DISTANCE_BETWEEN_BUTTONS_AND_ARROW_POSX;
@@ -58,7 +56,12 @@ namespace julienfEngine1
             _arrowMenu.P_PosY += (singlePlayerMenu.P_GameObjectFigures[0].P_Figure.Length / 2) - (_arrowMenu.P_GameObjectFigures[0].P_Figure.Length / 2);
             _arrowMenu.P_CurrentSelectOption = 0;
         }
-         
+
+        public override void Start()
+        {
+            _arrowMenu.SetArrowAt(_ARROW_POINT_SIDE, _DISTANCE_BETWEEN_BUTTONS_AND_ARROW_POSX, 0);
+        }
+
         public override void Update()
         {
             //arrowMenu.MoveArrowToCurrentMenu(cooldownToMoveArrow, arrowVelocity, buttonDistance, ArrowMenu.E_PointSide.PointLeft, keysToMoveArrowToLeft, keysToMoveArrowToRight);

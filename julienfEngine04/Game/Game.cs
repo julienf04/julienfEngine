@@ -330,7 +330,6 @@
 
             // Step 1: Initialize all scenes you have created --> YourScene.Initialize();
             Scene.InitializeScene(typeof(MainMenuScene));
-
             Scene.InitializeScene(typeof(ExitMenuScene));
             Scene.InitializeScene(typeof(SinglePlayerMenuScene));
             Scene.InitializeScene(typeof(SinglePlayerGameScene));

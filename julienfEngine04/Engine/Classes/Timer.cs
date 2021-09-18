@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace julienfEngine1
 {
@@ -58,6 +59,8 @@ namespace julienfEngine1
 
         public void StartMyTimer(double startInTime)
         {
+            if (_stMyTimer.IsRunning) throw new Exception("You cannot start a timer already started");
+
             _myTimer = startInTime;
             _stMyTimer.Start();
         }
@@ -65,6 +68,13 @@ namespace julienfEngine1
         public void StopMyTimer()
         {
             _stMyTimer.Stop();
+        }
+
+        public void ContinueMyTimer()
+        {
+            if (_stMyTimer.IsRunning) throw new Exception("You cannot continue a timer that is already running");
+
+            _stMyTimer.Start();
         }
 
         public void ResetMyTimer()

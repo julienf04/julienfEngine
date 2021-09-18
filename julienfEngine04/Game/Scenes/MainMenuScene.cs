@@ -8,17 +8,22 @@ namespace julienfEngine1
     {
         #region ATRIBUTES
 
-        private IClickable[] buttonsMainMenu;
+        private const int _BUTTONS_RELATIVE_POSX = 6;
+        private const int _FIRST_BUTTON_RELATIVE_POSY = 10;
+        private const int _DISTANCE_BETWEEN_BUTTONS_POSY = 13;
+
+        private const double _COOLDOWN_TO_MOVE_ARROW = 0.55;
+        private const double _ARROW_VELOCITY = 0.30;
+        private const byte _DISTANCE_BETWEEN_BUTTONS_AND_ARROW_POSX = 10;
+
+        private const ArrowMenu.E_PointSide _ARROW_POINT_SIDE = ArrowMenu.E_PointSide.PointLeft;
 
 
-        private static ArrowMenu arrowMenu;
+        private static ArrowMenu _arrowMenu;
 
-        private const double cooldownToMoveArrow = 0.55;
-        private const double arrowVelocity = 0.30;
-        private const byte buttonDistance = 3;
-        private const ArrowMenu.E_PointSide _arrowPointSide = ArrowMenu.E_PointSide.PointLeft;
+        private static IClickable[] _buttonsMainMenu;
 
-        private double _timerChangeArrowVelocity = 0;
+        private static double _timerChangeArrowVelocity = 0;
 
         #endregion
 
@@ -34,17 +39,26 @@ namespace julienfEngine1
 
         public override void Start()
         {
-            buttonsMainMenu = new IClickable[3]
+            int allButtonsPosX = Screen.P_Width / _BUTTONS_RELATIVE_POSX;
+            int singlePlayerMenuPosY = Screen.P_Height / _FIRST_BUTTON_RELATIVE_POSY;
+            int multiplayerMenuPosY = singlePlayerMenuPosY + _DISTANCE_BETWEEN_BUTTONS_POSY;
+            int exitMenuPosY = multiplayerMenuPosY + _DISTANCE_BETWEEN_BUTTONS_POSY;
+
+            SinglePlayerMenu singlePlayerMenu = new SinglePlayerMenu(allButtonsPosX, singlePlayerMenuPosY, true, true, 0);
+            _buttonsMainMenu = new IClickable[3]
             {
-                new SinglePlayerMenu(35, 5, true, true, 0),
-                new MultiplayerMenu(35, 17, true, true, 0),
-                new ExitMenu(35, 30, true, true, 0),
+                singlePlayerMenu,
+                new MultiplayerMenu(allButtonsPosX, multiplayerMenuPosY, true, true, 0),
+                new ExitMenu(allButtonsPosX, exitMenuPosY, true, true, 0),
             };
 
-            arrowMenu = new ArrowMenu(buttonsMainMenu, 108, 6, true, true, 0, ArrowMenu.RO_FigureMenuArrow, (byte)ArrowMenu.E_ArrowSidesAndSizes.BigArrowPointLeft);
-            arrowMenu.P_CurrentSelectOption = 0;
+            int arrowMenuPosX = allButtonsPosX + singlePlayerMenu.P_GameObjectFigures[0].P_Figure[0].Length + _DISTANCE_BETWEEN_BUTTONS_AND_ARROW_POSX;
+            _arrowMenu = new ArrowMenu(_buttonsMainMenu, arrowMenuPosX, singlePlayerMenuPosY,
+                true, true, 0, ArrowMenu.RO_FigureMenuArrow, (byte)ArrowMenu.E_ArrowSidesAndSizes.BigArrowPointLeft);
+            _arrowMenu.P_PosY += (singlePlayerMenu.P_GameObjectFigures[0].P_Figure.Length / 2) - (_arrowMenu.P_GameObjectFigures[0].P_Figure.Length / 2);
+            _arrowMenu.P_CurrentSelectOption = 0;
         }
-
+         
         public override void Update()
         {
             //arrowMenu.MoveArrowToCurrentMenu(cooldownToMoveArrow, arrowVelocity, buttonDistance, ArrowMenu.E_PointSide.PointLeft, keysToMoveArrowToLeft, keysToMoveArrowToRight);
@@ -53,12 +67,12 @@ namespace julienfEngine1
             {
                 if (Input.GetKeyDown(Input.P_LastKeyPressed))
                 {
-                    arrowMenu.MoveOneStepRight(_arrowPointSide, buttonDistance);
+                    _arrowMenu.MoveOneStepRight(_ARROW_POINT_SIDE, _DISTANCE_BETWEEN_BUTTONS_AND_ARROW_POSX);
                 }
-                else if (_timerChangeArrowVelocity > cooldownToMoveArrow)
+                else if (_timerChangeArrowVelocity > _COOLDOWN_TO_MOVE_ARROW)
                 {
-                    arrowMenu.MoveOneStepRight(_arrowPointSide, buttonDistance);
-                    _timerChangeArrowVelocity = arrowVelocity;
+                    _arrowMenu.MoveOneStepRight(_ARROW_POINT_SIDE, _DISTANCE_BETWEEN_BUTTONS_AND_ARROW_POSX);
+                    _timerChangeArrowVelocity = _ARROW_VELOCITY;
                 }
                 _timerChangeArrowVelocity += Timer.P_DeltaTime;
             }
@@ -66,19 +80,19 @@ namespace julienfEngine1
             {
                 if (Input.GetKeyDown(Input.P_LastKeyPressed))
                 {
-                    arrowMenu.MoveOneStepLeft(_arrowPointSide, buttonDistance);
+                    _arrowMenu.MoveOneStepLeft(_ARROW_POINT_SIDE, _DISTANCE_BETWEEN_BUTTONS_AND_ARROW_POSX);
                 }
-                else if (_timerChangeArrowVelocity > cooldownToMoveArrow)
+                else if (_timerChangeArrowVelocity > _COOLDOWN_TO_MOVE_ARROW)
                 {
-                    arrowMenu.MoveOneStepLeft(_arrowPointSide, buttonDistance);
-                    _timerChangeArrowVelocity = arrowVelocity;
+                    _arrowMenu.MoveOneStepLeft(_ARROW_POINT_SIDE, _DISTANCE_BETWEEN_BUTTONS_AND_ARROW_POSX);
+                    _timerChangeArrowVelocity = _ARROW_VELOCITY;
                 }
                 _timerChangeArrowVelocity += Timer.P_DeltaTime;
             }
             else _timerChangeArrowVelocity = 0;
 
 
-            if (Input.GetKeyDown(E_Keyboard.Enter) || Input.GetKeyDown(E_Keyboard.SpaceBar)) arrowMenu.DoClick();
+            if (Input.GetKeyDown(E_Keyboard.Enter) || Input.GetKeyDown(E_Keyboard.SpaceBar)) _arrowMenu.DoClick();
         }
 
         #endregion

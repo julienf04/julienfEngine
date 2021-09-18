@@ -20,6 +20,8 @@ namespace julienfEngine1
 
         private static bool _limitFPSbyAverage = false;
 
+        private static Stack<Task> _tasksToWait = new Stack<Task>();
+
         #if DEBUG
         private static Debug _debugGameObject;
         #endif
@@ -128,6 +130,8 @@ namespace julienfEngine1
 
         private static void ResetValuesUpdate() //this method resets all values of the game so that it works correctly
         {
+            WaitToTasks();
+
             DetectAllCollisions();
 
             DrawAllGameObjects();
@@ -214,6 +218,21 @@ namespace julienfEngine1
             _limitFPSbyAverage = true;
             Timer.P_LimitFPS = limitFpsToReset;
         }
+
+        public static void WaitToTasksAtEndFrame(Task taskToWait)
+        {
+            _tasksToWait.Push(taskToWait);
+        }
+
+        private static void WaitToTasks()
+        {
+            int count = _tasksToWait.Count;
+            for (int i = 0; i < count; i++)
+            {
+                _tasksToWait.Pop().Wait();
+            }
+        }
+
 
         #if DEBUG
         internal static void SetDebugGameObject()

@@ -34,10 +34,17 @@ namespace julienfEngine1
             this.P_GameObjectFigures = new Figure[1] { _figureBullet };
             this.P_GameObjectFigures[0].ForegroundColor = color;
 
-            this.P_Collision.P_Colliders = new Area[1]
+            switch (playerID)
             {
-                new Area(1,1,0,0)
-            };
+                case Spaceship.E_PlayerID.Player1:
+                    this.P_Collision.P_Colliders = new Area[1] { new Area(1, 1, 0, 0) };
+                    break;
+                case Spaceship.E_PlayerID.Player2:
+                    this.P_Collision.P_Colliders = new Area[1] { new Area(0, 0, 0, 0) };
+                    break;
+                default:
+                    break;
+            }
 
             this._velocity *= playerID == Spaceship.E_PlayerID.Player1 ? 1 : -1;
         }

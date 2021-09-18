@@ -24,15 +24,15 @@ namespace julienfEngine1
         private Figure _figureSpaceshipLeftSide = new Figure
            (new string[9]
                {
-                    @"|====;",
-                    @"|    |",
-                    @"|    ====;",
-                    @"|        |",
+                    @"|====;      ",
+                    @"|    |      ",
+                    @"|    ====;  ",
+                    @"|        |  ",
                     @"|        ===",
-                    @"|        |",
-                    @"|    ====;",
-                    @"|    |",
-                    @"|====;"
+                    @"|        |  ",
+                    @"|    ====;  ",
+                    @"|    |      ",
+                    @"|====;      "
                }, E_ForegroundColors.Gray
            );
 
@@ -70,6 +70,8 @@ namespace julienfEngine1
 
         private E_ForegroundColors _bulletsColor;
 
+        private bool _isAlive = true;
+
         #endregion
 
         // Constructors of this GameObject
@@ -93,7 +95,7 @@ namespace julienfEngine1
                     new Area(10, 11, 4, 4)
                 };
 
-                this._posXToInstantiateBullets = 15;
+                this._posXToInstantiateBullets = (int)this.P_PosX + this.P_GameObjectFigures[0].P_Figure[0].Length;
             }
             else
             {
@@ -106,10 +108,9 @@ namespace julienfEngine1
                     new Area(6, 11, 0, 8)
                 };
 
-                this._posXToInstantiateBullets = 200;
+                this._posXToInstantiateBullets = (int)this.P_PosX - this.P_GameObjectFigures[0].P_Figure[0].Length - 10;
             }
 
-            _posXToInstantiateBullets = _playerID == E_PlayerID.Player1 ? 20 : 200;
             _halfFigureY = (byte)(this.P_GameObjectFigures[0].P_Figure.Length / 2);
 
             _bulletsColor = bulletsColor;
@@ -128,7 +129,6 @@ namespace julienfEngine1
         public void MoveBulletsAttached()
         {
             foreach (Bullet bullet in _bullets) bullet.MoveBullet();
-
         }
 
         public void Shoot()
@@ -142,7 +142,7 @@ namespace julienfEngine1
                 _bullets.Enqueue(bullet);
             }
 
-            if (_countOfBullets > 0)
+            if (_countOfBullets > 0 && _isAlive)
             {
                 if (!_bullets.Peek().P_IsBeenUsed) SetBullet(_bullets.Dequeue());
                 else SetBullet(new Bullet(_bulletsColor, _playerID, 0, 0, true));
@@ -152,22 +152,32 @@ namespace julienfEngine1
                 double timerDecimalsElapsed = _timerToRechargeBullets.P_MyTimer >= _countOfBullets ? _timerToRechargeBullets.P_MyTimer - (int)_timerToRechargeBullets.P_MyTimer : 0;
                 _timerToRechargeBullets.ResetMyTimer();
                 _timerToRechargeBullets.StartMyTimer(_countOfBullets + timerDecimalsElapsed);
-
-                //// Decimal reset = true;
-                //_countOfBullets--;
-                //_timerToRechargeBullets.ResetMyTimer();
-                //_timerToRechargeBullets.StartMyTimer(_countOfBullets);
             }
         }
 
         public void RechargeBullets()
         {
-            _countOfBullets = _countOfBullets < _maxBullets ? (byte)_timerToRechargeBullets.P_MyTimer : _maxBullets;
+            _countOfBullets = _countOfBullets < _maxBullets && (byte)_timerToRechargeBullets.P_MyTimer < _maxBullets
+                ? (byte)_timerToRechargeBullets.P_MyTimer : _maxBullets;
+
+            //_countOfBullets = (byte)_timerToRechargeBullets.P_MyTimer < _maxBullets
+            //   ? (byte)_timerToRechargeBullets.P_MyTimer : _maxBullets;
+        }
+
+        public void OnPause(bool isPause)
+        {
+            if (isPause) _timerToRechargeBullets.StopMyTimer();
+            else _timerToRechargeBullets.ContinueMyTimer();
         }
 
         void IOnCollisionEnter.OnCollisionEnter(GameObject[] collisions)
         {
-            this._figureSpaceshipLeftSide.ForegroundColor = E_ForegroundColors.Red;
+            this.P_Visible = false;
+            this.P_Collision.P_DetectCollisions = false;
+            int queueLength = _bullets.Count;
+            for (int i = 0; i < queueLength; i++) _bullets.Dequeue().P_IsBeenUsed = false;
+            _numberOfPlayers = 0;
+            ((IWinnable)Scene.P_CurrentScene).GameOver(this._playerID);
         }
 
         #endregion

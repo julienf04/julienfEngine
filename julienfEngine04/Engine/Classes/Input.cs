@@ -13,6 +13,8 @@ namespace julienfEngine1
 
         [DllImport("User32", SetLastError = true)] static extern short GetAsyncKeyState(E_Keyboard Key);
 
+        [DllImport("user32.dll")] static extern bool SetKeyboardState(byte[] lpKeyState);
+
         //[DllImport("user32.dll")] static extern uint GetKeyboardLayoutList(int nBuff, [Out] IntPtr[] lpList);
 
         //[DllImport("user32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)] static extern bool GetKeyboardState(byte[] lpKeyState);
@@ -30,6 +32,8 @@ namespace julienfEngine1
 
         private static E_Keyboard _lastKeyPressed = 0;
         private static E_Keyboard _lastKeyUp = 0;
+
+        private static bool _anyKeyPressed = false;
 
         #endregion
 
@@ -84,6 +88,9 @@ namespace julienfEngine1
 
         internal static void ResetValues()
         {
+            _keysPressedThisFrame.Clear();
+            SetKeyboardState(new byte[256]);
+
             for (int i = 0; i < _keysDownToCheck.Count; i++)
             {
                 E_Keyboard currentKeyToCheck = _keysDownToCheck[i];
@@ -112,15 +119,25 @@ namespace julienfEngine1
                     }
                 }
             }
-
-            _keysPressedThisFrame.Clear();
         }
 
 
 
         public static bool AnyKeyPressed()
         {
-            return Console.KeyAvailable;
+            E_Keyboard[] allKeys = Enum.GetValues<E_Keyboard>();
+            foreach (E_Keyboard key in allKeys)
+            {
+                if (GetKeyDown(key))
+                {
+                    _anyKeyPressed = true;
+                    break;
+                }
+            }
+
+            bool anyKeyPressedNow = _anyKeyPressed;
+            _anyKeyPressed = false;
+            return anyKeyPressedNow;
         }
 
         #endregion

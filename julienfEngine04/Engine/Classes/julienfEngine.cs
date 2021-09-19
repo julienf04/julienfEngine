@@ -172,9 +172,20 @@ namespace julienfEngine1
                                     currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionStayGameObjects.Add(currentGameObjectCollision1);
                                 }
                             }
-                            else if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision2) &&
-                                     currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision1))
+                            else if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Contains(currentGameObjectCollision2) &&
+                                     currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionStayGameObjects.Contains(currentGameObjectCollision1))
                             {
+                                bool notRemoved = true;
+                                while (notRemoved)
+                                {
+                                    try
+                                    {
+                                        currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision2);
+                                        currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision1);
+                                        notRemoved = false;
+                                    }
+                                    catch { }
+                                }
                                 currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionExitGameObjects.Push(currentGameObjectCollision2);
                                 currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionExitGameObjects.Push(currentGameObjectCollision1);
                             }

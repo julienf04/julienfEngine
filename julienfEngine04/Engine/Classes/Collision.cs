@@ -13,10 +13,13 @@ namespace julienfEngine1
         private bool _detectCollisions = true;
 
         private Stack<GameObject> _currentOnCollisionEnterGameObjects;
-        private List<GameObject> _currentOnCollisionStayGameObjects;
+        private Dictionary<uint, GameObject> _currentOnCollisionStayGameObjects;
         private Stack<GameObject> _currentOnCollisionExitGameObjects;
 
         private GameObject _gameObjectAttached;
+
+        private uint _ID = 0;
+        private static uint _countOfExistingCollisions = 0;
 
         #endregion
 
@@ -27,8 +30,11 @@ namespace julienfEngine1
             this._gameObjectAttached = gameObjectAttached;
 
             _currentOnCollisionEnterGameObjects = new Stack<GameObject>();
-            _currentOnCollisionStayGameObjects = new List<GameObject>();
+            _currentOnCollisionStayGameObjects = new Dictionary<uint, GameObject>();
             _currentOnCollisionExitGameObjects = new Stack<GameObject>();
+
+            _ID = _countOfExistingCollisions;
+            _countOfExistingCollisions++;
         }
 
         #endregion
@@ -147,7 +153,7 @@ namespace julienfEngine1
             }
         }
 
-        internal List<GameObject> P_CurrentOnCollisionStayGameObjects
+        internal Dictionary<uint, GameObject> P_CurrentOnCollisionStayGameObjects
         {
             get
             {
@@ -160,6 +166,14 @@ namespace julienfEngine1
             get
             {
                 return _currentOnCollisionExitGameObjects;
+            }
+        }
+
+        internal uint P_ID
+        {
+            get
+            {
+                return _ID;
             }
         }
 

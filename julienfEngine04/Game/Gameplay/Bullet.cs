@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace julienfEngine1
 {
-    class Bullet : GameObject, IOnCollisionEnter, IOnCollisionStay, IOnCollisionExit
+    class Bullet : GameObject, ICanCollide, IDodgeable
     {
         // Declare every attributes of this GameObject
         #region ATRIBUTES
@@ -19,7 +19,8 @@ namespace julienfEngine1
                }, E_ForegroundColors.Gray
            );
 
-        private int _velocity = 50;
+        private byte _velocity = 50;
+        private sbyte _direction;
 
         private bool _isBeenUsed = false;
 
@@ -46,7 +47,7 @@ namespace julienfEngine1
                     break;
             }
 
-            this._velocity *= playerID == Spaceship.E_PlayerID.Player1 ? 1 : -1;
+            this._direction = playerID == Spaceship.E_PlayerID.Player1 ? (sbyte)1 : (sbyte)-1;
         }
 
         #endregion
@@ -56,24 +57,9 @@ namespace julienfEngine1
 
         public void MoveBullet()
         {
-            if (this._isBeenUsed) this.P_PosX += _velocity * Timer.P_DeltaTime;
+            if (this._isBeenUsed) this.P_PosX += _velocity * _direction * Timer.P_DeltaTime;
 
             this._isBeenUsed = this.P_PosX < Screen.P_Width && this.P_PosX > 0;
-        }
-
-        void IOnCollisionEnter.OnCollisionEnter(GameObject[] collisions)
-        {
-            //int i = 0;
-        }
-
-        void IOnCollisionStay.OnCollisionStay(GameObject[] collisions)
-        {
-            //int i = 0;
-        }
-
-        void IOnCollisionExit.OnCollisionExit(GameObject[] collisions)
-        {
-            //int i = 0;
         }
 
         #endregion
@@ -104,6 +90,22 @@ namespace julienfEngine1
                     this.P_Collision.P_DetectCollisions = value;
                     _isBeenUsed = value;
                 }
+            }
+        }
+
+        Transform IDodgeable.P_Transform
+        {
+            get
+            {
+                return this;
+            }
+        }
+
+        float IDodgeable.P_Velocity
+        {
+            get
+            {
+                return _velocity;
             }
         }
 

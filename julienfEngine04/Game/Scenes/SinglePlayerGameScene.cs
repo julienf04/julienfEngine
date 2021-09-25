@@ -16,6 +16,7 @@ namespace julienfEngine1
 
         private Spaceship _spaceshipPlayer1;
         private Spaceship _spaceshipPlayer2;
+        private SpaceshipAI _spaceshipAI;
 
         private const byte _WALL_DISTANCE = 3;
 
@@ -66,6 +67,8 @@ namespace julienfEngine1
             _spaceshipPlayer2 = new Spaceship(E_ForegroundColors.Red, Screen.P_Width - _WALL_DISTANCE, Screen.P_Height / 2, true);
             _spaceshipPlayer2.P_PosX -= _spaceshipPlayer2.P_GameObjectFigures[0].P_Figure[0].Length;
             _spaceshipPlayer2.P_GameObjectFigures[0].ForegroundColor = E_ForegroundColors.White;
+
+            _spaceshipAI = new SpaceshipAIHard(_spaceshipPlayer2, _spaceshipPlayer1.P_Bullets);
 
 
             _pauseText = new TextMessage("Pause: P", (int)_bulletsAvailibleUI.P_PosX, (int)_bulletsAvailibleUI.P_PosY - 1, true, true, 0);
@@ -139,15 +142,13 @@ namespace julienfEngine1
                     return;
                 }
 
-                int spaceship1_OldPosY = (int)_spaceshipPlayer1.P_PosY;
-                int spaceship2_OldPosY = (int)_spaceshipPlayer2.P_PosY;
+                int spaceship1OldPosY = (int)_spaceshipPlayer1.P_PosY;
 
                 if (Input.GetKey(E_Keyboard.W) || Input.GetKey(E_Keyboard.UpArrow)) _spaceshipPlayer1.P_PosY -= _spaceshipPlayer1.P_Velocity * Timer.P_DeltaTime;
 
                 if (Input.GetKey(E_Keyboard.S) || Input.GetKey(E_Keyboard.DownArrow)) _spaceshipPlayer1.P_PosY += _spaceshipPlayer1.P_Velocity * Timer.P_DeltaTime;
 
-
-                if (_spaceshipPlayer1.P_PosY < _spaceshipPlayer1.P_MinPosY || _spaceshipPlayer1.P_PosY >= _spaceshipPlayer1.P_MaxPosY) _spaceshipPlayer1.P_PosY = spaceship1_OldPosY;
+                if (_spaceshipPlayer1.P_PosY < _spaceshipPlayer1.P_MinPosY || _spaceshipPlayer1.P_PosY >= _spaceshipPlayer1.P_MaxPosY) _spaceshipPlayer1.P_PosY = spaceship1OldPosY;
 
                 if (Input.GetKey(E_Keyboard.D) || Input.GetKey(E_Keyboard.RightArrow) || Input.GetKey(E_Keyboard.SpaceBar)) _spaceshipPlayer1.Shoot();
 
@@ -156,6 +157,14 @@ namespace julienfEngine1
                 _spaceshipPlayer1.MoveBulletsAttached();
                 _spaceshipPlayer1.RechargeBullets();
                 _bulletsAvailibleUI.UpdateBulletsUI();
+
+                int spaceship2OldPosY = (int)_spaceshipPlayer2.P_PosY;
+
+                if (_spaceshipPlayer2.P_PosY > _spaceshipPlayer2.P_MinPosY && _spaceshipPlayer2.P_PosY <= _spaceshipPlayer2.P_MaxPosY)
+                    _spaceshipAI.Run();
+
+                if (_spaceshipPlayer2.P_PosY < _spaceshipPlayer2.P_MinPosY || _spaceshipPlayer2.P_PosY >= _spaceshipPlayer2.P_MaxPosY) _spaceshipPlayer2.P_PosY = spaceship2OldPosY;
+
 
                 return;
             }

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace julienfEngine1
 {
-    class SpaceshipAINormal : SpaceshipAI
+    class SpaceshipAIEasy: SpaceshipAI
     {
         #region CONSTRUCTORS
 
-        public SpaceshipAINormal(Spaceship mySpaceship, Queue<Transform> objectsToDodge) : base(mySpaceship, objectsToDodge)
+        public SpaceshipAIEasy(Spaceship mySpaceship, IEnumerable<IDodgeable> objectsToDodge) : base(mySpaceship, objectsToDodge)
         {
 
         }
@@ -19,7 +19,7 @@ namespace julienfEngine1
 
         #region METHODS
 
-        public override void AlgoritmAI()
+        public override void Run()
         {
 
         }

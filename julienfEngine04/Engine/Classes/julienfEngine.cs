@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Diagnostics;
 
 namespace julienfEngine1
 {
@@ -133,7 +134,7 @@ namespace julienfEngine1
 
         private static void ResetValuesUpdate() //this method resets all values of the game so that it works correctly
         {
-            WaitToTasks();
+            WaitPendingTasks();
 
             Task[] tasksToResetValues = new Task[_COUNT_OF_METHODS_TO_RESET_ALL_ENGINE_VALUES];
 
@@ -242,7 +243,7 @@ namespace julienfEngine1
             _tasksToWait.Push(taskToWait);
         }
 
-        private static void WaitToTasks()
+        private static void WaitPendingTasks()
         {
             int count = _tasksToWait.Count;
             for (int i = 0; i < count; i++)

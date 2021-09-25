@@ -14,7 +14,7 @@ namespace julienfEngine1
 
         private List<GameObject> _gameObjectsToDraw = new List<GameObject>();
 
-        private List<IOnCollisionEnter> _ICollideableToDetectCollisions = new List<IOnCollisionEnter>();
+        private List<ICanCollide> _ICollideableToDetectCollisions = new List<ICanCollide>();
 
         private static List<IntPtr> _allScenePointers = new List<IntPtr>();
         private static List<Scene> _allLoadedScenes = new List<Scene>();
@@ -94,17 +94,17 @@ namespace julienfEngine1
 
         public void AddToDetectCollisionsGameObject(GameObject gameObject)
         {
-            if (!(gameObject is IOnCollisionEnter)) throw new Exception("gamobject must be 'ICollideable'");
+            if (!(gameObject is ICanCollide)) throw new Exception("gamobject must be 'ICollideable'");
 
-            IOnCollisionEnter collision = (IOnCollisionEnter)gameObject;
+            ICanCollide collision = (ICanCollide)gameObject;
             if (!_ICollideableToDetectCollisions.Contains(collision)) _ICollideableToDetectCollisions.Add(collision);
         }
 
         public void RemoveToDetectCollisionsGameObject(GameObject gameObject)
         {
-            if (!(gameObject is IOnCollisionEnter)) throw new Exception("gamobject must be 'ICollideable'");
+            if (!(gameObject is ICanCollide)) throw new Exception("gamobject must be 'ICollideable'");
 
-            _ICollideableToDetectCollisions.Remove((IOnCollisionEnter)gameObject);
+            _ICollideableToDetectCollisions.Remove((ICanCollide)gameObject);
         }
 
         public void RemoveAllToDetectCollisionsGameObject()
@@ -214,7 +214,7 @@ namespace julienfEngine1
             }
         }
 
-        public IOnCollisionEnter[] P_ICollideableToDetectCollisions
+        public ICanCollide[] P_ICollideableToDetectCollisions
         {
             get
             {

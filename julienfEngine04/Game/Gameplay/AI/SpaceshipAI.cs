@@ -11,41 +11,48 @@ namespace julienfEngine1
         #region ATTRIBUTES
 
         private Spaceship _spaceshipAttached;
-        private Queue<Transform> _objectsToDodge;
-        private Task _taskRunAI;
-        private bool _runAI = false;
+        private IEnumerable<IDodgeable> _objectsToDodge;
+
+        //private Task _taskRunAI;
+        //private bool _runAI = false;
 
         #endregion
 
         #region CONSTRUCTORS
 
-        public SpaceshipAI(Spaceship mySpaceship, Queue<Transform> objectsToDodge)
+        protected SpaceshipAI(Spaceship mySpaceship, IEnumerable<IDodgeable> objectsToDodge)
         {
+            
+
             _spaceshipAttached = mySpaceship;
             _objectsToDodge = objectsToDodge;
-
-            _taskRunAI = new Task(RunAsync);
+            //_taskRunAI = new Task(RunAsync);
         }
 
         #endregion
 
         #region METHODS
 
-        public void RunAsync()
-        {
-            _runAI = true;
-            while (_runAI && _taskRunAI.IsCompleted)
-            {
-                AlgoritmAI();
-            }
-        }
+        //public void Run()
+        //{
 
-        public abstract void AlgoritmAI();
+        //}
 
-        public void StopRunning()
-        {
-            _runAI = false;
-        }
+        //public void RunAsync()
+        //{
+        //    _runAI = true;
+        //    while (_runAI && _taskRunAI.IsCompleted)
+        //    {
+        //        AlgoritmAI();
+        //    }
+        //}
+
+        public abstract void Run();
+
+        //public void StopRunning()
+        //{
+        //    _runAI = false;
+        //}
 
         #endregion
 
@@ -59,7 +66,7 @@ namespace julienfEngine1
             }
         }
 
-        protected Queue<Transform> P_ObjectsToDodge
+        protected IEnumerable<IDodgeable> P_ObjectsToDodge
         {
             get
             {

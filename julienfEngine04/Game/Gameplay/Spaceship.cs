@@ -55,7 +55,7 @@ namespace julienfEngine1
         private static byte _numberOfPlayers = 0;
         private E_PlayerID _playerID = E_PlayerID.Player1;
 
-        private double _velocity = 25;
+        private float _velocity = 25;
         private int _minPosY = 0;
         private int _maxPosY = 46;
 
@@ -207,7 +207,7 @@ namespace julienfEngine1
             }
         }
 
-        public double P_Velocity
+        public float P_Velocity
         {
             get
             {
@@ -260,6 +260,14 @@ namespace julienfEngine1
             get
             {
                 return _bulletsColor;
+            }
+        }
+
+        public IEnumerable<IDodgeable> P_Bullets
+        {
+            get
+            {
+                return _bullets.Where(currentBullet => currentBullet.P_IsBeenUsed);
             }
         }
 

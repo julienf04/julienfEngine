@@ -10,18 +10,18 @@ namespace julienfEngine1
         private static Stopwatch _stTime = new Stopwatch(); //this variable is a variable that counts the time elapsed since the game started
         private static double _time = 0; //This variable is a variable that shows the time elapsed since de last frame
         private static Stopwatch _stDeltaTime = new Stopwatch(); //This variable is a variable that counts the time elapsed since de last frame
-        private static double _deltaTime = 0; //This variable is a variable that shows the time elapsed since de last frame
+        private static float _deltaTime = 0; //This variable is a variable that shows the time elapsed since de last frame
 
         private Stopwatch _stMyTimer = new Stopwatch(); //This variable is for managing a timer given to the user
-        private double _myTimer = 0; //This timer is a final timer that going to be showed to the user. The user can set a start timer value
+        private float _myTimer = 0; //This timer is a final timer that going to be showed to the user. The user can set a start timer value
 
 
-        private static uint _limitFPS = 60;
+        private static int _limitFPS = 60;
                  
-        private static double _averageFPS = 0; // Average fps taken by this lap
+        private static float _averageFPS = 0; // Average fps taken by this lap
 
-        private static double _countOfDeltaTime = 0; // Average fps taken each 60 frames
-        private static uint _countOfFPS = 0; // This variable count the fps until _averageFPS, in loop
+        private static float _countOfDeltaTime = 0; // Average fps taken each 60 frames
+        private static int _countOfFPS = 0; // This variable count the fps until _averageFPS, in loop
 
         #endregion
 
@@ -39,7 +39,7 @@ namespace julienfEngine1
 
         internal static void ResetDeltaTime()
         {
-            _deltaTime = (double)_stDeltaTime.ElapsedMilliseconds / 1000;
+            _deltaTime = (float)_stDeltaTime.ElapsedMilliseconds / 1000;
             
             if (_countOfFPS >= _limitFPS)
             {
@@ -57,7 +57,7 @@ namespace julienfEngine1
             _stDeltaTime.Reset();
         }
 
-        public void StartMyTimer(double startInTime)
+        public void StartMyTimer(float startInTime)
         {
             if (_stMyTimer.IsRunning) throw new Exception("You cannot start a timer already started");
 
@@ -91,12 +91,12 @@ namespace julienfEngine1
         {
             get
             {
-                _time = (double)_stTime.ElapsedMilliseconds / 1000;
+                _time = _stTime.ElapsedMilliseconds / 1000;
                 return _time;
             }
         }
 
-        public static double P_DeltaTime
+        public static float P_DeltaTime
         {
             get
             {
@@ -128,7 +128,7 @@ namespace julienfEngine1
         //    }
         //}
 
-        public static double P_AverageFPS
+        public static float P_AverageFPS
         {
             get
             {
@@ -136,7 +136,7 @@ namespace julienfEngine1
             }
         }
 
-        internal static uint P_LimitFPS
+        internal static int P_LimitFPS
         {
             get
             {

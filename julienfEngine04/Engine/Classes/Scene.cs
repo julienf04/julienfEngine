@@ -137,7 +137,7 @@ namespace julienfEngine1
                 }
 
                 _currentScene = Scene.GetLoadedSceneByType(sceneType);
-                GC.Collect();
+                //GC.Collect();
 
                 #if DEBUG
                 julienfEngine.SetDebugGameObject();

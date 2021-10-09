@@ -24,6 +24,21 @@ namespace julienfEngine1
 
         }
 
+        protected override IDodgeable FindTargetBullet(int spaceshipMinPosY, int spaceshipMaxPosY, out int? fixedDirection)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void MoveToDestiny(int fixedDirection)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void MoveToDestiny(int destiny, int spaceshipMinPosY, int spaceshipMaxPosY)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

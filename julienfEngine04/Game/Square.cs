@@ -6,7 +6,7 @@ namespace julienfEngine1
     class Square : GameObject
     {
         private bool _allowInput;
-        private double velocity = 10;
+        private float velocity = 10;
         public int ID = 0;
 
         public Square(bool allowInput, int posX, int posY, bool visible, bool isUI, byte layer, Figure[] figures, byte baseFigure)

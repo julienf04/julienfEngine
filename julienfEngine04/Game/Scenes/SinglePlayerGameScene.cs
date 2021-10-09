@@ -144,7 +144,8 @@ namespace julienfEngine1
 
                 int spaceship1OldPosY = (int)_spaceshipPlayer1.P_PosY;
 
-                if (Input.GetKey(E_Keyboard.W) || Input.GetKey(E_Keyboard.UpArrow)) _spaceshipPlayer1.P_PosY -= _spaceshipPlayer1.P_Velocity * Timer.P_DeltaTime;
+                if (Input.GetKey(E_Keyboard.W) || Input.GetKey(E_Keyboard.UpArrow))
+                    _spaceshipPlayer1.P_PosY -= _spaceshipPlayer1.P_Velocity * Timer.P_DeltaTime;
 
                 if (Input.GetKey(E_Keyboard.S) || Input.GetKey(E_Keyboard.DownArrow)) _spaceshipPlayer1.P_PosY += _spaceshipPlayer1.P_Velocity * Timer.P_DeltaTime;
 
@@ -160,10 +161,11 @@ namespace julienfEngine1
 
                 int spaceship2OldPosY = (int)_spaceshipPlayer2.P_PosY;
 
-                if (_spaceshipPlayer2.P_PosY > _spaceshipPlayer2.P_MinPosY && _spaceshipPlayer2.P_PosY <= _spaceshipPlayer2.P_MaxPosY)
-                    _spaceshipAI.Run();
+                //if (_spaceshipPlayer2.P_PosY >= _spaceshipPlayer2.P_MinPosY && _spaceshipPlayer2.P_PosY <= _spaceshipPlayer2.P_MaxPosY)
+                if (_spaceshipPlayer2.P_IsAlive) _spaceshipAI.Run();
 
-                if (_spaceshipPlayer2.P_PosY < _spaceshipPlayer2.P_MinPosY || _spaceshipPlayer2.P_PosY >= _spaceshipPlayer2.P_MaxPosY) _spaceshipPlayer2.P_PosY = spaceship2OldPosY;
+
+                //if (_spaceshipPlayer2.P_PosY < _spaceshipPlayer2.P_MinPosY || _spaceshipPlayer2.P_PosY >= _spaceshipPlayer2.P_MaxPosY) _spaceshipPlayer2.P_PosY = spaceship2OldPosY;
 
 
                 return;
@@ -172,15 +174,15 @@ namespace julienfEngine1
             if (Input.GetKeyDown(E_Keyboard.P)) Pause(false);
         }
 
-        public void GameOver(Spaceship.E_PlayerID playerID)
+        public void GameOver(E_PlayerID playerID)
         {
             switch (playerID)
             {
-                case Spaceship.E_PlayerID.Player1:
+                case E_PlayerID.Player1:
                     _loser.P_Visible = true;
                     break;
 
-                case Spaceship.E_PlayerID.Player2:
+                case E_PlayerID.Player2:
                     _winner.P_Visible = true;
                     break;
             }

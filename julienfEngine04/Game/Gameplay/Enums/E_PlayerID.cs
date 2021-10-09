@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace julienfEngine1
 {
-    interface IWinnable
+    enum E_PlayerID
     {
-        public void GameOver(E_PlayerID playerID);
+        Player1,
+        Player2
     }
 }

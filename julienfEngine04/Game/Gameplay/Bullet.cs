@@ -12,12 +12,19 @@ namespace julienfEngine1
         #region ATRIBUTES
 
         // Declare and initialize a figure/s of this GameObject
-        private Figure _figureBullet = new Figure
+        private Figure _figureBulletPlayer1 = new Figure
            (new string[1]
                {
                     @"==>"
                }, E_ForegroundColors.Gray
            );
+
+        private Figure _figureBulletPlayer2 = new Figure
+         (new string[1]
+             {
+                    @"<=="
+             }, E_ForegroundColors.Gray
+         );
 
         private byte _velocity = 50;
         private sbyte _direction;
@@ -30,24 +37,26 @@ namespace julienfEngine1
         #region CONSTRUCTORS
 
         // Create a constructor/s of tthis GameObject
-        public Bullet(E_ForegroundColors color, Spaceship.E_PlayerID playerID, int posX, int posY, bool visible) : base(posX, posY, visible)
+        public Bullet(E_ForegroundColors color, E_PlayerID playerID, int posX, int posY, bool visible) : base(posX, posY, visible)
         {
-            this.P_GameObjectFigures = new Figure[1] { _figureBullet };
-            this.P_GameObjectFigures[0].ForegroundColor = color;
+            //this.P_GameObjectFigures = new Figure[1] { _figureBulletPlayer1 };
+            //this.P_GameObjectFigures[0].ForegroundColor = color;
 
             switch (playerID)
             {
-                case Spaceship.E_PlayerID.Player1:
+                case E_PlayerID.Player1:
                     this.P_Collision.P_Colliders = new Area[1] { new Area(1, 1, 0, 0) };
+                    this.P_GameObjectFigures = new Figure[1] { _figureBulletPlayer1 };
+                    this.P_GameObjectFigures[0].ForegroundColor = color;
                     break;
-                case Spaceship.E_PlayerID.Player2:
+                case E_PlayerID.Player2:
                     this.P_Collision.P_Colliders = new Area[1] { new Area(0, 0, 0, 0) };
-                    break;
-                default:
+                    this.P_GameObjectFigures = new Figure[1] { _figureBulletPlayer2 };
+                    this.P_GameObjectFigures[0].ForegroundColor = color;
                     break;
             }
 
-            this._direction = playerID == Spaceship.E_PlayerID.Player1 ? (sbyte)1 : (sbyte)-1;
+            this._direction = playerID == E_PlayerID.Player1 ? (sbyte)1 : (sbyte)-1;
         }
 
         #endregion
@@ -59,7 +68,7 @@ namespace julienfEngine1
         {
             if (this._isBeenUsed) this.P_PosX += _velocity * _direction * Timer.P_DeltaTime;
 
-            this._isBeenUsed = this.P_PosX < Screen.P_Width && this.P_PosX > 0;
+            this._isBeenUsed = this.P_PosX < Screen.P_Width && this.P_PosX > 0 - this.P_GameObjectFigures[0].P_Figure[0].Length;
         }
 
         #endregion
@@ -68,11 +77,19 @@ namespace julienfEngine1
         #region PROPERTIES
 
         // Figure property of this GameObject
-        public Figure P_FigureBullet
+        public Figure P_FigureBulletPlayer1
         {
             get
             {
-                return _figureBullet;
+                return _figureBulletPlayer1;
+            }
+        }
+
+        public Figure P_FigureBulletPlayer2
+        {
+            get
+            {
+                return _figureBulletPlayer2;
             }
         }
 

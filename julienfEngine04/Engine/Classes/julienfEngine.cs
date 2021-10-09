@@ -215,7 +215,7 @@ namespace julienfEngine1
         public static void LimitFPSbyAverage(uint limitFpsToReset)
         {
             _limitFPSbyAverage = true;
-            Timer.P_LimitFPS = limitFpsToReset;
+            Timer.P_LimitFPS = (int)limitFpsToReset;
         }
 
         public static void WaitToTasksAtEndFrame(Task taskToWait)

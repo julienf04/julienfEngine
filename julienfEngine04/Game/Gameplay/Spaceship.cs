@@ -7,16 +7,6 @@ namespace julienfEngine1
 {
     class Spaceship : GameObject, IOnCollisionEnter
     {
-        #region ENUMS
-
-        public enum E_PlayerID : byte
-        {
-            Player1,
-            Player2
-        }
-
-        #endregion
-
         // Declare every attributes of this GameObject
         #region ATRIBUTES
 
@@ -154,7 +144,7 @@ namespace julienfEngine1
 
                 //// Decimal reset = false;
                 _countOfBullets--;
-                double timerDecimalsElapsed = _timerToRechargeBullets.P_MyTimer >= _countOfBullets ? _timerToRechargeBullets.P_MyTimer - (int)_timerToRechargeBullets.P_MyTimer : 0;
+                float timerDecimalsElapsed = (float)_timerToRechargeBullets.P_MyTimer >= _countOfBullets ? (float)_timerToRechargeBullets.P_MyTimer - (int)_timerToRechargeBullets.P_MyTimer : 0;
                 _timerToRechargeBullets.ResetMyTimer();
                 _timerToRechargeBullets.StartMyTimer(_countOfBullets + timerDecimalsElapsed);
             }
@@ -182,7 +172,8 @@ namespace julienfEngine1
             int queueLength = _bullets.Count;
             for (int i = 0; i < queueLength; i++) _bullets.Dequeue().P_IsBeenUsed = false;
             _numberOfPlayers = 0;
-            ((IWinnable)Scene.P_CurrentScene).GameOver(this._playerID);
+            _isAlive = false;
+            ((IWinnable)Scene.P_CurrentScene).GameOver(_playerID);
         }
 
         #endregion
@@ -221,6 +212,10 @@ namespace julienfEngine1
             {
                 return _minPosY;
             }
+            set
+            {
+                _minPosY = value;
+            }
         }
 
         public int P_MaxPosY
@@ -228,6 +223,10 @@ namespace julienfEngine1
             get
             {
                 return _maxPosY;
+            }
+            set
+            {
+                _maxPosY = value;
             }
         }
 
@@ -271,13 +270,21 @@ namespace julienfEngine1
             }
         }
 
-        //public E_BackgroundColors P_BulletsColorUI
-        //{
-        //    get
-        //    {
-        //        return _bulletsColorUI;
-        //    }
-        //}
+        public E_PlayerID P_PlayerID
+        {
+            get
+            {
+                return _playerID;
+            }
+        }
+
+        public bool P_IsAlive
+        {
+            get
+            {
+                return _isAlive;
+            }
+        }
 
         #endregion
     }

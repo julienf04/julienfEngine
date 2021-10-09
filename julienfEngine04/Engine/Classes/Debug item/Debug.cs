@@ -27,7 +27,19 @@ namespace julienfEngine1
 
         internal void UpdateValues()
         {
+            UpdateFigure();
+            BreakThread(E_Keyboard.B);
+        }
+
+        private void UpdateFigure()
+        {
             this.P_GameObjectFigures[0].P_Figure[0] = "fps: " + Timer.P_DeltaTime.ToString();
+        }
+
+        private void BreakThread(E_Keyboard key)
+        {
+            if (Input.GetKey(key))
+            { }
         }
 
         #endregion

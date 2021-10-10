@@ -9,19 +9,55 @@ namespace julienfEngine1
         #region ATRIBUTES
 
         // Declare and initialize a figure/s of this GameObject
-        private Figure _figureWinner = new Figure
-           (new string[8]
-               {
-                    @"           (        )     )       (    ",
-                    @" (  (      )\ )  ( /(  ( /(       )\ ) ",
-                    @" )\))(   '(()/(  )\()) )\()) (   (()/( ",
-                    @"((_)()\ )  /(_))((_)\ ((_)\  )\   /(_))",
-                    @"_(())\_)()(_))   _((_) _((_)((_) (_))  ",
-                    @"\ \((_)/ /|_ _| | \| || \| || __|| _ \ ",
-                    @" \ \/\/ /  | |  | .` || .` || _| |   / ",
-                    @"  \_/\_/  |___| |_|\_||_|\_||___||_|_\ "
-               }, E_ForegroundColors.Gray
-           );
+
+        private string[] _textWinner = new string[8]
+        {
+            @"           (        )     )       (    ",
+            @" (  (      )\ )  ( /(  ( /(       )\ ) ",
+            @" )\))(   '(()/(  )\()) )\()) (   (()/( ",
+            @"((_)()\ )  /(_))((_)\ ((_)\  )\   /(_))",
+            @"_(())\_)()(_))   _((_) _((_)((_) (_))  ",
+            @"\ \((_)/ /|_ _| | \| || \| || __|| _ \ ",
+            @" \ \/\/ /  | |  | .` || .` || _| |   / ",
+            @"  \_/\_/  |___| |_|\_||_|\_||___||_|_\ "
+        };
+
+        private string[] _textWinnerP1 = new string[8]
+        {
+            @"           (        )     )       (        (          ",
+            @" (  (      )\ )  ( /(  ( /(       )\ )     )\ )    )  ",
+            @" )\))(   '(()/(  )\()) )\()) (   (()/(    (()/( ( /(  ",
+            @"((_)()\ )  /(_))((_)\ ((_)\  )\   /(_))    /(_)))\()) ",
+            @"_(())\_)()(_))   _((_) _((_)((_) (_))     (_)) ((_)\  ",
+            @"\ \((_)/ /|_ _| | \| || \| || __|| _ \    | _ \ / (_) ",
+            @" \ \/\/ /  | |  | .` || .` || _| |   /    |  _/ | |   ",
+            @"  \_/\_/  |___| |_|\_||_|\_||___||_|_\    |_|   |_|   "
+        };
+
+        private string[] _textWinnerP2 = new string[8]
+       {
+            @"           (        )     )       (      (          ",
+            @" (  (      )\ )  ( /(  ( /(       )\ )   )\ )    )  ",
+            @" )\))(   '(()/(  )\()) )\()) (   (()/(  (()/( ( /(  ",
+            @"((_)()\ )  /(_))((_)\ ((_)\  )\   /(_))  /(_)))(_)) ",
+            @"_(())\_)()(_))   _((_) _((_)((_) (_))   (_)) ((_)   ",
+            @"\ \((_)/ /|_ _| | \| || \| || __|| _ \  | _ \|_  )  ",
+            @" \ \/\/ /  | |  | .` || .` || _| |   /  |  _/ / /   ",
+            @"  \_/\_/  |___| |_|\_||_|\_||___||_|_\  |_|  /___|  "
+       };
+
+        private Figure _figureWinner = new Figure(E_ForegroundColors.Yellow);
+
+        #endregion
+
+        #region ENUMS
+
+        public enum E_WinnerTypes
+        {
+            Winner,
+            WinnerP1,
+            WinnerP2
+        }
 
         #endregion
 
@@ -29,8 +65,24 @@ namespace julienfEngine1
         #region CONSTRUCTORS
 
         // Create a constructor/s of tthis GameObject
-        public Winner(int posX, int posY, bool visible, bool isUI, byte layer) : base(posX, posY, visible, isUI, layer)
+        public Winner(E_WinnerTypes winnerType, int posX, int posY, bool visible, bool isUI, byte layer) : base(posX, posY, visible, isUI, layer)
         {
+            string[] textFigure = null;
+
+            switch (winnerType)
+            {
+                case E_WinnerTypes.Winner:
+                    textFigure = _textWinner;
+                    break;
+                case E_WinnerTypes.WinnerP1:
+                    textFigure = _textWinnerP1;
+                    break;
+                case E_WinnerTypes.WinnerP2:
+                    textFigure = _textWinnerP2;
+                    break;
+            }
+
+            _figureWinner.P_Figure = textFigure;
             this.P_GameObjectFigures = new Figure[1] { _figureWinner };
         }
 

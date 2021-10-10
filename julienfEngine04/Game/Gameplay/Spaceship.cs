@@ -73,6 +73,11 @@ namespace julienfEngine1
             _playerID = (E_PlayerID)_numberOfPlayers;
             _numberOfPlayers++;
 
+            _bulletsColor = bulletsColor;
+            Bullet firstBullet = new Bullet(bulletsColor, _playerID, 0, 0, false);
+            firstBullet.P_Collision.P_DetectCollisions = false;
+            _bullets.Enqueue(firstBullet);
+
             if (_playerID == E_PlayerID.Player1)
             {
                 this.P_GameObjectFigures = new Figure[1] { _figureSpaceshipLeftSide };
@@ -98,15 +103,10 @@ namespace julienfEngine1
                     new Area(6, 11, 0, 8)
                 };
 
-                this._posXToInstantiateBullets = (int)this.P_PosX - this.P_GameObjectFigures[0].P_Figure[0].Length - 10;
+                this._posXToInstantiateBullets = (int)this.P_PosX - this.P_GameObjectFigures[0].P_Figure[0].Length - firstBullet.P_GameObjectFigures[0].P_Figure[0].Length;
             }
 
             _halfFigureY = (byte)(this.P_GameObjectFigures[0].P_Figure.Length / 2);
-
-            _bulletsColor = bulletsColor;
-            Bullet firstBullet = new Bullet(bulletsColor, _playerID, 0, 0, false);
-            firstBullet.P_Collision.P_DetectCollisions = false;
-            _bullets.Enqueue(firstBullet);
 
             _maxBullets = maxBullets;
             _timeToRecharge = timeToRecharge;

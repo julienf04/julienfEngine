@@ -16,7 +16,7 @@ namespace julienfEngine1
         private const byte _DISTANCE_BETWEEN_BUTTONS_AND_ARROW_POSX = 10;
         private const ArrowMenu.E_PointSide _ARROW_POINT_SIDE = ArrowMenu.E_PointSide.PointLeft;
 
-        private const byte _DISTANCE_BETWEEN_BUTTONS_AND_TUTORIALS_POSX = 70;
+        private const byte _DISTANCE_BETWEEN_BUTTONS_AND_TUTORIALS_POSX = 110;
         private const byte _DISTANCE_BETWEEN_FIRST_BUTTON_AND_FIRST_TUTORIAL_POSY = 10;
         private const byte _DISTANCE_BETWEEN_TUTORIALS = 5;
 
@@ -43,14 +43,17 @@ namespace julienfEngine1
         {
             int buttonsPosX = (int)(Screen.P_Width / _BUTTONS_RELATIVE_POSX);
             int multiplayerOfflinePosY = (int)(Screen.P_Height / _FIRST_BUTTON_RELATIVE_POSY);
-            int backPosY = multiplayerOfflinePosY + _DISTANCE_BETWEEN_BUTTONS_POSY;
+            int multiplayerOnlinePosY = multiplayerOfflinePosY + _DISTANCE_BETWEEN_BUTTONS_POSY;
+            int backPosY = multiplayerOnlinePosY + _DISTANCE_BETWEEN_BUTTONS_POSY;
 
             MultiplayerOffline multiplayerOffline = new MultiplayerOffline(buttonsPosX, multiplayerOfflinePosY, true, true, 0);
+            MultiplayerOnline multiplayerOnline = new MultiplayerOnline(buttonsPosX, multiplayerOnlinePosY, true, true, 0);
             Back back = new Back(buttonsPosX - 2, backPosY, true, true, 0); // -2 becouse this font is not the same, so it looks more aligned
 
-            _buttonsMainMenu = new IClickable[2]
+            _buttonsMainMenu = new IClickable[3]
             {
                 multiplayerOffline,
+                multiplayerOnline,
                 back
             };
 

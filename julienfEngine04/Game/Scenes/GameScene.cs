@@ -50,6 +50,7 @@ namespace julienfEngine1
         private const double _TIME_TO_ALLOW_ANY_KEY_PRESSED = 1;
 
         private E_GameType _gameType;
+        private Winner.E_WinnerTypes _winnerType = Winner.E_WinnerTypes.Winner;
 
         #endregion
 
@@ -91,7 +92,6 @@ namespace julienfEngine1
             _spaceshipPlayer2 = new Spaceship(E_ForegroundColors.Red, _MAX_BULLETS_PLAYER2, _TIME_TO_RECHARGE_PLAYER2, Screen.P_Width - _WALL_DISTANCE, Screen.P_Height / 2, true);
             _spaceshipPlayer2.P_PosX -= _spaceshipPlayer2.P_GameObjectFigures[0].P_Figure[0].Length;
             _spaceshipPlayer2.P_GameObjectFigures[0].ForegroundColor = E_ForegroundColors.White;
-            _bulletsAvailibleUIPlayer2 = new bulletsAvailibleUI(_spaceshipPlayer2, E_BackgroundColors.Red, Screen.P_Width - _WALL_DISTANCE_UI - (_spaceshipPlayer2.P_MaxBullets * bulletsAvailibleUI.BULLET_DISTANCE), _CEILING_DISTANCE_UI, true, true, 0);
 
             switch (_gameType)
             {
@@ -107,6 +107,12 @@ namespace julienfEngine1
                     _spaceshipAI = new SpaceshipAIHard(_spaceshipPlayer2, _spaceshipPlayer1.P_Bullets);
                     _gameType = E_GameType.SinglePlayer;
                     break;
+                case E_GameType.MultiplayerOffline:
+                    _bulletsAvailibleUIPlayer2 = new bulletsAvailibleUI(_spaceshipPlayer2, E_BackgroundColors.Red, Screen.P_Width - _WALL_DISTANCE_UI - (_spaceshipPlayer2.P_MaxBullets * bulletsAvailibleUI.BULLET_DISTANCE), _CEILING_DISTANCE_UI, true, true, 0);
+                    break;
+                case E_GameType.MultiplayerOnline:
+
+                    break;
             }
 
 
@@ -116,9 +122,6 @@ namespace julienfEngine1
             //horizontalLineDown = new HorizontalLine(60, HorizontalLine.E_CurveDirection.Up, null, 0, true, true, 0, 77, 24);
             //verticalLineLeft = new VerticalLine(15, VerticalLine.E_CurveDirection.Right, null, 0, true, true, 0, 76, 10);
             //verticalLineRight = new VerticalLine(15, VerticalLine.E_CurveDirection.Left, null, 0, true, true, 0, 137, 10);
-
-            _winner = new Winner(Screen.P_Width / 2, Screen.P_Height / 5, false, true, 0);
-            _winner.P_PosX -= _winner.P_GameObjectFigures[0].P_Figure[0].Length / 2;
 
             _loser = new Loser(Screen.P_Width / 2, Screen.P_Height / 5, false, true, 0);
             _loser.P_PosX -= _loser.P_GameObjectFigures[0].P_Figure[0].Length / 2;
@@ -192,6 +195,7 @@ namespace julienfEngine1
                         MultiplayerOffline();
                         break;
                     case E_GameType.MultiplayerOnline:
+                        MultiplayerOnline();
                         break;
                 }
 
@@ -207,14 +211,23 @@ namespace julienfEngine1
 
         public void GameOver(E_PlayerID playerID)
         {
+            bool gameMultiplayerOffline = _gameType == E_GameType.MultiplayerOffline;
+
             switch (playerID)
             {
                 case E_PlayerID.Player1:
-                    _loser.P_Visible = true;
+                    if (gameMultiplayerOffline)
+                    {
+                        _winner = new Winner(Winner.E_WinnerTypes.WinnerP2, Screen.P_Width / 2, Screen.P_Height / 5, true, true, 0);
+                        _winner.P_PosX -= _winner.P_GameObjectFigures[0].P_Figure[0].Length / 2;
+                    }
+                    else _loser.P_Visible = true;
                     break;
 
                 case E_PlayerID.Player2:
-                    _winner.P_Visible = true;
+                    _winner = new Winner(gameMultiplayerOffline ? Winner.E_WinnerTypes.WinnerP1 : Winner.E_WinnerTypes.Winner,
+                        Screen.P_Width / 2, Screen.P_Height / 5, true, true, 0);
+                    _winner.P_PosX -= _winner.P_GameObjectFigures[0].P_Figure[0].Length / 2;
                     break;
             }
 
@@ -281,6 +294,11 @@ namespace julienfEngine1
             _spaceshipPlayer2.MoveBulletsAttached();
             _spaceshipPlayer2.RechargeBullets();
             _bulletsAvailibleUIPlayer2.UpdateBulletsUI();
+        }
+
+        private void MultiplayerOnline()
+        {
+            RunPlayer1FullKeys();
         }
 
         #endregion

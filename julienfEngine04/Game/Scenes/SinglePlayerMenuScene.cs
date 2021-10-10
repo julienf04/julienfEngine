@@ -67,8 +67,6 @@ namespace julienfEngine1
             _arrowMenu.P_PosY += (easySinglePlayerMenu.P_GameObjectFigures[0].P_Figure.Length / 2) - (_arrowMenu.P_GameObjectFigures[0].P_Figure.Length / 2);
             _arrowMenu.P_CurrentSelectOption = 0;
 
-            GameObject firstButton = (GameObject)_buttonsMainMenu[0];
-
             int tutorialsPosX = buttonsPosX + _DISTANCE_BETWEEN_BUTTONS_AND_TUTORIALS_POSX;
             int tutorialControlsPosY = easySinglePlayerMenuPosY + _DISTANCE_BETWEEN_FIRST_BUTTON_AND_FIRST_TUTORIAL_POSY;
             int tutorialDefeatYourOpponentPosY = tutorialControlsPosY + _DISTANCE_BETWEEN_TUTORIALS;

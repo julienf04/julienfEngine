@@ -22,7 +22,7 @@ namespace julienfEngine1
 
         private int _timeBetweenFigures = 1; //time in seconds
 
-        private Timer _sequenceTimer = new Timer();
+        private readonly Timer _sequenceTimer = new Timer();
 
         private bool _isNextFigureFrame = false;
 
@@ -77,7 +77,7 @@ namespace julienfEngine1
 
                     case E_AnimationStates.Repeat:
                         _currentFigureIndex++;
-                        _currentFigureIndex = _currentFigureIndex % (_sequenceOfFigures.Length);
+                        _currentFigureIndex %= (_sequenceOfFigures.Length);
                         break;
 
                     case E_AnimationStates.RepeatReverse:

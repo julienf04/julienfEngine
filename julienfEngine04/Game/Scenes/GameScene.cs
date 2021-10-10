@@ -39,18 +39,15 @@ namespace julienfEngine1
         private Pause _pause;
 
         private TextMessage _pressToContinue;
-        private const byte _TEXT_ANY_KEY_FIXED_WINEER_POSX = 8;
-        private const byte _TEXT_ANY_KEY_FIXED_LOSER_POSX = 5;
         private const byte _TEXT_ANY_KEY_FIXED_PAUSE_POSX = 8;
 
         private bool _onPause = false;
         private bool _gameOver = false;
 
-        private Timer _timerToAllowAnyKeyPressed = new Timer();
+        private readonly Timer _timerToAllowAnyKeyPressed = new Timer();
         private const double _TIME_TO_ALLOW_ANY_KEY_PRESSED = 1;
 
         private E_GameType _gameType;
-        private Winner.E_WinnerTypes _winnerType = Winner.E_WinnerTypes.Winner;
 
         #endregion
 

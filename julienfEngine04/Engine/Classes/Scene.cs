@@ -12,12 +12,12 @@ namespace julienfEngine1
 
         private Camera _mainCamera = new Camera(0, 0); //This Camera is the main camera, the camera displayed 
 
-        private List<GameObject> _gameObjectsToDraw = new List<GameObject>();
+        private readonly List<GameObject> _gameObjectsToDraw = new List<GameObject>();
 
-        private List<ICanCollide> _ICollideableToDetectCollisions = new List<ICanCollide>();
+        private readonly List<ICanCollide> _ICollideableToDetectCollisions = new List<ICanCollide>();
 
-        private static List<IntPtr> _allScenePointers = new List<IntPtr>();
-        private static List<Scene> _allLoadedScenes = new List<Scene>();
+        private static readonly List<IntPtr> _allScenePointers = new List<IntPtr>();
+        private static readonly List<Scene> _allLoadedScenes = new List<Scene>();
 
         private static bool _onLoadScene = false;
 

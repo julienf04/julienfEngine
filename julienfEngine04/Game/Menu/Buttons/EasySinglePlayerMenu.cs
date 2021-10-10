@@ -7,7 +7,7 @@ namespace julienfEngine1
     {
         #region ATRIBUTES
 
-        private Figure _figureEasy = new Figure
+        private readonly Figure _figureEasy = new Figure
             (new string[8]
                 {
                     @" _____                    ",

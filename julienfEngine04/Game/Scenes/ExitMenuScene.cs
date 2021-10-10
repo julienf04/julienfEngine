@@ -81,8 +81,10 @@ namespace julienfEngine1
 
             int arrowPosX = yesPosX + _DISTANCE_BETWEEN_YES_AND_ARROW_POSX;
             int arrowPosY = yesAndNoPosY - _DISTANCE_BETWEEN_YES_AND_ARROW_POSY;
-            _arrowMenu = new ArrowMenu(_buttonsExitMenu, arrowPosX, arrowPosY, true, true, 0, ArrowMenu.RO_FigureMenuArrow, 7);
-            _arrowMenu.P_CurrentSelectOption = 1;
+            _arrowMenu = new ArrowMenu(_buttonsExitMenu, arrowPosX, arrowPosY, true, true, 0, ArrowMenu.RO_FigureMenuArrow, 7)
+            {
+                P_CurrentSelectOption = 1
+            };
         }
 
         public override void Start()

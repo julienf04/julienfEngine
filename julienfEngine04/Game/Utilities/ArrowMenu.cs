@@ -80,13 +80,13 @@ namespace julienfEngine1
 
         private uint _currentSelectOption = 0; //Current select option dimension 1
 
-        private IClickable[] _currentMenu;
+        private readonly IClickable[] _currentMenu;
 
 
         // Support variables
         private double _timerChangeArrowVelocity = 0;
 
-        private Func<E_Keyboard, bool> _predicateForCheckArrowMovement;
+        private readonly Func<E_Keyboard, bool> _predicateForCheckArrowMovement;
         private E_Keyboard _currentKeyPressed;
 
         #endregion

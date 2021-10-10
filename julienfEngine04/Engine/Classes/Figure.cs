@@ -22,7 +22,7 @@ namespace julienfEngine1
 
         public Figure()
         {
-            _figure = new string[0];
+            _figure = Array.Empty<string>();
         }
 
         public Figure(string[] figure)

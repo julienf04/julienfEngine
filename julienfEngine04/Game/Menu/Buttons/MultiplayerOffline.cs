@@ -9,7 +9,7 @@ namespace julienfEngine1
         #region ATRIBUTES
 
         // Declare and initialize figure/s for this GameObject
-        private Figure _figureMultiplayerOffline = new Figure
+        private readonly Figure _figureMultiplayerOffline = new Figure
            (new string[8]
                {
                     @"___  ___      _ _   _       _                                __  __ _ _            ",

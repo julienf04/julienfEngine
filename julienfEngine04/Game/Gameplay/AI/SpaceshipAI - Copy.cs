@@ -10,10 +10,8 @@ namespace julienfEngine1
     {
         #region ATTRIBUTES
 
-        private const byte _WEIGHT_MARGIN = 2;
-
-        private Spaceship _spaceshipAttached;
-        private IEnumerable<IDodgeable> _objectsToDodge;
+        private readonly Spaceship _spaceshipAttached;
+        private readonly IEnumerable<IDodgeable> _objectsToDodge;
 
 
         //private Task _taskRunAI;

@@ -10,7 +10,7 @@ namespace julienfEngine1
 
         // Declare and initialize a figure/s of this GameObject
 
-        private string[] _textWinner = new string[8]
+        private readonly string[] _textWinner = new string[8]
         {
             @"           (        )     )       (    ",
             @" (  (      )\ )  ( /(  ( /(       )\ ) ",
@@ -22,7 +22,7 @@ namespace julienfEngine1
             @"  \_/\_/  |___| |_|\_||_|\_||___||_|_\ "
         };
 
-        private string[] _textWinnerP1 = new string[8]
+        private readonly string[] _textWinnerP1 = new string[8]
         {
             @"           (        )     )       (        (          ",
             @" (  (      )\ )  ( /(  ( /(       )\ )     )\ )    )  ",
@@ -34,7 +34,7 @@ namespace julienfEngine1
             @"  \_/\_/  |___| |_|\_||_|\_||___||_|_\    |_|   |_|   "
         };
 
-        private string[] _textWinnerP2 = new string[8]
+        private readonly string[] _textWinnerP2 = new string[8]
        {
             @"           (        )     )       (      (          ",
             @" (  (      )\ )  ( /(  ( /(       )\ )   )\ )    )  ",
@@ -46,7 +46,7 @@ namespace julienfEngine1
             @"  \_/\_/  |___| |_|\_||_|\_||___||_|_\  |_|  /___|  "
        };
 
-        private Figure _figureWinner = new Figure(E_ForegroundColors.Yellow);
+        private readonly Figure _figureWinner = new Figure(E_ForegroundColors.Yellow);
 
         #endregion
 

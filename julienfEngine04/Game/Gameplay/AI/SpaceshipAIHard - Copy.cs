@@ -24,7 +24,7 @@ namespace julienfEngine1
         private IDodgeable _lastMaxBullet;
         private int _lastMaxBulletPosY;
         private bool _operatorGreaterRandomDestiny = true;
-        private Timer _timerImmovable = new Timer();
+        private readonly Timer _timerImmovable = new Timer();
         private int _timeImmovable = 1;
 
         #endregion
@@ -50,9 +50,9 @@ namespace julienfEngine1
             if (targetBullet is not null)
             {
                 int destiny = (int)targetBullet.P_Transform.P_PosY;
-                int direction = 0;
                 if (fixedDirection is null)
                 {
+                    int direction;
                     MoveToDestiny(destiny, 0, this.P_SpaceshipAttached.P_MaxPosY, out direction);
 
                     if (direction == 1)
@@ -184,8 +184,8 @@ namespace julienfEngine1
             if (targetBulletPosY <= (int)this.P_SpaceshipAttached.P_PosY + halfSpaceshipFigureLength) direction = 1;
             else if (targetBulletPosY >= (int)this.P_SpaceshipAttached.P_PosY + spaceshipFigureLength - halfSpaceshipFigureLength) direction = -1;
 
-            if (targetBulletPosY >= this.P_SpaceshipAttached.P_MaxPosY) direction = -1;
-            else if (targetBulletPosY - spaceshipFigureLength <= this.P_SpaceshipAttached.P_MinPosY) direction = 1;
+            if (targetBulletPosY >= spaceshipMaxPosY) direction = -1;
+            else if (targetBulletPosY - spaceshipFigureLength <= spaceshipMinPosY) direction = 1;
 
             outDirection = direction;
 

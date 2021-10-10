@@ -12,11 +12,11 @@ namespace julienfEngine1
 
         private bool _detectCollisions = true;
 
-        private Stack<GameObject> _currentOnCollisionEnterGameObjects;
-        private List<GameObject> _currentOnCollisionStayGameObjects;
-        private Stack<GameObject> _currentOnCollisionExitGameObjects;
+        private readonly Stack<GameObject> _currentOnCollisionEnterGameObjects;
+        private readonly List<GameObject> _currentOnCollisionStayGameObjects;
+        private readonly Stack<GameObject> _currentOnCollisionExitGameObjects;
 
-        private GameObject _gameObjectAttached;
+        private readonly GameObject _gameObjectAttached;
 
         #endregion
 

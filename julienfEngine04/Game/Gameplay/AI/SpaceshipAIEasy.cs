@@ -10,10 +10,6 @@ namespace julienfEngine1
     {
         #region ATTRIBUTES
 
-        private const byte _LIMIT_MARGIN_Y = 1;
-        private const int _MIN_RANDOMLY_BULLET_POSX_TO_START_MOVING = 40;
-        private const int _MAX_RANDOMLY_BULLET_POSX_TO_START_MOVING = 70;
-        private const int _WEIGHT_MARGIN = 2;
         private const int _MIN_TIME_TO_SLEEP = 1;
         private const int _MAX_TIME_TO_SLEEP = 5;
         private const int _POSSIBILITY_OF_SLEEP = 4;
@@ -25,7 +21,7 @@ namespace julienfEngine1
         private IDodgeable _lastMaxBullet;
         private int _lastMaxBulletPosY;
         private bool _operatorGreaterRandomDestiny = true;
-        private Timer _timerImmovable = new Timer();
+        private readonly Timer _timerImmovable = new Timer();
         private int _timeImmovable = 1;
 
         #endregion

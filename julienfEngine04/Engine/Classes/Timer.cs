@@ -7,12 +7,12 @@ namespace julienfEngine1
     {
         #region ---ATRIBUTES;
 
-        private static Stopwatch _stTime = new Stopwatch(); //this variable is a variable that counts the time elapsed since the game started
+        private static readonly Stopwatch _stTime = new Stopwatch(); //this variable is a variable that counts the time elapsed since the game started
         private static double _time = 0; //This variable is a variable that shows the time elapsed since de last frame
-        private static Stopwatch _stDeltaTime = new Stopwatch(); //This variable is a variable that counts the time elapsed since de last frame
+        private static readonly Stopwatch _stDeltaTime = new Stopwatch(); //This variable is a variable that counts the time elapsed since de last frame
         private static float _deltaTime = 0; //This variable is a variable that shows the time elapsed since de last frame
 
-        private Stopwatch _stMyTimer = new Stopwatch(); //This variable is for managing a timer given to the user
+        private readonly Stopwatch _stMyTimer = new Stopwatch(); //This variable is for managing a timer given to the user
         private double _myTimer = 0; //This timer is a final timer that going to be showed to the user. The user can set a start timer value
 
 

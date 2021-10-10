@@ -24,18 +24,18 @@ namespace julienfEngine1
 
         #region ---ATRIBUTES
 
-        private static List<E_Keyboard> _keysPressedThisFrame = new List<E_Keyboard>();
-        private static List<E_Keyboard> _keysDown = new List<E_Keyboard>();
-        private static List<E_Keyboard> _keysUp = new List<E_Keyboard>();
-        private static List<E_Keyboard> _keysDownToCheck = new List<E_Keyboard>();
-        private static List<E_Keyboard> _keysUpToCheck = new List<E_Keyboard>();
+        private static readonly List<E_Keyboard> _keysPressedThisFrame = new List<E_Keyboard>();
+        private static readonly List<E_Keyboard> _keysDown = new List<E_Keyboard>();
+        private static readonly List<E_Keyboard> _keysUp = new List<E_Keyboard>();
+        private static readonly List<E_Keyboard> _keysDownToCheck = new List<E_Keyboard>();
+        private static readonly List<E_Keyboard> _keysUpToCheck = new List<E_Keyboard>();
 
         private static E_Keyboard _lastKeyPressed = 0;
         private static E_Keyboard _lastKeyUp = 0;
 
         private static bool _anyKeyPressed = false;
 
-        private static Stack<E_Keyboard> _keysUsedForThisGame = new Stack<E_Keyboard>();
+        private static readonly Stack<E_Keyboard> _keysUsedForThisGame = new Stack<E_Keyboard>();
 
         #endregion
 

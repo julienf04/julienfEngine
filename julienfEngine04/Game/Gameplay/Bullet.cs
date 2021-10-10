@@ -12,22 +12,22 @@ namespace julienfEngine1
         #region ATRIBUTES
 
         // Declare and initialize a figure/s of this GameObject
-        private Figure _figureBulletPlayer1 = new Figure
+        private readonly Figure _figureBulletPlayer1 = new Figure
            (new string[1]
                {
                     @"==>"
                }, E_ForegroundColors.Gray
            );
 
-        private Figure _figureBulletPlayer2 = new Figure
+        private readonly Figure _figureBulletPlayer2 = new Figure
          (new string[1]
              {
                     @"<=="
              }, E_ForegroundColors.Gray
          );
 
-        private byte _velocity = 50;
-        private sbyte _direction;
+        private readonly byte _velocity = 50;
+        private readonly sbyte _direction;
 
         private bool _isBeenUsed = false;
 

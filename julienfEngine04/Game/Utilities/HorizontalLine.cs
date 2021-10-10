@@ -26,7 +26,7 @@ namespace julienfEngine1
             : base(posX, posY, visible, isUI, layer)
         {
             string line = "";
-            for (int i = 0; i < length; i++) line = line + "-";
+            for (int i = 0; i < length; i++) line += "-";
 
             this.P_GameObjectFigures[0].P_Figure = new string[1] { line };
             //figures[0].P_Figure = new string[1] { line };

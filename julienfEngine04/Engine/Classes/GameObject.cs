@@ -17,11 +17,11 @@ namespace julienfEngine1
 
         private bool _isUI = false;
 
-        private Animation _animation = null;
+        private readonly Animation _animation = null;
 
         private byte _layer = 0;
 
-        private Collision _collision;
+        private readonly Collision _collision;
 
         //private Scene _myScene = null;
 

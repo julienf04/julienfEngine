@@ -9,7 +9,7 @@ namespace julienfEngine1
         #region ATRIBUTES
 
         // Declare and initialize a figure/s of this GameObject
-        private Figure _figureSimpleBacgroundColor = new Figure
+        private readonly Figure _figureSimpleBacgroundColor = new Figure
            (new string[1]
                {
                     @" "

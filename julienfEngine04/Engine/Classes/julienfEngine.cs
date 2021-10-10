@@ -22,7 +22,7 @@ namespace julienfEngine1
 
         private static bool _limitFPSbyAverage = false;
 
-        private static Stack<Task> _tasksToWait = new Stack<Task>();
+        private static readonly Stack<Task> _tasksToWait = new Stack<Task>();
 
         private const byte _COUNT_OF_METHODS_TO_RESET_ALL_ENGINE_VALUES = 3;
 
@@ -126,7 +126,7 @@ namespace julienfEngine1
         {
             DllImporter.SetScreenBuffer(_currentScreenBufferID);
 
-            _currentScreenBufferID = _currentScreenBufferID % DllImporter.P_NumberOfScreenBuffers;
+            _currentScreenBufferID %= DllImporter.P_NumberOfScreenBuffers;
             _currentScreenBufferID++;
 
             DllImporter.ClearConsole(_currentScreenBufferID);
@@ -185,15 +185,15 @@ namespace julienfEngine1
 
                 if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionEnterGameObjects.Count != 0)
                 {
-                    if (currentGameObjectCollision1 is IOnCollisionEnter) ((IOnCollisionEnter)currentGameObjectCollision1).OnCollisionEnter(currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionEnterGameObjects.ToArray());
-                    if (currentGameObjectCollision1 is IOnCollisionStay) ((IOnCollisionStay)currentGameObjectCollision1).OnCollisionStay(currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.ToArray());
+                    if (currentGameObjectCollision1 is IOnCollisionEnter colEnter) colEnter.OnCollisionEnter(currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionEnterGameObjects.ToArray());
+                    if (currentGameObjectCollision1 is IOnCollisionStay colStay) colStay.OnCollisionStay(currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.ToArray());
                 }
 
-                else if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Count != 0 && currentGameObjectCollision1 is IOnCollisionStay)
-                    ((IOnCollisionStay)currentGameObjectCollision1).OnCollisionStay(currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.ToArray());
+                else if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Count != 0 && currentGameObjectCollision1 is IOnCollisionStay colStay)
+                    colStay.OnCollisionStay(currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.ToArray());
 
-                if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionExitGameObjects.Count != 0 && currentGameObjectCollision1 is IOnCollisionExit)
-                    ((IOnCollisionExit)currentGameObjectCollision1).OnCollisionExit(currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionExitGameObjects.ToArray());
+                if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionExitGameObjects.Count != 0 && currentGameObjectCollision1 is IOnCollisionExit colExit)
+                    colExit.OnCollisionExit(currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionExitGameObjects.ToArray());
 
                 currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionEnterGameObjects.Clear();
                 currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionExitGameObjects.Clear();

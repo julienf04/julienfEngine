@@ -11,7 +11,7 @@ namespace julienfEngine1
         #region ATRIBUTES
 
         // Declare and initialize a figure/s of this GameObject
-        private Figure _figureSpaceshipLeftSide = new Figure
+        private readonly Figure _figureSpaceshipLeftSide = new Figure
            (new string[9]
                {
                     @"|====;      ",
@@ -26,7 +26,7 @@ namespace julienfEngine1
                }, E_ForegroundColors.Gray
            );
 
-        private Figure _figureSpaceshipRightSide = new Figure
+        private readonly Figure _figureSpaceshipRightSide = new Figure
           (new string[9]
               {
                     @"      ;====|",
@@ -43,22 +43,22 @@ namespace julienfEngine1
 
 
         private static byte _numberOfPlayers = 0;
-        private E_PlayerID _playerID = E_PlayerID.Player1;
+        private readonly E_PlayerID _playerID = E_PlayerID.Player1;
 
-        private float _velocity = 25;
+        private readonly float _velocity = 25;
         private int _minPosY = 0;
         private int _maxPosY = 46;
 
-        private Queue<Bullet> _bullets = new Queue<Bullet>();
-        private int _posXToInstantiateBullets;
-        private byte _halfFigureY;
+        private readonly Queue<Bullet> _bullets = new Queue<Bullet>();
+        private readonly int _posXToInstantiateBullets;
+        private readonly byte _halfFigureY;
 
-        private int _maxBullets = 5;
-        private float _timeToRecharge = 1;
+        private readonly int _maxBullets = 5;
+        private readonly float _timeToRecharge = 1;
         private int _countOfBullets;
-        private Timer _timerToRechargeBullets = new Timer();
+        private readonly Timer _timerToRechargeBullets = new Timer();
 
-        private E_ForegroundColors _bulletsColor;
+        private readonly E_ForegroundColors _bulletsColor;
 
         private bool _isAlive = true;
 

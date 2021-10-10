@@ -9,7 +9,7 @@ namespace julienfEngine1
         #region ATRIBUTES
 
         // Declare and initialize a figure/s of this GameObject
-        private Figure _figurePause = new Figure
+        private readonly Figure _figurePause = new Figure
            (new string[6]
                {
                     @"  _____                               ",

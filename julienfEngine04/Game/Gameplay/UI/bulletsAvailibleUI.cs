@@ -10,15 +10,15 @@ namespace julienfEngine1
         #region ATRIBUTES
 
         // Declare and initialize a figure/s of this GameObject
-        private Figure _figurebulletsAvailible = new Figure
+        private readonly Figure _figurebulletsAvailible = new Figure
            (new string[1]
                {
                     @"Bullets:"
                }, E_ForegroundColors.Yellow
            );
 
-        private Spaceship _spaceshipAttached;
-        private SimpleBacgroundColor[] _bullets;
+        private readonly Spaceship _spaceshipAttached;
+        private readonly SimpleBacgroundColor[] _bullets;
         private int _countOfBulletsUI;
 
         public const byte BULLET_DISTANCE = 2;

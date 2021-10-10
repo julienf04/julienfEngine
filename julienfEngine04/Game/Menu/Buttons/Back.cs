@@ -9,7 +9,7 @@ namespace julienfEngine1
         #region ATRIBUTES
 
         // Declare and initialize a figure/s of this GameObject
-        private Figure _figureBack = new Figure
+        private readonly Figure _figureBack = new Figure
            (new string[5]
                {
                     @"    ____             __  ",

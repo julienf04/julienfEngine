@@ -29,7 +29,7 @@ namespace julienfEngine1
 
         #region METHODS
 
-        private int ChangeValues(int value, ref int otherPoint)
+        private static int ChangeValues(int value, ref int otherPoint)
         {
             int point = otherPoint;
             otherPoint = value;

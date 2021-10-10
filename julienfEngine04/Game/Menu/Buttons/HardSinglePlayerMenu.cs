@@ -44,7 +44,13 @@ namespace julienfEngine1
 
         public void OnClick()
         {
+            Scene.UnloadScene(typeof(MainMenuScene));
+            Scene.UnloadScene(typeof(ExitMenuScene));
+            Scene.UnloadScene(typeof(SinglePlayerMenuScene));
+            Scene.UnloadScene(typeof(MultiplayerMenuScene));
 
+            Scene.LoadScene(typeof(GameScene), new object[] { GameScene.E_GameType.SinglePlayerHard });
+            Scene.SetLoadedScene(typeof(GameScene), true);
         }
 
         #endregion

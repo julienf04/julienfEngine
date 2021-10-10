@@ -176,6 +176,24 @@ namespace julienfEngine1
             _currentScene = currentScene;
         }
 
+        public static void LoadScene(Type sceneType, params object[] args)
+        {
+            if (!IsScene(sceneType)) throw new Exception("The type is not a scene");
+
+            if (_allLoadedScenes.All(currentScene => currentScene.GetType() == sceneType) && _allLoadedScenes.Count >= 1) throw new Exception("The scene you are trying to load is already loaded");
+
+            _onLoadScene = true;
+            Scene sceneToLoad = (Scene)Activator.CreateInstance(sceneType, args);
+            _allLoadedScenes.Add(sceneToLoad);
+
+            if (_currentScene == null) _currentScene = sceneToLoad;
+
+            Scene currentScene = _currentScene;
+            _currentScene = sceneToLoad;
+            sceneToLoad.Awake();
+            _currentScene = currentScene;
+        }
+
         public static void UnloadScene(Type sceneType)
         {
             if (!IsScene(sceneType)) throw new Exception("The type is not a scene");

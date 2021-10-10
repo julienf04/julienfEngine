@@ -53,9 +53,9 @@ namespace julienfEngine1
         private int _posXToInstantiateBullets;
         private byte _halfFigureY;
 
-        private byte _maxBullets = 5;
-        private double _timeToRecharge = 1;
-        private byte _countOfBullets;
+        private int _maxBullets = 5;
+        private float _timeToRecharge = 1;
+        private int _countOfBullets;
         private Timer _timerToRechargeBullets = new Timer();
 
         private E_ForegroundColors _bulletsColor;
@@ -68,7 +68,7 @@ namespace julienfEngine1
         #region CONSTRUCTORS
 
         // Create a constructor/s of tthis GameObject
-        public Spaceship(E_ForegroundColors bulletsColor, int posX, int posY, bool visible) : base(posX, posY, visible)
+        public Spaceship(E_ForegroundColors bulletsColor, int maxBullets, float timeToRecharge, int posX, int posY, bool visible) : base(posX, posY, visible)
         {
             _playerID = (E_PlayerID)_numberOfPlayers;
             _numberOfPlayers++;
@@ -108,6 +108,8 @@ namespace julienfEngine1
             firstBullet.P_Collision.P_DetectCollisions = false;
             _bullets.Enqueue(firstBullet);
 
+            _maxBullets = maxBullets;
+            _timeToRecharge = timeToRecharge;
             _countOfBullets = _maxBullets;
         }
 
@@ -116,7 +118,7 @@ namespace julienfEngine1
         // Create actions of this GameObject
         #region METHODS
 
-        public void SetBullets(byte bullets)
+        public void SetBullets(int bullets)
         {
             this._countOfBullets = bullets <= _maxBullets ? bullets : _maxBullets;
         }
@@ -146,14 +148,14 @@ namespace julienfEngine1
                 _countOfBullets--;
                 float timerDecimalsElapsed = (float)_timerToRechargeBullets.P_MyTimer >= _countOfBullets ? (float)_timerToRechargeBullets.P_MyTimer - (int)_timerToRechargeBullets.P_MyTimer : 0;
                 _timerToRechargeBullets.ResetMyTimer();
-                _timerToRechargeBullets.StartMyTimer(_countOfBullets + timerDecimalsElapsed);
+                _timerToRechargeBullets.StartMyTimer(_countOfBullets + timerDecimalsElapsed, 1 / _timeToRecharge);
             }
         }
 
         public void RechargeBullets()
         {
-            _countOfBullets = _countOfBullets < _maxBullets && (byte)_timerToRechargeBullets.P_MyTimer < _maxBullets
-                ? (byte)_timerToRechargeBullets.P_MyTimer : _maxBullets;
+            _countOfBullets = _countOfBullets < _maxBullets && _timerToRechargeBullets.P_MyTimer < _maxBullets
+                ? (int)_timerToRechargeBullets.P_MyTimer : _maxBullets;
 
             //_countOfBullets = (byte)_timerToRechargeBullets.P_MyTimer < _maxBullets
             //   ? (byte)_timerToRechargeBullets.P_MyTimer : _maxBullets;
@@ -230,7 +232,7 @@ namespace julienfEngine1
             }
         }
 
-        public byte P_MaxBullets
+        public int P_MaxBullets
         {
             get
             {
@@ -238,7 +240,7 @@ namespace julienfEngine1
             }
         }
 
-        public byte P_CountOfBullets
+        public int P_CountOfBullets
         {
             get
             {

@@ -26,6 +26,18 @@ namespace julienfEngine1
 
         #region PROPERTIES
 
+        public string P_Message
+        {
+            get
+            {
+                return this.P_GameObjectFigures[0].P_Figure[0];
+            }
+            set
+            {
+                this.P_GameObjectFigures[0].P_Figure[0] = value;
+            }
+        }
+
         #endregion
     }
 }

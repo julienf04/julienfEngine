@@ -19,9 +19,9 @@ namespace julienfEngine1
 
         private Spaceship _spaceshipAttached;
         private SimpleBacgroundColor[] _bullets;
-        private byte _countOfBulletsUI;
+        private int _countOfBulletsUI;
 
-        private const byte _BULLET_DISTANCE = 2;
+        public const byte BULLET_DISTANCE = 2;
 
         #endregion
 
@@ -35,7 +35,7 @@ namespace julienfEngine1
             this.P_GameObjectFigures = new Figure[1] { _figurebulletsAvailible };
 
             _bullets = new SimpleBacgroundColor[player.P_MaxBullets];
-            for (int i = 0, x = 0; x < _bullets.Length * _BULLET_DISTANCE; i++, x += _BULLET_DISTANCE)
+            for (int i = 0, x = 0; x < _bullets.Length * BULLET_DISTANCE; i++, x += BULLET_DISTANCE)
                 _bullets[i] = new SimpleBacgroundColor(bulletsColor, (int)this.P_PosX + _figurebulletsAvailible.P_Figure[0].Length + 1 + x, (int)this.P_PosY,
                     true, true, 0);
 

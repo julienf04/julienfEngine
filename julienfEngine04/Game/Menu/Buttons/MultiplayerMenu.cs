@@ -46,7 +46,7 @@ namespace julienfEngine1
 
         public void OnClick()
         {
-            throw new NotImplementedException();
+            Scene.SetLoadedScene(typeof(MultiplayerMenuScene), false);
         }
 
         #endregion

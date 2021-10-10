@@ -57,10 +57,6 @@ namespace julienfEngine1
         //    _runAI = false;
         //}
 
-        protected abstract IDodgeable FindTargetBullet(int spaceshipMinPosY, int spaceshipMaxPosY, out int? fixedDirection);
-        protected abstract void MoveToDestiny(int fixedDirection);
-        protected abstract void MoveToDestiny(int destiny, int spaceshipMinPosY, int spaceshipMaxPosY);
-
         #endregion
 
         #region PROPERTIES

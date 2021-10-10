@@ -12,15 +12,16 @@ namespace julienfEngine1
     {
         #region ATTRIBUTES
 
-        private const byte _LIMIT_MARGIN_Y = 1;
-        private const float _MAX_RANDOMLY_BULLET_POSX_TO_START_MOVING = 3;
         private const int _WEIGHT_MARGIN = 2;
+        private const int _MIN_TIME_TO_SLEEP = 1;
+        private const int _MAX_TIME_TO_SLEEP = 5;
+        private const int _POSSIBILITY_OF_SLEEP = 4;
 
         //private Transform _currentTransformToDodge;
-        private sbyte _destiny;
-        private int _lastRandomDirection = 1;
         private int _lastRandomDestiny = 1;
+        private IDodgeable _lastMinBullet;
         private int _lastMinBulletPosY;
+        private IDodgeable _lastMaxBullet;
         private int _lastMaxBulletPosY;
         private bool _operatorGreaterRandomDestiny = true;
         private Timer _timerImmovable = new Timer();
@@ -32,7 +33,6 @@ namespace julienfEngine1
 
         public SpaceshipAIHard(Spaceship mySpaceship, IEnumerable<IDodgeable> objectsToDodge) : base(mySpaceship, objectsToDodge)
         {
-            _destiny = (sbyte)this.P_SpaceshipAttached.P_PosY;
             _lastMinBulletPosY = this.P_SpaceshipAttached.P_MinPosY;
             _lastMaxBulletPosY = this.P_SpaceshipAttached.P_MaxPosY;
             _timerImmovable.StartMyTimer(0);
@@ -50,12 +50,27 @@ namespace julienfEngine1
             if (targetBullet is not null)
             {
                 int destiny = (int)targetBullet.P_Transform.P_PosY;
-                if (fixedDirection is null) MoveToDestiny(destiny, 0, this.P_SpaceshipAttached.P_MaxPosY);
+                int direction = 0;
+                if (fixedDirection is null)
+                {
+                    MoveToDestiny(destiny, 0, this.P_SpaceshipAttached.P_MaxPosY, out direction);
+
+                    if (direction == 1)
+                    {
+                        _lastMinBullet = targetBullet;
+                        _lastMinBulletPosY = (int)_lastMinBullet.P_Transform.P_PosY;
+                    }
+                    else
+                    {
+                        _lastMaxBullet = targetBullet;
+                        _lastMaxBulletPosY = (int)_lastMaxBullet.P_Transform.P_PosY;
+                    }
+                }
                 else MoveToDestiny((int)fixedDirection);
 
                 _timerImmovable.ResetMyTimer();
                 _timerImmovable.StartMyTimer(0);
-                _timeImmovable = new Random().Next(1, 5);
+                _timeImmovable = new Random().Next(_MIN_TIME_TO_SLEEP, _MAX_TIME_TO_SLEEP);
             }
             else if (_timerImmovable.P_MyTimer >= _timeImmovable)
             {
@@ -63,12 +78,23 @@ namespace julienfEngine1
                 MoveToDestiny(direction);
             }
 
+            if (!this.P_ObjectsToDodge.Contains(_lastMinBullet))
+            {
+                _lastMinBullet = null;
+                _lastMinBulletPosY = this.P_SpaceshipAttached.P_MinPosY;
+            }
+            if (!this.P_ObjectsToDodge.Contains(_lastMaxBullet))
+            {
+                _lastMaxBullet = null;
+                _lastMaxBulletPosY = this.P_SpaceshipAttached.P_MaxPosY;
+            }
+
             this.P_SpaceshipAttached.Shoot();
             this.P_SpaceshipAttached.RechargeBullets();
             this.P_SpaceshipAttached.MoveBulletsAttached();
         }
 
-        protected override IDodgeable FindTargetBullet(int spaceshipMinPosY, int spaceshipMaxPosY, out int? fixedDirection)
+        private IDodgeable FindTargetBullet(int spaceshipMinPosY, int spaceshipMaxPosY, out int? fixedDirection)
         {
             bool CheckDanger(int dodgeablePosY, int spaceshipFigureLength)
             {
@@ -120,6 +146,7 @@ namespace julienfEngine1
             //    else if ((int)bulletMaxPosY.P_Transform.P_PosY < spaceshipMaxPosY) return bulletMaxPosY;
             //    else return bulletMinPosY;
 
+            
             IDodgeable bulletToReturn = destinyDistanceMaxPosY <= destinyDistanceMinPosY && (int)bulletMaxPosY.P_Transform.P_PosY <= spaceshipMaxPosY ? bulletMaxPosY
                 : (int)bulletMinPosY.P_Transform.P_PosY >= spaceshipMinPosY ? bulletMinPosY
                 : null;
@@ -138,12 +165,12 @@ namespace julienfEngine1
             return bulletToReturn;
         }
 
-        protected override void MoveToDestiny(int fixedDirection)
+        private void MoveToDestiny(int fixedDirection)
         {
             this.P_SpaceshipAttached.P_PosY += fixedDirection * this.P_SpaceshipAttached.P_Velocity * Timer.P_DeltaTime;
         }
 
-        protected override void MoveToDestiny(int targetBulletPosY, int spaceshipMinPosY, int spaceshipMaxPosY)
+        private void MoveToDestiny(int targetBulletPosY, int spaceshipMinPosY, int spaceshipMaxPosY, out int outDirection)
         {
             int spaceshipFigureLength = this.P_SpaceshipAttached.P_GameObjectFigures[0].P_Figure.Length;
             int halfSpaceshipFigureLength = spaceshipFigureLength / 2;
@@ -155,13 +182,12 @@ namespace julienfEngine1
             int direction = 0;
 
             if (targetBulletPosY <= (int)this.P_SpaceshipAttached.P_PosY + halfSpaceshipFigureLength) direction = 1;
-            else if (targetBulletPosY > (int)this.P_SpaceshipAttached.P_PosY + spaceshipFigureLength - halfSpaceshipFigureLength) direction = -1;
+            else if (targetBulletPosY >= (int)this.P_SpaceshipAttached.P_PosY + spaceshipFigureLength - halfSpaceshipFigureLength) direction = -1;
 
             if (targetBulletPosY >= this.P_SpaceshipAttached.P_MaxPosY) direction = -1;
-            else if (targetBulletPosY - spaceshipFigureLength < this.P_SpaceshipAttached.P_MinPosY) direction = 1;
+            else if (targetBulletPosY - spaceshipFigureLength <= this.P_SpaceshipAttached.P_MinPosY) direction = 1;
 
-            if (direction == 1) _lastMinBulletPosY = targetBulletPosY;
-            else _lastMaxBulletPosY = targetBulletPosY;
+            outDirection = direction;
 
             this.P_SpaceshipAttached.P_PosY += direction * this.P_SpaceshipAttached.P_Velocity * Timer.P_DeltaTime;
         }
@@ -171,11 +197,11 @@ namespace julienfEngine1
             Random random = new Random();
             if (_operatorGreaterRandomDestiny ? this.P_SpaceshipAttached.P_PosY >= lastRandomDestiny : this.P_SpaceshipAttached.P_PosY <= lastRandomDestiny)
             {
-                if (random.Next(0, 2) == 0)
+                if (random.Next(0, _POSSIBILITY_OF_SLEEP) == 0)
                 {
                     _timerImmovable.ResetMyTimer();
                     _timerImmovable.StartMyTimer(0);
-                    _timeImmovable = random.Next(1, 5);
+                    _timeImmovable = random.Next(_MIN_TIME_TO_SLEEP, _MAX_TIME_TO_SLEEP);
                 }
 
                 lastRandomDestiny = random.Next(minRange, maxRange);

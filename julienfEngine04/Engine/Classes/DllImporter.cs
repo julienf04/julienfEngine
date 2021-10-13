@@ -294,6 +294,22 @@ namespace julienfEngine1
             WriteConsoleOutputCharacter(screenBufferToWrite, message, message.Length, coords, out ignore);
         }
 
+        internal protected static void WriteConsoleWithSpecialCharacters(int screenBufferID, string message, COORD coords, E_ForegroundColors foregroundColor, E_BackgroundColors backgroundColor, short[] startIndexes, int[] lengthToPaint)
+        {
+            uint ignore = 0;
+            screenBufferID--;
+            IntPtr screenBufferToWrite = _screenBuffers[screenBufferID];
+
+            COORD coordsForLoop = coords;
+            for (int i = 0; i < startIndexes.Length; i++)
+            {
+                COORD coordsThisIteration = coords;
+                coordsThisIteration.X += startIndexes[i];
+                FillConsoleOutputAttribute(screenBufferToWrite, (int)foregroundColor | (int)backgroundColor, lengthToPaint[i], coordsThisIteration, out ignore);
+            }
+            WriteConsoleOutputCharacter(screenBufferToWrite, message, message.Length, coords, out ignore);
+        }
+
         internal protected static void ClearConsole(int screenBufferID)
         {
             uint ignore = 0;

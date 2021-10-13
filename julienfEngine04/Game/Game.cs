@@ -334,6 +334,7 @@
             Scene.InitializeScene(typeof(ExitMenuScene));
             Scene.InitializeScene(typeof(SinglePlayerMenuScene));
             Scene.InitializeScene(typeof(MultiplayerMenuScene));
+            Scene.InitializeScene(typeof(LoadingScene));
             Scene.InitializeScene(typeof(GameScene));
 
             // Step 2: Load the start scenes and set the first scene for your game --> julienfEngine.LoadScene(typeof(YourFirstScene)); julienfEngine.SetLoadedScene(typeof(YourFirstScene));
@@ -341,6 +342,7 @@
             Scene.LoadScene(typeof(ExitMenuScene));
             Scene.LoadScene(typeof(SinglePlayerMenuScene));
             Scene.LoadScene(typeof(MultiplayerMenuScene));
+            Scene.LoadScene(typeof(LoadingScene));
             Scene.SetLoadedScene(typeof(MainMenuScene), false);
         }
 

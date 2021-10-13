@@ -7,7 +7,7 @@ namespace julienfEngine1
     {
         #region ATRIBUTES
 
-        public Figure _figureMultiplayer = new Figure
+        private readonly Figure _figureMultiplayer = new Figure
             (new string[8]
                 {
                     @"___  ___        _  _    _         _                           ",

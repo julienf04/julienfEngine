@@ -48,6 +48,11 @@ namespace julienfEngine1
         private const double _TIME_TO_ALLOW_ANY_KEY_PRESSED = 1;
 
         private E_GameType _gameType;
+        private bool _shoot = false;
+        private bool _myGameDataChanged = false;
+        private Server<GameData> _remotePlayer2;
+        private Client<GameData> _myRemotePlayer;
+        private Task<string> _taskRemotePlayer2;
 
         #endregion
 
@@ -199,6 +204,8 @@ namespace julienfEngine1
                 _spaceshipPlayer1.MoveBulletsAttached();
                 _spaceshipPlayer1.RechargeBullets();
                 _bulletsAvailibleUIPlayer1.UpdateBulletsUI();
+                _myGameDataChanged = false;
+                _shoot = false;
 
                 return;
             }
@@ -239,16 +246,30 @@ namespace julienfEngine1
             int spaceship1OldPosY = (int)_spaceshipPlayer1.P_PosY;
 
             if (Input.GetKey(E_Keyboard.W) || Input.GetKey(E_Keyboard.UpArrow))
+            {
                 _spaceshipPlayer1.P_PosY -= _spaceshipPlayer1.P_Velocity * Timer.P_DeltaTime;
+                _myGameDataChanged = true;
+            }
 
-            if (Input.GetKey(E_Keyboard.S) || Input.GetKey(E_Keyboard.DownArrow)) _spaceshipPlayer1.P_PosY += _spaceshipPlayer1.P_Velocity * Timer.P_DeltaTime;
+            if (Input.GetKey(E_Keyboard.S) || Input.GetKey(E_Keyboard.DownArrow))
+            {
+                _spaceshipPlayer1.P_PosY += _spaceshipPlayer1.P_Velocity * Timer.P_DeltaTime;
+                _myGameDataChanged = true;
+            }
 
-            if (_spaceshipPlayer1.P_PosY < _spaceshipPlayer1.P_MinPosY || _spaceshipPlayer1.P_PosY >= _spaceshipPlayer1.P_MaxPosY) _spaceshipPlayer1.P_PosY = spaceship1OldPosY;
+            if (_spaceshipPlayer1.P_PosY < _spaceshipPlayer1.P_MinPosY || _spaceshipPlayer1.P_PosY >= _spaceshipPlayer1.P_MaxPosY)
+                _spaceshipPlayer1.P_PosY = spaceship1OldPosY;
 
-            if (Input.GetKey(E_Keyboard.D) || Input.GetKey(E_Keyboard.RightArrow) || Input.GetKey(E_Keyboard.SpaceBar)) _spaceshipPlayer1.Shoot();
+            if (Input.GetKey(E_Keyboard.D) || Input.GetKey(E_Keyboard.RightArrow) || Input.GetKey(E_Keyboard.SpaceBar))
+            {
+                _spaceshipPlayer1.Shoot();
+                _myGameDataChanged = true;
+                _shoot = true;
+            }
+
         }
 
-        private void RunPlayer1LimitedKeys()
+            private void RunPlayer1LimitedKeys()
         {
             int spaceship1OldPosY = (int)_spaceshipPlayer1.P_PosY;
 
@@ -296,6 +317,32 @@ namespace julienfEngine1
         private void MultiplayerOnline()
         {
             RunPlayer1FullKeys();
+
+            if (_myGameDataChanged)
+            {
+                GameData myData = new GameData()
+                {
+                    P_PosY = (int)_spaceshipPlayer1.P_PosY,
+                    P_Shoot = _shoot
+                };
+                string sendData = GameData.SerializeData(myData);
+                Task.Run(()=> _myRemotePlayer.SendInfo(sendData));
+                _myRemotePlayer.SendInfoAsync(sendData);
+            }
+            
+
+            if (_taskRemotePlayer2.IsCompleted)
+            {
+                string remotePlayer2DataString = _taskRemotePlayer2.Result;
+                GameData remotePlayer2Data = GameData.DeserializeData(remotePlayer2DataString);
+
+                _spaceshipPlayer2.P_PosY = remotePlayer2Data.P_PosY;
+
+                if (remotePlayer2Data.P_Shoot) _spaceshipPlayer2.Shoot();
+
+                _taskRemotePlayer2 = _remotePlayer2.ReceiveInfoAsync();
+            }
+            
         }
 
         #endregion

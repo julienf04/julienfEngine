@@ -151,6 +151,7 @@ namespace julienfEngine1
 
             set
             {
+                if (value.Length != this._animation.P_SequenceOfFigures.Length) this._animation.P_NewSequenceOfFigures = value.Length;
                 _figures = value;
             }
         }

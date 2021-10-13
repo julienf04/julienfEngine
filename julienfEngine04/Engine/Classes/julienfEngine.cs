@@ -26,6 +26,8 @@ namespace julienfEngine1
 
         private const byte _COUNT_OF_METHODS_TO_RESET_ALL_ENGINE_VALUES = 3;
 
+        public const char SPECIAL_ASCII_CHARACTER = '¼';
+
         #if DEBUG
         private static Debug _debugGameObject;
         #endif
@@ -72,13 +74,25 @@ namespace julienfEngine1
                     if (y >= 0 && y <= Screen.P_Height)
                     {
                         int xEnd = xStart + currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure].Length;
+                        bool hasSpecialChars = currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_HasSpecialCharacters is not null && currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_HasSpecialCharacters[iFigure];
 
                         if (xStart >= 0 && xEnd <= Screen.P_Width)
-                            DllImporter.WriteConsole(_currentScreenBufferID, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure], new DllImporter.COORD((short)(xStart), (short)y), currentGameObjectToDraw.P_GameObjectFigures[figureIndex].ForegroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].BackgroundColor);
+                            if (!hasSpecialChars)
+                                DllImporter.WriteConsole(_currentScreenBufferID, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure], new DllImporter.COORD((short)(xStart), (short)y), currentGameObjectToDraw.P_GameObjectFigures[figureIndex].ForegroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].BackgroundColor);
+                            else
+                                DllImporter.WriteConsoleWithSpecialCharacters(_currentScreenBufferID, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure], new DllImporter.COORD((short)(xStart), (short)y), currentGameObjectToDraw.P_GameObjectFigures[figureIndex].ForegroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].BackgroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_SpecialCharactersStartIndexes[iFigure], currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_SpecialCharactersLengthToPaint[iFigure]);
+
                         else if (xStart < Screen.P_Width && xEnd >= Screen.P_Width)
-                            DllImporter.WriteConsole(_currentScreenBufferID, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure].Substring(0, Screen.P_Width - xStart), new DllImporter.COORD((short)(xStart), (short)y), currentGameObjectToDraw.P_GameObjectFigures[figureIndex].ForegroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].BackgroundColor);
+                            if (!hasSpecialChars)
+                                DllImporter.WriteConsole(_currentScreenBufferID, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure].Substring(0, Screen.P_Width - xStart), new DllImporter.COORD((short)(xStart), (short)y), currentGameObjectToDraw.P_GameObjectFigures[figureIndex].ForegroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].BackgroundColor);
+                            else
+                                DllImporter.WriteConsoleWithSpecialCharacters(_currentScreenBufferID, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure].Substring(0, Screen.P_Width - xStart), new DllImporter.COORD((short)(xStart), (short)y), currentGameObjectToDraw.P_GameObjectFigures[figureIndex].ForegroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].BackgroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_SpecialCharactersStartIndexes[iFigure], currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_SpecialCharactersLengthToPaint[iFigure]);
+
                         else if (xStart < 0 && xEnd > 0)
-                            DllImporter.WriteConsole(_currentScreenBufferID, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure].Substring(-xStart, xEnd), new DllImporter.COORD((short)(0), (short)y), currentGameObjectToDraw.P_GameObjectFigures[figureIndex].ForegroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].BackgroundColor);
+                            if (!hasSpecialChars)
+                                DllImporter.WriteConsole(_currentScreenBufferID, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure].Substring(-xStart, xEnd), new DllImporter.COORD((short)(0), (short)y), currentGameObjectToDraw.P_GameObjectFigures[figureIndex].ForegroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].BackgroundColor);
+                            else
+                                DllImporter.WriteConsoleWithSpecialCharacters(_currentScreenBufferID, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_Figure[iFigure].Substring(-xStart, xEnd), new DllImporter.COORD((short)(0), (short)y), currentGameObjectToDraw.P_GameObjectFigures[figureIndex].ForegroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].BackgroundColor, currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_SpecialCharactersStartIndexes[iFigure], currentGameObjectToDraw.P_GameObjectFigures[figureIndex].P_SpecialCharactersLengthToPaint[iFigure]);
                     }
                 }
 

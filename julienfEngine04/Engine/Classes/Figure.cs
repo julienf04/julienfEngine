@@ -15,6 +15,10 @@ namespace julienfEngine1
 
         private E_BackgroundColors _backgroundColor = E_BackgroundColors.Black;
 
+        private bool[] _hasSpecialCharacters = null;
+        private short[][] _specialCharactersStartIndexes = null;
+        private int[][] _specialCharactersLengthToPaint = null;
+
         #endregion
 
         #region ---CONSTRUCTORS;
@@ -28,6 +32,7 @@ namespace julienfEngine1
         public Figure(string[] figure)
         {
             _figure = figure;
+            _hasSpecialCharacters = FigureFilter.GetSpecialCharacters(figure, out _specialCharactersStartIndexes, out _specialCharactersLengthToPaint);
         }
 
         public Figure(E_ForegroundColors foregroundColor)
@@ -50,12 +55,14 @@ namespace julienfEngine1
         {
             _figure = figure;
             _foregroundColor = foregroundColor;
+            _hasSpecialCharacters = FigureFilter.GetSpecialCharacters(figure, out _specialCharactersStartIndexes, out _specialCharactersLengthToPaint);
         }
 
         public Figure(string[] figure, E_BackgroundColors backgroundColor)
         {
             _figure = figure;
             _backgroundColor = backgroundColor;
+            _hasSpecialCharacters = FigureFilter.GetSpecialCharacters(figure, out _specialCharactersStartIndexes, out _specialCharactersLengthToPaint);
         }
 
         public Figure(string[] figure, E_ForegroundColors foregroundColor, E_BackgroundColors backgroundColor)
@@ -63,6 +70,7 @@ namespace julienfEngine1
             _figure = figure;
             _foregroundColor = foregroundColor;
             _backgroundColor = backgroundColor;
+            _hasSpecialCharacters = FigureFilter.GetSpecialCharacters(figure, out _specialCharactersStartIndexes, out _specialCharactersLengthToPaint);
         }
 
         #endregion
@@ -82,7 +90,8 @@ namespace julienfEngine1
 
             set
             {
-                _figure = value; //If matriz in X and matriz in Y are less than screen, it is allowed, not else
+                _hasSpecialCharacters = FigureFilter.GetSpecialCharacters(_figure, out _specialCharactersStartIndexes, out _specialCharactersLengthToPaint);
+                _figure = value;
             }
         }
 
@@ -109,6 +118,30 @@ namespace julienfEngine1
             set
             {
                 _backgroundColor = value;
+            }
+        }
+
+        public bool[] P_HasSpecialCharacters
+        {
+            get
+            {
+                return _hasSpecialCharacters;
+            }
+        }
+
+        public short[][] P_SpecialCharactersStartIndexes
+        {
+            get
+            {
+                return _specialCharactersStartIndexes;
+            }
+        }
+
+        public int[][] P_SpecialCharactersLengthToPaint
+        {
+            get
+            {
+                return _specialCharactersLengthToPaint;
             }
         }
 

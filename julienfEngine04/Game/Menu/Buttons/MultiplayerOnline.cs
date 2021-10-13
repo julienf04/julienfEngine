@@ -62,13 +62,7 @@ namespace julienfEngine1
 
         void IClickable.OnClick()
         {
-            Scene.UnloadScene(typeof(MainMenuScene));
-            Scene.UnloadScene(typeof(ExitMenuScene));
-            Scene.UnloadScene(typeof(SinglePlayerMenuScene));
-            Scene.UnloadScene(typeof(MultiplayerMenuScene));
-
-            Scene.LoadScene(typeof(GameScene), new object[] { GameScene.E_GameType.MultiplayerOnline });
-            Scene.SetLoadedScene(typeof(GameScene), true);
+            Scene.SetLoadedScene(typeof(LoadingScene), false);
         }
 
         #endregion

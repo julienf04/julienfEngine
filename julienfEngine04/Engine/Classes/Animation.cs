@@ -20,7 +20,7 @@ namespace julienfEngine1
 
         private int _nextFigureIndexForPingPong = 1;
 
-        private int _timeBetweenFigures = 1; //time in seconds
+        private double _timeBetweenFigures = 1; //time in seconds
 
         private readonly Timer _sequenceTimer = new Timer();
 
@@ -34,10 +34,7 @@ namespace julienfEngine1
         {
             _sequenceOfFigures = new int[sequenceOfFiguresLength];
 
-            for (int i = 0; i < _sequenceOfFigures.Length; i++)
-            {
-                _sequenceOfFigures[i] = i;
-            }
+            for (int i = 0; i < _sequenceOfFigures.Length; i++) _sequenceOfFigures[i] = i;
         }
 
         #endregion
@@ -46,6 +43,7 @@ namespace julienfEngine1
 
         public void RunAnimation()
         {
+            if (this._isRunning) throw new Exception("Animation is already running");
             _sequenceTimer.StartMyTimer(0);
             _isRunning = true;
         }
@@ -117,8 +115,21 @@ namespace julienfEngine1
 
             set
             {
-                if (value.Length >= 0 && value.Length <= _sequenceOfFigures.Length &&
-                    value.Min() >= 0 && value.Max() <= _sequenceOfFigures.Max()) _sequenceOfFigures = value;
+                if (value.Length <= 0 || value.Length > _sequenceOfFigures.Length)
+                    throw new Exception("You cannot set a sequence of figures with different length than the total figures of this GameObject");
+                if (value.Min() < 0 || value.Max() > _sequenceOfFigures.Max())
+                    throw new Exception("You cannot set figure values greater or less than the maximum or minimum number of figures in the GameObject");
+
+                _sequenceOfFigures = value;
+            }
+        }
+
+        internal int P_NewSequenceOfFigures
+        {
+            set
+            {
+                _sequenceOfFigures = new int[value];
+                for (int i = 0; i < _sequenceOfFigures.Length; i++) _sequenceOfFigures[i] = i;
             }
         }
 
@@ -152,7 +163,7 @@ namespace julienfEngine1
             }
         }
 
-        public int P_TimeBetweenFigures
+        public double P_TimeBetweenFigures
         {
             get
             {

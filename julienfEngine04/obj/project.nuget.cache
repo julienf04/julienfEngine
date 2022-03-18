@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "uEKGbNvs3w5WaShuFyO6jOeGbrBdPL0kTBJ+5e1FUqJ3oGIOA0MdDZJ+nLTY2Cl1ByS6X2nXVMIxRqaLIOiyMw==",
+  "dgSpecHash": "eTTTyrv/Ihwh0Vc23CEUPA+NKhErjY/ArnrurS4VmXc85MrWCE0S+2bninOd3Y2plMKHMS/O9BZTetJ3kw/y7g==",
   "success": true,
   "projectFilePath": "C:\\Users\\julie\\C# Proyetos\\motorDeVideojuegosProbando0\\julienfEngine1\\julienfEngine\\julienfEngine04\\julienfEngine1.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\julie\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.13\\microsoft.netcore.app.host.win-x64.5.0.13.nupkg.sha512"
+  ],
   "logs": []
 }

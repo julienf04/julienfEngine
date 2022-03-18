@@ -6,6 +6,7 @@ using System.Buffers;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace julienfEngine1
 {
@@ -21,6 +22,8 @@ namespace julienfEngine1
         private static bool _limitFPSbyAverage = false;
 
         private static Stack<Task> _tasksToWait = new Stack<Task>();
+
+        private static object _lockControlCollider = new object();
 
         #if DEBUG
         private static Debug _debugGameObject;
@@ -175,19 +178,11 @@ namespace julienfEngine1
                             else if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Contains(currentGameObjectCollision2) &&
                                      currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionStayGameObjects.Contains(currentGameObjectCollision1))
                             {
-                                bool notRemoved = true;
-                                while (notRemoved)
+                                lock (_lockControlCollider)
                                 {
-                                    try
-                                    {
-                                        currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision2);
-                                        currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision1);
-                                        notRemoved = false;
-                                    }
-                                    catch { }
+                                    currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionExitGameObjects.Push(currentGameObjectCollision2);
+                                    currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionExitGameObjects.Push(currentGameObjectCollision1);
                                 }
-                                currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionExitGameObjects.Push(currentGameObjectCollision2);
-                                currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionExitGameObjects.Push(currentGameObjectCollision1);
                             }
                         });
                     }
@@ -216,7 +211,7 @@ namespace julienfEngine1
         {
             double timeToWait = _limitFPSbyAverage ? Timer.P_AverageFPS : _limitTimePerFrame;
 
-            while (Timer.P_CurrentTimeOfDeltaTime < timeToWait) { }
+            System.Threading.SpinWait.SpinUntil(() => Timer.P_CurrentTimeOfDeltaTime >= timeToWait);
         }
 
         public static void LimitFPS(uint fps)

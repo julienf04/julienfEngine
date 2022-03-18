@@ -90,7 +90,7 @@ namespace julienfEngine1
 
             set
             {
-                _hasSpecialCharacters = FigureFilter.GetSpecialCharacters(_figure, out _specialCharactersStartIndexes, out _specialCharactersLengthToPaint);
+                _hasSpecialCharacters = FigureFilter.GetSpecialCharacters(value, out _specialCharactersStartIndexes, out _specialCharactersLengthToPaint);
                 _figure = value;
             }
         }

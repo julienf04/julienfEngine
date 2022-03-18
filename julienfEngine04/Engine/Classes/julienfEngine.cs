@@ -26,7 +26,7 @@ namespace julienfEngine1
 
         private const byte _COUNT_OF_METHODS_TO_RESET_ALL_ENGINE_VALUES = 3;
 
-        public const char SPECIAL_ASCII_CHARACTER = '¼';
+        public const char SPECIAL_ASCII_CHARACTER = '¼'; // NUm 172 Ascii ----- Alt + 172 (numeric pad)
 
         #if DEBUG
         private static Debug _debugGameObject;

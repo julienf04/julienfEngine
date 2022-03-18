@@ -326,7 +326,7 @@
 
         public static void Initialize()
         {
-            julienfEngine.LimitFPS(25);
+            julienfEngine.LimitFPS(30);
 
             // Step 1: Initialize all scenes you have cre
             // ated --> YourScene.Initialize();

@@ -28,6 +28,8 @@ namespace julienfEngine1
 
         public const char SPECIAL_ASCII_CHARACTER = '¼'; // NUm 172 Ascii ----- Alt + 172 (numeric pad)
 
+        private static object _lockControlCollisions = new object();
+
         #if DEBUG
         private static Debug _debugGameObject;
         #endif
@@ -188,9 +190,14 @@ namespace julienfEngine1
                                 currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionStayGameObjects.Add(currentGameObjectCollision1);
                             }
                         }
-                        else if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision2) &&
-                                  currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision1))
+                        else if (currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Contains(currentGameObjectCollision2) &&
+                                  currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionStayGameObjects.Contains(currentGameObjectCollision1))
                         {
+                            lock (_lockControlCollisions)
+                            {
+                                currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision2);
+                                currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionStayGameObjects.Remove(currentGameObjectCollision1);
+                            }
                             currentGameObjectCollision1.P_Collision.P_CurrentOnCollisionExitGameObjects.Push(currentGameObjectCollision2);
                             currentGameObjectCollision2.P_Collision.P_CurrentOnCollisionExitGameObjects.Push(currentGameObjectCollision1);
                         }
@@ -218,7 +225,7 @@ namespace julienfEngine1
         {
             double timeToWait = _limitFPSbyAverage ? Timer.P_AverageFPS : _limitTimePerFrame;
 
-            while (Timer.P_CurrentTimeOfDeltaTime < timeToWait) { }
+            System.Threading.SpinWait.SpinUntil(() => Timer.P_CurrentTimeOfDeltaTime >= timeToWait);
         }
 
         public static void LimitFPS(uint fps)

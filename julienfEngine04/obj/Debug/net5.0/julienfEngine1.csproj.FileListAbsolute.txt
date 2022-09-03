@@ -3,7 +3,6 @@ C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEng
 C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\bin\Debug\net5.0\julienfEngine1.runtimeconfig.json
 C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\bin\Debug\net5.0\julienfEngine1.runtimeconfig.dev.json
 C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\bin\Debug\net5.0\julienfEngine1.dll
-C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\bin\Debug\net5.0\ref\julienfEngine1.dll
 C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\bin\Debug\net5.0\julienfEngine1.pdb
 C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\Debug\net5.0\julienfEngine1.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\Debug\net5.0\julienfEngine1.AssemblyInfoInputs.cache
@@ -14,3 +13,4 @@ C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEng
 C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\Debug\net5.0\julienfEngine1.pdb
 C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\Debug\net5.0\julienfEngine1.genruntimeconfig.cache
 C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\Debug\net5.0\julienfEngine1.csproj.AssemblyReference.cache
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\Debug\net5.0\refint\julienfEngine1.dll

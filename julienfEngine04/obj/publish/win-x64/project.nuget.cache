@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "SZmmmxPu8Jxyp1MtYP6+agMDWb8y2EvZnxS6i59C58t8nbVrV+KO+SAhgpt6ELM5MwSpOQyio6wTBv333aArLQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\julie\\C# Proyetos\\motorDeVideojuegosProbando0\\julienfEngine1\\julienfEngine\\julienfEngine04\\julienfEngine1.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\julie\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\5.0.16\\microsoft.netcore.app.runtime.win-x64.5.0.16.nupkg.sha512",
+    "C:\\Users\\julie\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\5.0.16\\microsoft.windowsdesktop.app.runtime.win-x64.5.0.16.nupkg.sha512",
+    "C:\\Users\\julie\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\5.0.16\\microsoft.aspnetcore.app.runtime.win-x64.5.0.16.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,16 @@
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\x64\Release\net5.0-windows\julienfEngine1.csproj.AssemblyReference.cache
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\x64\Release\net5.0-windows\julienfEngine1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\x64\Release\net5.0-windows\julienfEngine1.AssemblyInfoInputs.cache
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\x64\Release\net5.0-windows\julienfEngine1.AssemblyInfo.cs
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\x64\Release\net5.0-windows\julienfEngine1.csproj.CoreCompileInputs.cache
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\bin\x64\Release\net5.0-windows\julienfEngine1.exe
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\bin\x64\Release\net5.0-windows\julienfEngine1.deps.json
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\bin\x64\Release\net5.0-windows\julienfEngine1.runtimeconfig.json
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\bin\x64\Release\net5.0-windows\julienfEngine1.runtimeconfig.dev.json
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\bin\x64\Release\net5.0-windows\julienfEngine1.dll
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\bin\x64\Release\net5.0-windows\julienfEngine1.pdb
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\x64\Release\net5.0-windows\julienfEngine1.dll
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\x64\Release\net5.0-windows\refint\julienfEngine1.dll
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\x64\Release\net5.0-windows\julienfEngine1.pdb
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\x64\Release\net5.0-windows\julienfEngine1.genruntimeconfig.cache
+C:\Users\julie\C# Proyetos\motorDeVideojuegosProbando0\julienfEngine1\julienfEngine\julienfEngine04\obj\x64\Release\net5.0-windows\ref\julienfEngine1.dll
